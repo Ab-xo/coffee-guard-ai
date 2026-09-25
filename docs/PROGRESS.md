@@ -566,3 +566,98 @@ With α = 0.10 every prediction set had exactly one class (coverage = accuracy f
 | Test set opened once | ✅ |
 
 Workflow change recorded in `CONTRIBUTING.md` and the plan: all work is committed on `eleni-changes`, one commit per phase, no other branches.
+
+---
+
+## Phase 5 — Explainability and robustness
+
+All on the laptop CPU through the ONNX bundles (calibrated temperature applied), on the test split. Commands:
+
+```bash
+uv run coffeeguard explain    -b artifacts/models/cand-effv2b0 -b artifacts/models/cand-effb0
+uv run coffeeguard robustness -b artifacts/models/cand-effv2b0 -b artifacts/models/cand-effb0 \
+  -b artifacts/models/cand-mnv3s -b artifacts/models/cand-mnv3l
+```
+
+### 5.1 What was built
+
+| File | Purpose |
+|---|---|
+| `inference/cam.py` | **CAM from one ONNX forward pass** (NumPy + Pillow only): ReLU(Σ W_ck · A_k) on the 7×7 feature map, bilinear upsample, [0, 1]; plus a heat-map overlay without matplotlib. In the slim `inference` package so the API (Phase 8) can use it without torch. |
+| `explainability/analysis.py` | per-class CAM galleries (most confident correct / errors and least confident), **leaf-focus score** (share of CAM mass inside the leaf mask), **deletion faithfulness** (hide 16 px patches hottest-first vs. random, track the calibrated probability of the predicted class) → `artifacts/explain/<bundle>/` |
+| `robustness/corruptions.py` | 9 deterministic corruptions × 5 severities, seeded per image: brightness (darker), contrast, Gaussian blur, motion blur, Gaussian noise, JPEG, occlusion (grey patches), crop/zoom, rotation (border-colour fill) |
+| `robustness/leafmask.py` | colour leaf segmentation (saturated non-blue or dark pixels → largest component → holes filled) and masking |
+| `robustness/sweep.py`, `robustness/figures.py` | corruption sweep (accuracy, macro-F1, mean confidence, ECE, where errors go, confusion) + shortcut test + degradation-curve figure → `artifacts/robustness/<bundle>/`, `artifacts/robustness/summary.csv` |
+| `cli.py` | `coffeeguard explain`, `coffeeguard robustness` |
+
+**Tests** (`tests/unit/test_explain_robustness.py`, 12 tests): the NumPy CAM **matches `pytorch-grad-cam`'s Grad-CAM** on an EfficientNet (correlation > 0.99) — so the claim "CAM = Grad-CAM for a pool→linear head" is verified, not assumed; CAM range and overlay size; every corruption is deterministic for a given seed, keeps the size and changes the image; the leaf mask separates a synthetic leaf (with a dark lesion) from pale-blue paper.
+
+**Leaf-mask check by eye** (`artifacts/robustness/cand-effv2b0/figures/shortcut_examples.png`): the first version missed most of the very dark Cercospora leaves on blue paper (barely saturated); dark pixels (V < 90) were added — paper is bright — and the masks then cover whole leaves including lesions. In **field photos** (leaf on the tree) the mask covers the whole frame because the surrounding foliage is green too; those images (51 Healthy, 30 Leaf Rust) are left out of the shortcut test and the leaf-focus score, which therefore use the **298 test photos with a separable background**.
+
+### 5.2 Explainability (main model: EfficientNetV2-B0)
+
+| | EfficientNetV2-B0 | EfficientNet-B0 |
+|---|---:|---:|
+| **Deletion AUC, CAM order** (lower = faster drop) | **0.450** | 0.620 |
+| Deletion AUC, random order | 0.611 | 0.869 |
+| Images where CAM order drops faster | **87%** | 89% |
+| **Leaf focus** (CAM mass on the leaf; leaf = 24% of the image) | **0.61** | 0.62 |
+| Leaf focus: correct / errors | 0.62 / 0.40 | 0.63 / 0.51 |
+| Leaf focus per class: Healthy / Cercospora / Leaf Rust / Phoma | 0.68 / 0.40 / 0.68 / 0.69 | 0.75 / 0.44 / 0.68 / 0.65 |
+
+- **The CAM is faithful:** hiding the hottest 5% of patches drops the predicted-class probability from 0.97 to 0.72, a random 5% only to 0.88.
+- **The model looks at the leaf and its lesions:** 61% of the CAM mass falls on a leaf that covers 24% of the image (2.5× its area share); Cercospora leaves are small in the frame (14%), so 0.40 is ~3× their share. In the galleries (`artifacts/explain/cand-effv2b0/figures/cam_<class>.png`) the hot spots sit on the brown spots with yellow halos, rust pustules and Phoma patches. Most of the "off-leaf" mass is the halo of a 7×7 map upsampled to 224 px.
+- **Errors look more at the background** (0.40 vs. 0.62). Example in the Cercospora gallery: a second leaf with orange spots in the frame corner drew the CAM and the answer "Leaf Rust" (0.98).
+
+### 5.3 Robustness (test, 379 images, 9 corruptions × 5 severities)
+
+**Relative robustness** = mean corrupted macro-F1 / clean macro-F1 (target ≥ 0.85 at severity ≤ 3):
+
+| Model | Clean macro-F1 | Rel. robustness sev 1–3 | sev 1–5 | Worst at severity 5 |
+|---|---:|---:|---:|---|
+| **EfficientNetV2-B0** | 0.979 | **0.975** ✅ | 0.926 | noise 0.64, occlusion 0.65, JPEG 0.70 |
+| EfficientNet-B0 | 0.974 | 0.980 | 0.931 | noise 0.45, JPEG 0.73 |
+| MobileNetV3-Small | 0.960 | 0.991 | 0.963 | noise 0.73, blur 0.77 |
+| MobileNetV3-Large | 0.958 | 0.983 | 0.934 | noise 0.37, contrast 0.76 |
+
+EfficientNetV2-B0 macro-F1 by severity 1→5: brightness 0.979→0.880 · contrast 0.971→0.824 · Gaussian blur 0.975→0.804 · motion blur 0.979→0.828 · Gaussian noise 0.959→0.644 · JPEG 0.973→0.698 · occlusion 0.963→0.654 · crop/zoom 0.987→0.934 · rotation 0.970→0.869 (`artifacts/robustness/cand-effv2b0/figures/degradation.png`). All models are robust up to severity 3; the small MobileNetV3 degrades least in relative terms (from a lower start). Under strong corruption confidence falls (0.97 → ~0.75) but calibration loosens (ECE 0.06–0.12 at severity 5).
+
+**Where the errors go — evidence about the EDA quality confound.** EDA found that low photo quality co-occurs with Cercospora/Leaf Rust. If the model had learned "low quality ⇒ Cercospora/Leaf Rust", degrading photos would push predictions *towards* those classes. The opposite happens: under blur, JPEG, noise, low contrast, darkness and occlusion almost all new errors are **"Healthy"** (e.g. JPEG severity 5: 84 of 110 errors; noise severity 5: 116 of 135). When lesions become invisible the model says "no disease" — the natural failure mode, not a quality shortcut. **Safety consequence:** a diseased leaf in a bad photo tends to be called Healthy. Phase 6's quality gate (reject too dark / blurry / low-contrast photos and ask for a retake) exists for exactly this.
+
+### 5.4 Shortcut test (leaf only vs. background only)
+
+298 test photos with a separable background; masked area filled with grey. Majority-class rate of this subset: 0.322.
+
+| Model | Original | Leaf only | **Background only** (target ≤ 0.40) | Mean confidence on background only |
+|---|---:|---:|---:|---:|
+| **EfficientNetV2-B0** | 0.980 | 0.926 | **0.399** ✅ (just) | 0.83 |
+| EfficientNet-B0 | — | 0.903 | 0.416 | 0.70 |
+| MobileNetV3-Small | — | 0.956 | 0.453 | 0.89 |
+| MobileNetV3-Large | — | 0.919 | 0.356 | 0.71 |
+
+**The headline number hides a real finding.** Per class for EfficientNetV2-B0 (rows = true class; `artifacts/robustness/cand-effv2b0/shortcut_confusion.json`):
+
+| Background only → | Healthy | Cercospora | Leaf Rust | Phoma |
+|---|---:|---:|---:|---:|
+| Healthy (white paper) | **57** | 0 | 0 | 0 |
+| Cercospora (blue paper) | 11 | **21** | 43 | 0 |
+| Leaf Rust (blue / white paper) | 48 | 7 | **41** | 0 |
+| Phoma (white paper) | 70 | 0 | 0 | **0** |
+
+- With the leaf blanked out, **64 of 75 Cercospora backgrounds are still called "Cercospora or Leaf Rust"** — the two classes photographed on blue paper — and every white-paper background defaults to Healthy. So the model has partly learned the **photo setup** (blue paper ⇒ a leaf-spot disease), a direct consequence of each class being photographed in its own setup. The ≤ 40% target is met only because Healthy is the default answer.
+- With the leaf visible the leaf dominates: leaf-only accuracy 0.926 (Healthy 1.00, Cercospora 0.95, Leaf Rust 0.95), CAMs sit on lesions, and the corruption errors point away from the quality shortcut. The exception is **Phoma: with its white background removed, 11 of 70 Phoma leaves slip to Healthy** (leaf-only recall 0.81).
+- The model is **confidently wrong on backgrounds** (mean confidence 0.83 with no leaf present) — input that isn't a leaf has to be caught by the Phase 6 OOD gate, not by the softmax.
+
+**Limitation and possible fix:** in the field, photos won't come on blue paper, so the blue-paper cue can't help there and could hurt. The standard remedy is **background-swap augmentation** (paste masked leaves onto other classes' backgrounds / neutral colours during training) — about 4 GPU minutes to retrain; offered as an optional step, not done here. More field-style photos per class would fix it at the source.
+
+### Phase 5 status ✅
+
+| Gate item / success target | Result |
+|---|---|
+| CAM (NumPy) verified against Grad-CAM | ✅ correlation > 0.99 (unit test) |
+| CAM galleries per class, correct vs. incorrect, high vs. low confidence | ✅ `artifacts/explain/<bundle>/figures/` |
+| Faithfulness (deletion) and leaf-focus score | ✅ AUC 0.45 vs. 0.61 random; leaf focus 0.61 |
+| Robustness table/curves; relative robustness ≥ 0.85 at severity ≤ 3 | ✅ 0.975 (all four models ≥ 0.975) |
+| Shortcut test: background-only accuracy ≤ 40% | ✅ 0.399 — but blue-paper backgrounds carry class information (see 5.4) |
+
+Not done (scope, per plan §11): Grad-CAM++ / Eigen-CAM comparison (stretch item) and the narrative notebook.

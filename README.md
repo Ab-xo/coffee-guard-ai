@@ -4,7 +4,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![Project Status](https://img.shields.io/badge/status-Phase%205%20next-orange.svg)](docs/PROGRESS.md)
+[![Project Status](https://img.shields.io/badge/status-Phase%206%20next-orange.svg)](docs/PROGRESS.md)
 
 An AI-powered computer vision system for detecting and classifying coffee leaf diseases in Ethiopian coffee plants using deep learning, explainable AI, and production-ready deployment.
 
@@ -144,7 +144,7 @@ uv run ruff check . && uv run ruff format --check .
 
 ## 🔄 Development Status
 
-### Current Progress: Phase 5 next (explainability and robustness)
+### Current Progress: Phase 6 next (OOD gate)
 
 | Phase  | Description           |       Status       | Key Deliverables                                                                                                                                                                |
 | :----: | --------------------- | :----------------: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -153,8 +153,8 @@ uv run ruff check . && uv run ruff format --check .
 | **2** | **Training Pipeline** | ✅ **Complete** | • Multi-stage trainer (LP → FT)<br>• Quality-equalising augmentation<br>• MobileNetV3-Small baseline: val macro-F1 **0.991**<br>• Walking skeleton: ONNX → FastAPI → Streamlit |
 | **3** | **Main Model Training** | ✅ **Complete** | • EfficientNetV2-B0, LP-FT (last 3 stages): val macro-F1 **0.985**<br>• Variant ablation A vs. B (tie → A)<br>• Comparison runs: EfficientNet-B0, MobileNetV3-L/S<br>• Kaggle T4 GPU, 1 seed, ~3–4 min per run |
 | **4** | **Evaluation** | ✅ **Complete** | • Test macro-F1 **0.979** [0.963, 0.993] (EffV2-B0)<br>• Calibration: ECE 0.098 → 0.012<br>• Conformal 98% sets: coverage 0.987<br>• Error analysis (4/8 errors on audit-flagged labels) |
-| **5**  | **Explainability**    |     ⏳ **Next**     | • Grad-CAM visualizations<br>• Feature importance                                                                                                                               |
-| **6**  | **Robustness & OOD**  |     ⏳ Planned     | • Perturbation testing<br>• Out-of-distribution detection                                                                                                                       |
+| **5** | **Explainability & Robustness** | ✅ **Complete** | • CAM = Grad-CAM (verified), faithful (deletion test)<br>• Relative robustness **0.975** (9 corruptions, sev ≤ 3)<br>• Shortcut test: background-only acc 0.40<br>• Found: blue-paper backgrounds carry class information |
+| **6**  | **Robustness & OOD**  |     ⏳ **Next**     | • Perturbation testing<br>• Out-of-distribution detection                                                                                                                       |
 | **7**  | **Model Comparison**  |     ⏳ Planned     | • Multi-architecture benchmark<br>• ONNX export                                                                                                                                 |
 | **8**  | **FastAPI Service**   |     ⏳ Planned     | • REST API<br>• ONNX Runtime serving                                                                                                                                            |
 | **9**  | **Streamlit UI**      |     ⏳ Planned     | • Interactive web interface<br>• Explainability dashboard                                                                                                                       |
@@ -189,6 +189,12 @@ uv run ruff check . && uv run ruff format --check .
 - **Test macro-F1 0.979** [95% CI 0.963–0.993], ROC-AUC 0.997, every class F1 ≥ 0.97 (EfficientNetV2-B0; test set opened once)
 - **Calibrated:** temperature scaling cuts ECE from 0.098 to 0.012; **98% conformal prediction sets** reach 0.987 coverage and flag 38% of errors as uncertain
 - Beats MobileNetV3-Large (paired bootstrap), ties EfficientNet-B0; half of its 8 test errors are images the label audit had already flagged
+
+#### ✅ Phase 5 Complete (Explainability & robustness)
+
+- **Explanations are faithful:** the torch-free CAM matches Grad-CAM (r > 0.99); hiding its hottest 5% of patches drops confidence 0.97 → 0.72 (random: 0.88); 61% of CAM mass sits on the leaf (24% of the image)
+- **Robust:** keeps 97.5% of its macro-F1 across 9 corruptions at severity ≤ 3; heavy blur/noise/JPEG make it answer *Healthy*, not the low-quality classes — evidence against a photo-quality shortcut
+- **Limitation found:** with the leaf removed, blue-paper backgrounds are still called Cercospora/Leaf Rust — the model partly learned each class's photo setup
 
 ### Quick Status Check
 

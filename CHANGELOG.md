@@ -9,6 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Phase 5 Completed - Explainability and Robustness ✅
+
+#### Added
+- `src/coffeeguard/inference/cam.py` - torch-free CAM from one ONNX pass + overlay (verified equal to Grad-CAM)
+- `src/coffeeguard/explainability/analysis.py` - CAM galleries, leaf-focus score, deletion faithfulness; CLI `coffeeguard explain`
+- `src/coffeeguard/robustness/` - 9 corruptions x 5 severities, colour leaf mask, sweep + shortcut test; CLI `coffeeguard robustness`
+- `tests/unit/test_explain_robustness.py`
+- Results: `artifacts/explain/<bundle>/`, `artifacts/robustness/<bundle>/`, `artifacts/robustness/summary.csv`
+
+#### Results
+- EfficientNetV2-B0: deletion AUC 0.45 (CAM order) vs. 0.61 (random); leaf focus 0.61; relative robustness 0.975 (sev <= 3)
+- Shortcut test: background-only accuracy 0.399, but blue-paper backgrounds are still classified as Cercospora/Leaf Rust (photo-setup confound)
+
 ### Phase 4 Completed - Evaluation, Calibration, Uncertainty ✅
 
 #### Added
@@ -239,7 +252,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 | **Phase 2** | Training pipeline, baseline, walking skeleton | ✅ Complete | ~30 files |
 | **Phase 3** | EfficientNetV2-B0 training (LP-FT, 1 seed) + comparison runs | ✅ Complete | ~15 files |
 | **Phase 4** | Evaluation, calibration, conformal prediction | ✅ Complete | ~20 files |
-| **Phase 5** | Explainability and robustness | ⏳ Planned | - |
+| **Phase 5** | Explainability and robustness | ✅ Complete | ~20 files |
 | **Phase 6** | OOD detection gate | ⏳ Planned | - |
 | **Phase 7** | Model comparison and export | ⏳ Planned | - |
 | **Phase 8** | FastAPI service | ⏳ Planned | - |

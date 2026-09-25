@@ -199,6 +199,40 @@ def evaluate(
 
 
 @app.command()
+def explain(
+    bundle: Annotated[list[Path], typer.Option("--bundle", "-b", help="Bundle dir(s).")],
+    config: ConfigOpt = Path("configs/data.yaml"),
+    out_root: Annotated[Path, typer.Option(help="Output folder.")] = Path("artifacts/explain"),
+) -> None:
+    """CAM galleries, leaf-focus score and deletion faithfulness on the test split."""
+    from coffeeguard.explainability.analysis import run_explain
+    from coffeeguard.utils.paths import resolve
+
+    cfg = _data_cfg(config, None)
+    for b in bundle:
+        res = run_explain(resolve(b), cfg, resolve(out_root))
+        typer.echo(json.dumps({k: v for k, v in res.items() if k != "deletion"}, indent=2))
+
+
+@app.command()
+def robustness(
+    bundle: Annotated[list[Path], typer.Option("--bundle", "-b", help="Bundle dir(s).")],
+    config: ConfigOpt = Path("configs/data.yaml"),
+    out_root: Annotated[Path, typer.Option(help="Output folder.")] = Path("artifacts/robustness"),
+) -> None:
+    """Corruption sweep (9 x 5 severities) + leaf/background shortcut test on test."""
+    from coffeeguard.robustness.sweep import run_robustness, summary_table
+    from coffeeguard.utils.paths import resolve
+
+    cfg = _data_cfg(config, None)
+    out = resolve(out_root)
+    results = [run_robustness(resolve(b), cfg, out) for b in bundle]
+    table = summary_table(results)
+    table.to_csv(out / "summary.csv", index=False)
+    typer.echo(table.T.to_string())
+
+
+@app.command()
 def curves(
     run: Annotated[Path, typer.Option("--run", "-r", help="Run directory.")],
 ) -> None:
