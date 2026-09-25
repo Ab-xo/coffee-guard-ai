@@ -1,0 +1,115 @@
+{
+  "split": "test",
+  "n": 379,
+  "models": [
+    {
+      "bundle": "cand-effv2b0",
+      "model": "tf_efficientnetv2_b0.in1k",
+      "val_macro_f1": 0.9825926711514399,
+      "test_macro_f1": 0.9793695314738403,
+      "test_macro_f1_ci": [
+        0.9630143068470071,
+        0.9926590016745107
+      ],
+      "test_accuracy": 0.978891820580475,
+      "test_errors": 8,
+      "test_ece_after_ts": 0.01238059226944452,
+      "temperature": 0.548325355665168,
+      "conformal_coverage": 0.9868073878627969,
+      "avg_set_size": 1.0263852242744063
+    },
+    {
+      "bundle": "cand-effb0",
+      "model": "efficientnet_b0.ra_in1k",
+      "val_macro_f1": 0.9843061324284913,
+      "test_macro_f1": 0.9740273097636352,
+      "test_macro_f1_ci": [
+        0.9572927293703128,
+        0.9884118912796379
+      ],
+      "test_accuracy": 0.9736147757255936,
+      "test_errors": 10,
+      "test_ece_after_ts": 0.0163011869371409,
+      "temperature": 0.47494253045739415,
+      "conformal_coverage": 0.9815303430079155,
+      "avg_set_size": 1.0263852242744063
+    },
+    {
+      "bundle": "cand-mnv3s",
+      "model": "mobilenetv3_small_100.lamb_in1k",
+      "val_macro_f1": 0.9842860571902675,
+      "test_macro_f1": 0.9601205723124697,
+      "test_macro_f1_ci": [
+        0.938277362359435,
+        0.9789585608822821
+      ],
+      "test_accuracy": 0.9604221635883905,
+      "test_errors": 15,
+      "test_ece_after_ts": 0.02257281416009791,
+      "temperature": 0.46837967990017576,
+      "conformal_coverage": 0.978891820580475,
+      "avg_set_size": 1.0343007915567282
+    },
+    {
+      "bundle": "cand-mnv3l",
+      "model": "mobilenetv3_large_100.ra_in1k",
+      "val_macro_f1": 0.9794377331641253,
+      "test_macro_f1": 0.9577230737416289,
+      "test_macro_f1_ci": [
+        0.9348084044519062,
+        0.9766758484573924
+      ],
+      "test_accuracy": 0.9577836411609498,
+      "test_errors": 16,
+      "test_ece_after_ts": 0.01829483059276691,
+      "temperature": 0.49371779847217323,
+      "conformal_coverage": 0.9841688654353562,
+      "avg_set_size": 1.0606860158311346
+    },
+    {
+      "bundle": "coffeeguard-mnv3s-baseline",
+      "model": "mobilenetv3_small_100.lamb_in1k",
+      "val_macro_f1": 0.9913039524791292,
+      "test_macro_f1": 0.9663271839620109,
+      "test_macro_f1_ci": [
+        0.9472299683097963,
+        0.9840451857699012
+      ],
+      "test_accuracy": 0.9656992084432717,
+      "test_errors": 13,
+      "test_ece_after_ts": 0.02488228450664432,
+      "temperature": 0.5770207734142707,
+      "conformal_coverage": 0.9656992084432717,
+      "avg_set_size": 1.0
+    }
+  ],
+  "paired_bootstrap_vs_main": {
+    "main": "cand-effv2b0",
+    "comparisons": {
+      "cand-effb0": {
+        "diff": 0.005342221710205153,
+        "lo": -0.008435460633760236,
+        "hi": 0.02038785265719764,
+        "p_a_not_better": 0.244
+      },
+      "cand-mnv3s": {
+        "diff": 0.019248959161370593,
+        "lo": -0.0008516743834213275,
+        "hi": 0.040255074130993725,
+        "p_a_not_better": 0.031
+      },
+      "cand-mnv3l": {
+        "diff": 0.02164645773221141,
+        "lo": 0.0036903670065639746,
+        "hi": 0.04053937205296912,
+        "p_a_not_better": 0.0075
+      },
+      "coffeeguard-mnv3s-baseline": {
+        "diff": 0.013042347511829422,
+        "lo": -0.004209139997899372,
+        "hi": 0.03159715302347762,
+        "p_a_not_better": 0.069
+      }
+    }
+  }
+}

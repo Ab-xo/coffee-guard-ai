@@ -484,3 +484,85 @@ Curves: `artifacts/figures/training/<model>-s0-gpu.png`.
 | Training-curve figures per run | ✅ |
 
 GPU time used this week: about 25 min of 6 h (two kernels: 9 + 15 min).
+
+---
+
+## Phase 4 — Evaluation, calibration, uncertainty
+
+### 4.1 What was built
+
+| File | Purpose |
+|---|---|
+| `evaluation/evaluate.py` | `evaluate_bundle()`: predicts val + test **through the exported ONNX bundle** (exactly what the API serves), fits temperature and conformal q̂ on **val only**, reports test metrics, writes `artifacts/eval/<bundle>/metrics.json`, `predictions_{val,test}.parquet` (probabilities, set size, quality measures joined; git-ignored) and `embeddings_{val,test}.npy` (for the Phase 6 OOD gate; git-ignored), and **writes `temperature` + `conformal_qhat` into `bundle.json`** so the API serves calibrated probabilities. `compare()`: summary table + paired bootstrap of the main model vs. each alternative. |
+| `evaluation/calibration.py` | temperature scaling (1-D bounded search on log T, minimising val NLL), reliability bins, ECE (15 bins) |
+| `evaluation/conformal.py` | split conformal prediction, LAC score; sets never empty; coverage / set size overall and per class |
+| `evaluation/metrics.py` | + `bootstrap_ci` (2,000 resamples, percentile 95% CI for accuracy and macro-F1), `paired_bootstrap_diff` |
+| `evaluation/figures.py` | test confusion matrix (counts + row %), reliability diagram before/after (val, test), selective-accuracy curve, test-error gallery → `artifacts/eval/<bundle>/figures/` |
+| `cli.py` | `coffeeguard evaluate -b <main bundle> -b <other> …` → also `artifacts/metrics/test_metrics.json` |
+
+Tests: `tests/unit/test_evaluation.py` (temperature recovers a known ×2 over-confidence; ECE ≈ 0 on calibrated synthetic data and large when not; conformal coverage holds on fresh data at α 0.10 and 0.02; sets never empty; bootstrap CI brackets the estimate; paired diff of identical predictions is 0). The slow smoke test now also runs `evaluate_bundle` end to end on its exported bundle.
+
+**Run:** the four Phase 3 models were exported (`cand-effv2b0`, `cand-effb0`, `cand-mnv3s`, `cand-mnv3l`; torch ↔ ONNX max |Δlogit| ≤ 5e-6, argmax agreement 100%, `cam_exact` true for both EfficientNets) and evaluated together with the Phase 2 baseline bundle — **2.5 min on CPU for all five**. This is the one time the test split was opened.
+
+```bash
+uv run coffeeguard evaluate -b artifacts/models/cand-effv2b0 -b artifacts/models/cand-effb0 \
+  -b artifacts/models/cand-mnv3s -b artifacts/models/cand-mnv3l -b artifacts/models/coffeeguard-mnv3s-baseline
+```
+
+### 4.2 Decision: conformal level α = 0.02 (not the planned 0.10)
+
+With α = 0.10 every prediction set had exactly one class (coverage = accuracy for all models): the models are ~98% accurate, so a 90% guarantee is met by the top class alone and the sets carry no information. Measured on the main model (q̂ fitted on val, evaluated on test):
+
+| α (target coverage) | q̂ | Test coverage | Avg set size | Predictions with > 1 class | Test errors flagged by a set |
+|---|---:|---:|---:|---:|---:|
+| 0.10 (90%) | 0.035 | 0.979 | 1.000 | 0% | 0% |
+| 0.05 (95%) | 0.139 | 0.979 | 1.000 | 0% | 0% |
+| **0.02 (98%)** | **0.742** | **0.987** | **1.026** | **2.6%** | **38%** |
+| 0.01 (99%) | 0.996 | 0.997 | 1.799 | 51% | 88% |
+
+α = 0.02 is the useful operating point: coverage within ±2 pp of its target, only 2.6% of answers become "uncertain", and those catch over a third of the errors. α = 0.01 would make half of all answers uncertain, and its q̂ (0.996) rests on the ~4 hardest of 377 val images. The CLI default is now 0.02.
+
+### 4.3 Results (test, 379 images, opened once)
+
+`artifacts/metrics/test_metrics.json`; per-model details in `artifacts/eval/<bundle>/metrics.json`.
+
+| Model | Val macro-F1 | **Test macro-F1 [95% CI]** | Test errors | ECE before → after | T | Conformal coverage (98%) | Avg set size |
+|---|---:|---|---:|---|---:|---:|---:|
+| **EfficientNetV2-B0** (main) | 0.983 | **0.979** [0.963, 0.993] | 8 | 0.098 → **0.012** | 0.55 | 0.987 | 1.026 |
+| EfficientNet-B0 | 0.984 | 0.974 [0.957, 0.988] | 10 | 0.094 → 0.016 | 0.47 | 0.982 | 1.026 |
+| MobileNetV3-Small (Phase 2, CPU) | 0.991 | 0.966 [0.947, 0.984] | 13 | 0.070 → 0.025 | 0.58 | 0.966 | 1.000 |
+| MobileNetV3-Small (GPU) | 0.984 | 0.960 [0.938, 0.979] | 15 | 0.099 → 0.023 | 0.47 | 0.979 | 1.034 |
+| MobileNetV3-Large | 0.979 | 0.958 [0.935, 0.977] | 16 | 0.087 → 0.018 | 0.49 | 0.984 | 1.061 |
+
+(Val macro-F1 here is recomputed from the ONNX bundle in FP32; training scored val with FP16 autocast on the GPU, which flipped one borderline image for EfficientNetV2-B0: 0.9848 → 0.9826.)
+
+**Paired bootstrap, main model minus each alternative** (same 379 test images, 2,000 resamples):
+
+| vs. | Δ macro-F1 | 95% CI | P(main not better) |
+|---|---:|---|---:|
+| EfficientNet-B0 | +0.005 | [−0.008, +0.020] | 0.24 — a tie |
+| MobileNetV3-Small (GPU) | +0.019 | [−0.001, +0.040] | 0.03 |
+| MobileNetV3-Small (Phase 2 CPU) | +0.013 | [−0.004, +0.032] | 0.07 |
+| MobileNetV3-Large | +0.022 | [+0.004, +0.041] | 0.007 — better |
+
+**Main model in detail (EfficientNetV2-B0, test)**
+- Per-class F1: Healthy 0.986 · Cercospora 0.974 · Leaf Rust 0.972 · Phoma 0.986; macro ROC-AUC 0.997.
+- Confusion (rows = true Healthy/Cercospora/Leaf Rust/Phoma): `[[107,0,1,0],[0,74,1,0],[1,3,122,0],[1,0,1,68]]` — the main confusion is **Leaf Rust → Cercospora (3)**, the pair the label audit singled out.
+- **Calibration:** T = 0.55 (< 1): the models were *under*-confident, as expected after training with label smoothing 0.1. Temperature scaling brings ECE from 0.098 to 0.012 (target ≤ 0.05 ✓). The reliability diagram is dominated by the top bin: only 14 of 379 test images have confidence < 0.8, so the low-confidence points are single images and look jumpy.
+- **Confidence buckets (spec):** 0–0.4: none · 0.4–0.6: 5 images, 60% correct · 0.6–0.8: 9 images, 67% correct · 0.8–1.0: 365 images, **99.2% correct**. Answering only the most confident 95% (confidence ≥ 0.88) gives 99.2% accuracy; 90% (≥ 0.96) gives 99.1%.
+- **Error rate by photo quality** (val + test, quartiles of 189 images): the lowest quartile of sharpness, brightness, contrast and green fraction each has 3.2% errors vs. 0.5–2.6% elsewhere — a mild trend resting on 6 vs. 1–5 errors, not evidence of a quality shortcut. Phase 5's corruption sweep and shortcut test measure this properly.
+
+**Are the remaining errors label noise?** 4 of the 8 test errors — including the two most confident (0.997 and 0.983: "Leaf Rust" leaves with Cercospora-like brown spots and yellow halos) — are among the 19 images the Phase 1 cleanlab audit flagged independently, with a different model (DINOv2). Leaving out the 5 flagged test images: accuracy 0.989, macro-F1 0.990 (4 errors of 374). Nothing is excluded without an expert's check; `artifacts/eval/cand-effv2b0/figures/errors_test.png` is the gallery to review, together with `artifacts/figures/eda/label_issues.png`. Conformal sets flag 3 of the 8 errors as uncertain (set size 2).
+
+### Phase 4 status ✅
+
+| Gate item / success target | Result |
+|---|---|
+| Full metrics report for the main model and the baselines | ✅ incl. bootstrap CIs, per-class, confusion, ROC-AUC |
+| Test macro-F1 ≥ 0.90, every class F1 ≥ 0.85 | ✅ 0.979; lowest class 0.972 |
+| ECE ≤ 0.05 after temperature scaling | ✅ 0.012 |
+| Conformal coverage within ±2 pp of target | ✅ 0.987 at the 98% target (α changed from 0.10, see 4.2) |
+| Confidence buckets, selective curve, error galleries, error by quality | ✅ |
+| Test set opened once | ✅ |
+
+Workflow change recorded in `CONTRIBUTING.md` and the plan: all work is committed on `eleni-changes`, one commit per phase, no other branches.

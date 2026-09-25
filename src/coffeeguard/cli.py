@@ -171,6 +171,34 @@ def train(
 
 
 @app.command()
+def evaluate(
+    bundle: Annotated[
+        list[Path], typer.Option("--bundle", "-b", help="Bundle dir(s); repeatable.")
+    ],
+    config: ConfigOpt = Path("configs/data.yaml"),
+    alpha: Annotated[
+        float,
+        typer.Option(help="Conformal miscoverage; 0.02 = 98% sets."),
+    ] = 0.02,
+    out_root: Annotated[Path, typer.Option(help="Output folder.")] = Path("artifacts/eval"),
+) -> None:
+    """Evaluate bundles on val + test: CIs, calibration, conformal sets, error analysis.
+
+    The first bundle is the main model; the others are compared against it (paired bootstrap).
+    """
+    from coffeeguard.evaluation.evaluate import compare, evaluate_bundle
+    from coffeeguard.utils.io import write_json
+    from coffeeguard.utils.paths import resolve
+
+    cfg = _data_cfg(config, None)
+    out = resolve(out_root)
+    results = [evaluate_bundle(resolve(b), cfg, out, alpha) for b in bundle]
+    summary = compare(results, out)
+    write_json(resolve("artifacts/metrics/test_metrics.json"), summary)
+    typer.echo(json.dumps(summary, indent=2))
+
+
+@app.command()
 def curves(
     run: Annotated[Path, typer.Option("--run", "-r", help="Run directory.")],
 ) -> None:

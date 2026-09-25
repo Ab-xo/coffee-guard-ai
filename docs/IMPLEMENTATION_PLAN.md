@@ -152,7 +152,7 @@ Each run directory contains: `config.yaml`, `env.json` (versions, git SHA, data 
 
 ## 6. Phased implementation
 
-Each phase ends with a **Done when** gate. Work happens on a short-lived branch per phase (`phase/1-data`, …), merged to `main` through a PR once CI is green, then tagged (`v0.1-data`, …, `v1.0`).
+Each phase ends with a **Done when** gate. All work is committed on the `eleni-changes` branch, one commit per phase (no per-phase branches).
 
 ### Phase 0 — Foundation (Day 0, ~½ day)
 
@@ -227,6 +227,7 @@ Model: `tf_efficientnetv2_b0.in1k`, 224 px, `drop_rate=0.2`, `drop_path_rate=0.1
 2. **Metrics** — accuracy, macro and per-class precision/recall/F1, confusion matrix (counts + row-normalized), one-vs-rest ROC-AUC, **bootstrap 95% CI** for accuracy and macro-F1, mean ± std across seeds.
 3. **Calibration** — reliability diagram + ECE before and after **temperature scaling** (fit on val).
 4. **Conformal prediction** — split conformal (LAC score) fitted on val at α = 0.10; report empirical coverage and average set size on test, overall and per class.
+   *Revised in Phase 4: α = 0.02 (98% sets). The models are ~98% accurate, so at α = 0.10 every set had one class (see PROGRESS.md 4.2).*
 5. **Confidence analysis** — the 5 confidence buckets from the spec: count, accuracy, share of errors; plus a coverage-vs-accuracy (selective prediction) curve that motivates `τ_conf`.
 6. **Error analysis** — galleries: confident-but-wrong (p ≥ 0.8), low-confidence, most-confused class pairs; error rate by quality quantile (blur, brightness, background fraction). `notebooks/05_evaluation.ipynb` presents it.
 7. **Test set opened once** for the final candidates only; results go to `artifacts/metrics/test_metrics.json`.

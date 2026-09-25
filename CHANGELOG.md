@@ -9,6 +9,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Phase 4 Completed - Evaluation, Calibration, Uncertainty ✅
+
+#### Added
+- `src/coffeeguard/evaluation/evaluate.py` - evaluates ONNX bundles on val + test; CLI `coffeeguard evaluate -b <main> -b <other> ...`
+- `src/coffeeguard/evaluation/calibration.py` - temperature scaling, ECE, reliability bins
+- `src/coffeeguard/evaluation/conformal.py` - split conformal prediction sets (LAC)
+- `src/coffeeguard/evaluation/figures.py` - confusion matrix, reliability diagram, selective accuracy, error gallery
+- Bootstrap CIs and paired bootstrap in `evaluation/metrics.py`; `tests/unit/test_evaluation.py`
+- Results: `artifacts/metrics/test_metrics.json`, `artifacts/eval/<bundle>/metrics.json` + figures
+
+#### Results
+- EfficientNetV2-B0 test macro-F1 **0.979** [0.963, 0.993]; ECE 0.098 → 0.012 (T = 0.55); 98% conformal coverage 0.987
+- Bundles now carry the fitted `temperature` and `conformal_qhat` in `bundle.json`
+
+#### Changed
+- Conformal level α 0.10 → 0.02 (at 0.10 every set had one class)
+- Workflow: all work on the `eleni-changes` branch, one commit per phase (CONTRIBUTING, plan)
+
 ### Phase 3 Completed - Main Model (EfficientNetV2-B0) ✅
 
 #### Added - Results
@@ -220,7 +238,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 | **Phase 1** | Data engineering - validation, dedup, split, EDA | ✅ Complete | ~82 files |
 | **Phase 2** | Training pipeline, baseline, walking skeleton | ✅ Complete | ~30 files |
 | **Phase 3** | EfficientNetV2-B0 training (LP-FT, 1 seed) + comparison runs | ✅ Complete | ~15 files |
-| **Phase 4** | Evaluation, calibration, conformal prediction | ⏳ Planned | - |
+| **Phase 4** | Evaluation, calibration, conformal prediction | ✅ Complete | ~20 files |
 | **Phase 5** | Explainability and robustness | ⏳ Planned | - |
 | **Phase 6** | OOD detection gate | ⏳ Planned | - |
 | **Phase 7** | Model comparison and export | ⏳ Planned | - |
