@@ -1,0 +1,380 @@
+image,label,class_id,group_id,sha256,path
+cercospora/00d15b48c2f441df45cf.jpg,Cercospora,1,154,00d15b48c2f441df45cf89ff46e9fe66002186ca4e747ff4053fb761c360f83d,ethiopian cofee leaf dataset/test/Cerscospora/20231123_111819 (2).jpg
+cercospora/118b3da022ef2623c477.jpg,Cercospora,1,931,118b3da022ef2623c477db63a490ed5c4fa8ccb4088239254ee27d68f9ccb85e,ethiopian cofee leaf dataset/train aug/Cerscospora/20231122_153740 (2).jpg
+cercospora/124fdc979a59e5af72ef.jpg,Cercospora,1,972,124fdc979a59e5af72efcb7ae490797140ceff2c4ea2380628f23ff2ec9bc2c5,ethiopian cofee leaf dataset/train aug/Cerscospora/20231122_160040 (2).jpg
+cercospora/12d653a1073ff5b4f1b6.jpg,Cercospora,1,207,12d653a1073ff5b4f1b65193f08861dd6afa3156c974b562b34050a549907440,ethiopian cofee leaf dataset/test/Cerscospora/20231123_121022 (2).jpg
+cercospora/187a40e79b00e68ff595.jpg,Cercospora,1,270,187a40e79b00e68ff595a4a40799db480c27424b5ae66af6e1a87d98e7a323b5,ethiopian cofee leaf dataset/test/Cerscospora/20231123_123039 (2).jpg
+cercospora/1ade986325863121d562.jpg,Cercospora,1,1075,1ade986325863121d562b04cbf1f87c25375510e64070fe0b47038fcf28efe88,ethiopian cofee leaf dataset/train aug/Cerscospora/20231123_101208 (2).jpg
+cercospora/1aee07faf822ef134239.jpg,Cercospora,1,120,1aee07faf822ef134239bbb0762d7eac743a29e833ec889381c8f92e454796be,ethiopian cofee leaf dataset/test/Cerscospora/20231123_110422 (2).jpg
+cercospora/2006f51f65744a4de212.jpg,Cercospora,1,78,2006f51f65744a4de21289992ba87923de60e306881bb69f8a2344e73b71cf23,ethiopian cofee leaf dataset/test/Cerscospora/20231123_104803 (2).jpg
+cercospora/2060ad5c647303da4c66.jpg,Cercospora,1,51,2060ad5c647303da4c6624aed60637a8821e287734ff0f04be972645863ae182,ethiopian cofee leaf dataset/test/Cerscospora/20231123_104248 (2).jpg
+cercospora/2378dbc3b075d32f8995.jpg,Cercospora,1,1081,2378dbc3b075d32f899539860f1a76051993e4c1871c4837e4f2025098041838,ethiopian cofee leaf dataset/train aug/Cerscospora/20231123_101403 (2).jpg
+cercospora/23f67fe3219868083fb8.jpg,Cercospora,1,222,23f67fe3219868083fb80ac4808e9a63520308850f1b45895ecb9d2c092d0976,ethiopian cofee leaf dataset/test/Cerscospora/20231123_121516 (2).jpg
+cercospora/28328539ce2e1ca6bdb1.jpg,Cercospora,1,948,28328539ce2e1ca6bdb13fbc976254e3ffadb1d8a37b69e2fdb7491e5b384692,ethiopian cofee leaf dataset/train aug/Cerscospora/20231122_155515 (2).jpg
+cercospora/2926112fe080087f4e8e.jpg,Cercospora,1,921,2926112fe080087f4e8e17fe83232f0d8305da4bdfb5ab452d869bf3d286aeae,ethiopian cofee leaf dataset/train aug/Cerscospora/20231122_153020 (2).jpg
+cercospora/29559e277b4b043e921a.jpg,Cercospora,1,250,29559e277b4b043e921a28a74b20728721476db80567b90a8e4cc7f7e0275bd0,ethiopian cofee leaf dataset/test/Cerscospora/20231123_122515 (2).jpg
+cercospora/32e026c246c6d763bbac.jpg,Cercospora,1,216,32e026c246c6d763bbacf930f2aadcf9fe2392795cddda757fc912f4aef66afc,ethiopian cofee leaf dataset/test/Cerscospora/20231123_121156 (2).jpg
+cercospora/346a5e4511c3eac9d935.jpg,Cercospora,1,176,346a5e4511c3eac9d935d366615273378d76c9c993592c75317936ba30fdbc27,ethiopian cofee leaf dataset/test/Cerscospora/20231123_120055 (2).jpg
+cercospora/476e51b3fb30f81d2c8a.jpg,Cercospora,1,928,476e51b3fb30f81d2c8a00a99b34b755591780a56ce35ad3c0ce3bd8d9c67a55,ethiopian cofee leaf dataset/train aug/Cerscospora/20231122_153552 (2).jpg
+cercospora/47e68356a4fb76618b36.jpg,Cercospora,1,960,47e68356a4fb76618b366ebb700349288a5d174351bdfb910a2601c47bc0729b,ethiopian cofee leaf dataset/train aug/Cerscospora/20231122_155852 (2).jpg
+cercospora/487ba36489e99ada8989.jpg,Cercospora,1,141,487ba36489e99ada8989bdbc83ac3f9c83fd81ab435fb3421c6da57886f9db59,ethiopian cofee leaf dataset/test/Cerscospora/20231123_111222 (2).jpg
+cercospora/4e5050cc9ee0a1e2464f.jpg,Cercospora,1,237,4e5050cc9ee0a1e2464f30695b43ab5adadd63e93359db5d96bfa024d3cc89a1,ethiopian cofee leaf dataset/test/Cerscospora/20231123_121916 (2).jpg
+cercospora/53f42fd42925776823a0.jpg,Cercospora,1,1115,53f42fd42925776823a037f3b1b5fd06b5dfe50839fcd7c67bc2c2c44349061c,ethiopian cofee leaf dataset/train aug/Cerscospora/20231123_102631 (2).jpg
+cercospora/58a412557ca58caeab5d.jpg,Cercospora,1,110,58a412557ca58caeab5d3c7d082d9b2ded0b21373f7ff19a7ece83d472f688c7,ethiopian cofee leaf dataset/test/Cerscospora/20231123_110039 (2).jpg
+cercospora/5cfc7930ed4a024067a8.jpg,Cercospora,1,964,5cfc7930ed4a024067a8b49001a2828354cb9ca2fe895f4dc014434845a8a16b,ethiopian cofee leaf dataset/train aug/Cerscospora/20231122_155910 (2).jpg
+cercospora/5d9e96b0d3d981e192ff.jpg,Cercospora,1,912,5d9e96b0d3d981e192ff560adc4555372e6203b9a2f22893629d792d90daaf19,ethiopian cofee leaf dataset/train aug/Cerscospora/20231122_143609 (2).jpg
+cercospora/608cbe22a6326ca4f681.jpg,Cercospora,1,60,608cbe22a6326ca4f68138886769ebb147c0dfdde0ce7d0d41a9d40dba856158,ethiopian cofee leaf dataset/test/Cerscospora/20231123_104626 (2).jpg
+cercospora/62fffd9edf9a94d8abc1.jpg,Cercospora,1,917,62fffd9edf9a94d8abc150ecccb84f97543669d82e48dda434d0e4a426e6257d,ethiopian cofee leaf dataset/train aug/Cerscospora/20231122_152317 (2).jpg
+cercospora/6426a3474b363cfbdc9d.jpg,Cercospora,1,74,6426a3474b363cfbdc9db3973042a766a18eb263db544922b49290a0ad467149,ethiopian cofee leaf dataset/test/Cerscospora/20231123_104736 (2).jpg
+cercospora/670eec7db393a7ce8020.jpg,Cercospora,1,1009,670eec7db393a7ce80201fac5691c5443d245051be9a54ee351b67fde13d73ac,ethiopian cofee leaf dataset/train aug/Cerscospora/20231122_161316 (2).jpg
+cercospora/6c2ff33077930bdf2e07.jpg,Cercospora,1,10,6c2ff33077930bdf2e07fd75bb40e63358276acaf395e06477bf8eaf27282f9d,ethiopian cofee leaf dataset/test/Cerscospora/20231123_102846 (2).jpg
+cercospora/6dd003ea541bae1430a7.jpg,Cercospora,1,165,6dd003ea541bae1430a7fcac18225c3c03d9f657444c690fc4c83512abb7a7dd,ethiopian cofee leaf dataset/test/Cerscospora/20231123_112208 (2).jpg
+cercospora/6dd09deac6aeb7e5b428.jpg,Cercospora,1,246,6dd09deac6aeb7e5b4283faa5d658da2ee92b2e189c3578ef7efda79a5cb5d73,ethiopian cofee leaf dataset/test/Cerscospora/20231123_122458 (2).jpg
+cercospora/6e339ed41380ce84c7e2.jpg,Cercospora,1,12,6e339ed41380ce84c7e29e0e02bfb697b51c5d28adf2caafc8dbc05bd57136f6,ethiopian cofee leaf dataset/test/Cerscospora/20231123_102852 (2).jpg
+cercospora/75e2a85d4b96b3a6fbbf.jpg,Cercospora,1,245,75e2a85d4b96b3a6fbbf241235b7997499c1b660a2a08dd135fff16e692be1d9,ethiopian cofee leaf dataset/test/Cerscospora/20231123_122402 (2).jpg
+cercospora/762985f16c508f4322a8.jpg,Cercospora,1,1027,762985f16c508f4322a8c4a1eb0461d5e1c739139de7e0cb27f13a1a93114972,ethiopian cofee leaf dataset/train aug/Cerscospora/20231122_161956 (2).jpg
+cercospora/79b06608e5784e5f024b.jpg,Cercospora,1,1061,79b06608e5784e5f024b8e64fb34371a59262a069bd257b7a9bd414354ae940a,ethiopian cofee leaf dataset/train aug/Cerscospora/20231123_100601 (2).jpg
+cercospora/7e270325502a7c7023dc.jpg,Cercospora,1,919,7e270325502a7c7023dcd514fe1c5949cc76ec999f0b4e9fc26cf538acfc8401,ethiopian cofee leaf dataset/train aug/Cerscospora/20231122_152910 (2).jpg
+cercospora/7e8225a2c3ecdb686dbc.jpg,Cercospora,1,1117,7e8225a2c3ecdb686dbc85c4f89eb2a014db36ce390fb062ff7deec9c4b3d73d,ethiopian cofee leaf dataset/train aug/Cerscospora/20231123_102645 (2).jpg
+cercospora/7f4a2904434e9eaf3166.jpg,Cercospora,1,938,7f4a2904434e9eaf3166de390151bb0096a61efc8efc8e422e039187d56abe19,ethiopian cofee leaf dataset/train aug/Cerscospora/20231122_154835 (2).jpg
+cercospora/82286972e59b7dfcd8ca.jpg,Cercospora,1,115,82286972e59b7dfcd8ca3f492acc66d40c972f09b982fc5bff8ee351ae22a2d3,ethiopian cofee leaf dataset/test/Cerscospora/20231123_110236 (2).jpg
+cercospora/84f23dfe2548627fad99.jpg,Cercospora,1,1068,84f23dfe2548627fad99bde24bf3f745990c5086a58121972f2447c8bb381e99,ethiopian cofee leaf dataset/train aug/Cerscospora/20231123_100837 (2).jpg
+cercospora/8cc5783a3d07cbf1d71c.jpg,Cercospora,1,937,8cc5783a3d07cbf1d71c456510c3b7eccae8b437d69e89b2334e609af0676f0f,ethiopian cofee leaf dataset/train aug/Cerscospora/20231122_154714 (2).jpg
+cercospora/92b33ce940d68d594975.jpg,Cercospora,1,1018,92b33ce940d68d594975384eec0c41cb24089537f470db286dc371d0b043dc23,ethiopian cofee leaf dataset/train aug/Cerscospora/20231122_161457 (2).jpg
+cercospora/a47f1702946d3c134908.jpg,Cercospora,1,1033,a47f1702946d3c13490862e253466081923d5dba9df84b36ce96816411a902b5,ethiopian cofee leaf dataset/train aug/Cerscospora/20231122_162132 (2).jpg
+cercospora/a906fb166f31dd10e451.jpg,Cercospora,1,959,a906fb166f31dd10e45124f4c628f485c5e0b9a47b98034cb012fb0f29a83a38,ethiopian cofee leaf dataset/train aug/Cerscospora/20231122_155848 (2).jpg
+cercospora/ab3f07054579db5060d5.jpg,Cercospora,1,53,ab3f07054579db5060d55f961c62b18c78972e57aefb23e60fd1b60f65720801,ethiopian cofee leaf dataset/test/Cerscospora/20231123_104334 (2).jpg
+cercospora/b1d815e2a8f5029b52e0.jpg,Cercospora,1,213,b1d815e2a8f5029b52e0b2bf261ec31eea4a5cf3b78af8dc5b532a16c4a25fa9,ethiopian cofee leaf dataset/test/Cerscospora/20231123_121126 (2).jpg
+cercospora/b21c656842ed525e057f.jpg,Cercospora,1,1010,b21c656842ed525e057f385cd7b6a75e6de7a1a51e7cca5268c361a3342431d6,ethiopian cofee leaf dataset/train aug/Cerscospora/20231122_161341 (2).jpg
+cercospora/b38f6c7f023a651ad236.jpg,Cercospora,1,228,b38f6c7f023a651ad236e5da351ce8869abd5c85eebed7fd98ccb9d69b3ad0e6,ethiopian cofee leaf dataset/test/Cerscospora/20231123_121650 (2).jpg
+cercospora/b4ca01f81c2c9a625366.jpg,Cercospora,1,1034,b4ca01f81c2c9a625366724e04902e56233d018388db795943af7ff5337a405c,ethiopian cofee leaf dataset/train aug/Cerscospora/20231122_162202 (2).jpg
+cercospora/b626520199bc83714e56.jpg,Cercospora,1,1087,b626520199bc83714e569ddb0377d0a22856834d9c3fbe1f7d1d9238b79beaa4,ethiopian cofee leaf dataset/train aug/Cerscospora/20231123_101446 (2).jpg
+cercospora/b8b450cfebd2cdcaf11c.jpg,Cercospora,1,116,b8b450cfebd2cdcaf11c2e87a7830443a09c020c397ff5cc55349cf300c327be,ethiopian cofee leaf dataset/test/Cerscospora/20231123_110328 (2).jpg
+cercospora/b8d62cf65f1eba581474.jpg,Cercospora,1,118,b8d62cf65f1eba5814742dea48d545e73b461ec9490d5b77307021db784c9430,ethiopian cofee leaf dataset/test/Cerscospora/20231123_110414 (2).jpg
+cercospora/bcf4d145dc85d32378ba.jpg,Cercospora,1,158,bcf4d145dc85d32378ba75a1b4efa77ec59351c4d12a0e988745707f3d8ea151,ethiopian cofee leaf dataset/test/Cerscospora/20231123_111844 (2).jpg
+cercospora/c289b1b85166db4d31eb.jpg,Cercospora,1,30,c289b1b85166db4d31eb4ef332993fb418f5e1e84796646cf2b4b9bc1b6a85ff,ethiopian cofee leaf dataset/test/Cerscospora/20231123_103605 (2).jpg
+cercospora/c4ac006bf5c7f3845cb0.jpg,Cercospora,1,1104,c4ac006bf5c7f3845cb07063888ecdb15e5c6e3bc0f3513f71c325b4d92a94ec,ethiopian cofee leaf dataset/train aug/Cerscospora/20231123_102503 (2).jpg
+cercospora/c4dce8415ab0f0c8d78d.jpg,Cercospora,1,255,c4dce8415ab0f0c8d78deff9de564fd39be4f06aaf656aa06a9a918c44c10fc9,ethiopian cofee leaf dataset/test/Cerscospora/20231123_122629 (2).jpg
+cercospora/c71c50121dae71c9e2b4.jpg,Cercospora,1,8,c71c50121dae71c9e2b4fe49ae5336c09d51f516693177adb410d6f27762b87d,ethiopian cofee leaf dataset/test/Cerscospora/20231123_102837 (2).jpg
+cercospora/c882f5c9d0adf61e4baf.jpg,Cercospora,1,171,c882f5c9d0adf61e4bafaf2324ecd5db56aecdbbd86e7323d72cdb8d1e7ef6d9,ethiopian cofee leaf dataset/test/Cerscospora/20231123_115830 (2).jpg
+cercospora/ccd3e1eb9dea8f4f65ab.jpg,Cercospora,1,53,ccd3e1eb9dea8f4f65ab4d5860890fd6c946220d737fc0ff71924f49097940a7,ethiopian cofee leaf dataset/test/Cerscospora/20231123_104337 (2).jpg
+cercospora/d0fca9d13ce3b8b7c33d.jpg,Cercospora,1,187,d0fca9d13ce3b8b7c33da35b61c685203411f61821a449e9dda053febfdff77e,ethiopian cofee leaf dataset/test/Cerscospora/20231123_120324 (2).jpg
+cercospora/d347ed4256e046d2e125.jpg,Cercospora,1,1102,d347ed4256e046d2e125aee7810fc81b7deb1618b6675990f418dda72b18c7c8,ethiopian cofee leaf dataset/train aug/Cerscospora/20231123_102446 (2).jpg
+cercospora/d64316dfe1dbe46f4ede.jpg,Cercospora,1,131,d64316dfe1dbe46f4edeb9f4b88e7c1a0a3afc3a4f4aca1a4f660042da4f00e4,ethiopian cofee leaf dataset/test/Cerscospora/20231123_111902 (2).jpg
+cercospora/dfebb472d60a9dc89f19.jpg,Cercospora,1,1040,dfebb472d60a9dc89f19fa1744322bf81a63c73b2544bfb7396c54273d137f1c,ethiopian cofee leaf dataset/train aug/Cerscospora/20231122_162258 (2).jpg
+cercospora/e528fdb730f5fb880f42.jpg,Cercospora,1,1039,e528fdb730f5fb880f426f6dd4c9aedc600040c49db883ded82c325a074f835b,ethiopian cofee leaf dataset/train aug/Cerscospora/20231122_162253 (2).jpg
+cercospora/e73ff9027038226ae47b.jpg,Cercospora,1,1025,e73ff9027038226ae47b26a0d7233deb8d80ef4d678385f99ad8627adbd2d172,ethiopian cofee leaf dataset/train aug/Cerscospora/20231122_161706 (2).jpg
+cercospora/e946388f321c679be20a.jpg,Cercospora,1,93,e946388f321c679be20a68a263a0506967894906530f8c3470f7678e14c663f7,ethiopian cofee leaf dataset/test/Cerscospora/20231123_105330 (2).jpg
+cercospora/ec6ba4c5459118fa6993.jpg,Cercospora,1,1083,ec6ba4c5459118fa69936216c54bf35e21203aa1c7159aef0467ab49dea53a42,ethiopian cofee leaf dataset/train aug/Cerscospora/20231123_101413 (2).jpg
+cercospora/f28bd724f76aa57c3241.jpg,Cercospora,1,953,f28bd724f76aa57c3241b847158a9236e5c27b4233512cab8fc531725010f7a5,ethiopian cofee leaf dataset/train aug/Cerscospora/20231122_155726 (2).jpg
+cercospora/f2c26f5939b1763a1195.jpg,Cercospora,1,227,f2c26f5939b1763a1195900f6973770e35bb75fe6981f1e53224ebe74739e7d6,ethiopian cofee leaf dataset/test/Cerscospora/20231123_121600 (2).jpg
+cercospora/f406bc19583dc7b3baf1.jpg,Cercospora,1,131,f406bc19583dc7b3baf160bfde1e2b374ca5de58ec8e32b6c900c1feb6a6f706,ethiopian cofee leaf dataset/test/Cerscospora/20231123_110828 (2).jpg
+cercospora/f43aab9bdea372e3e55c.jpg,Cercospora,1,183,f43aab9bdea372e3e55ce40bb487f40630a252c63805d9f99e7948049c12b971,ethiopian cofee leaf dataset/test/Cerscospora/20231123_120251 (2).jpg
+cercospora/f607687f0861f382baeb.jpg,Cercospora,1,241,f607687f0861f382baebc3344ef2bc2445f04f580a5c04eaa861a90dc8769255,ethiopian cofee leaf dataset/test/Cerscospora/20231123_122033 (2).jpg
+cercospora/faba65715e88d8132015.jpg,Cercospora,1,2,faba65715e88d81320150358cd665a1b540b4882a91a7243d9ca5597e2939f39,ethiopian cofee leaf dataset/test/Cerscospora/20231123_102808 (2).jpg
+cercospora/fe13d45825a1bbedf3af.jpg,Cercospora,1,172,fe13d45825a1bbedf3afdf2fcf54f80e7e4fe1ec8d0b816f728716ab0d03b4ba,ethiopian cofee leaf dataset/test/Cerscospora/20231123_115925 (2).jpg
+cercospora/fed757d1c4113f8983bd.jpg,Cercospora,1,192,fed757d1c4113f8983bd65282c4f1b0d860fd70d446018c7e717f9fcb0369a25,ethiopian cofee leaf dataset/test/Cerscospora/20231123_120431 (2).jpg
+healthy/0085c38a18702c7ecd8e.jpg,Healthy,0,1138,0085c38a18702c7ecd8e2b70c1fd69c5bf41b820454ca9e6b12891a0134be1dd,ethiopian cofee leaf dataset/train aug/Healthy/1172.jpg
+healthy/0355637047c71f1f16d1.jpg,Healthy,0,384,0355637047c71f1f16d153b5d012784e0cdb73186fc8d0a35dffc803c6ab5f4f,ethiopian cofee leaf dataset/test/Healthy/C11P35E2.jpg
+healthy/03ee8e48f433d0297ba0.jpg,Healthy,0,1138,03ee8e48f433d0297ba05290106f296bc799cf97e76d88ab8dec0ce7cf638ad6,ethiopian cofee leaf dataset/train aug/Healthy/1206.jpg
+healthy/0a63cb86f24d4cc3638d.jpg,Healthy,0,1138,0a63cb86f24d4cc3638d1798476e2e8b9478c95e5950fbf588740b167ae3b9ed,ethiopian cofee leaf dataset/train aug/Healthy/1174.jpg
+healthy/0cac021a9b6b3a3d30e5.jpg,Healthy,0,1166,0cac021a9b6b3a3d30e5b156b25680f2f4b9b3398676cc4a2880a7fb9b3d64de,ethiopian cofee leaf dataset/train aug/Healthy/1431.jpg
+healthy/0e7ef5272d0ce1689b94.jpg,Healthy,0,446,0e7ef5272d0ce1689b9404967126d9a26c6f874bec683bd8712cb1f759f16c4f,ethiopian cofee leaf dataset/test/Healthy/C3P35H1.jpg
+healthy/117576b6b9028e858b30.jpg,Healthy,0,1138,117576b6b9028e858b302a12e843512a43fc68cb3c328571060e68a252a426b3,ethiopian cofee leaf dataset/train aug/Healthy/1186.jpg
+healthy/123f5d92436d82dcc3e8.jpg,Healthy,0,276,123f5d92436d82dcc3e8753f0c07c5548ba73367f993154209bd3c52399e56f8,ethiopian cofee leaf dataset/test/Healthy/C10P11H1.jpg
+healthy/12741e9288db2aadf61e.jpg,Healthy,0,1243,12741e9288db2aadf61ed87883bf8d84a266a2c8e1e4f4b6226163b0cb046a5b,ethiopian cofee leaf dataset/train aug/Healthy/C1P4E1.jpg
+healthy/2105efc675312ba338de.jpg,Healthy,0,1138,2105efc675312ba338de9bc36c72e00c960c930e2083b7a586238dd68d100847,ethiopian cofee leaf dataset/train aug/Healthy/1184.jpg
+healthy/22aed0e60c808e1a0f0a.jpg,Healthy,0,474,22aed0e60c808e1a0f0a41483dc95394752bb0b8681db7ae8a66e52f7612729b,ethiopian cofee leaf dataset/test/Healthy/C8P34E2.jpg
+healthy/2556d4f55d13a72a2261.jpg,Healthy,0,348,2556d4f55d13a72a22618404c5161c3922dd80d23975d1a4efc601ff6a0b06fe,ethiopian cofee leaf dataset/test/Healthy/C11P11E1.jpg
+healthy/259e18fdf500a2550d18.jpg,Healthy,0,1137,259e18fdf500a2550d18c0aad52773dbf84ad8dd0a679b393ea328a441f3b7ca,ethiopian cofee leaf dataset/train aug/Healthy/766.jpg
+healthy/280a796c879c08364f5f.jpg,Healthy,0,331,280a796c879c08364f5f5d120c881ea8850ebb31a465868dbee89ca2845da9f8,ethiopian cofee leaf dataset/test/Healthy/C10P3E1.jpg
+healthy/2a50eb383ac3e1addf0d.jpg,Healthy,0,1130,2a50eb383ac3e1addf0d26ca153243caebe024b017282cf52a48d124b16ca24d,ethiopian cofee leaf dataset/train aug/Healthy/920.jpg
+healthy/2b641feaf258d97013ab.jpg,Healthy,0,1137,2b641feaf258d97013ab2eebe2b86b1c0f61083dbed70d9e5fef188f7d9bb37f,ethiopian cofee leaf dataset/train aug/Healthy/1170.jpg
+healthy/2be05170297b51653019.jpg,Healthy,0,461,2be05170297b51653019d34d7ac65ab370494ddb84c339a288502e9ec6da5dcc,ethiopian cofee leaf dataset/test/Healthy/C8P25H2.jpg
+healthy/2e7c090fa3d4fe0e74dd.jpg,Healthy,0,290,2e7c090fa3d4fe0e74dd9c672ed4601eecc4b19dd082564994bb8bc9fc9eb33b,ethiopian cofee leaf dataset/test/Healthy/C10P19H1.jpg
+healthy/2eaada5443cf74a043b7.jpg,Healthy,0,1137,2eaada5443cf74a043b72806bb0e888fc2dc4b5e40b27f9e07f3ae8650339fc4,ethiopian cofee leaf dataset/train aug/Healthy/1169.jpg
+healthy/2ee1c66c4cb67b81c645.jpg,Healthy,0,1137,2ee1c66c4cb67b81c64509e583c27d554ce3ffd77ebd87c3b589171a4b8da477,ethiopian cofee leaf dataset/train aug/Healthy/767.jpg
+healthy/310c51a26ad97a0ea80b.jpg,Healthy,0,1138,310c51a26ad97a0ea80b08e968dd83e5ed5ca80176495cf0b17feb67d0a42bf2,ethiopian cofee leaf dataset/train aug/Healthy/1180.jpg
+healthy/31b8fc8f66a62a76fe14.jpg,Healthy,0,321,31b8fc8f66a62a76fe140c18e5cb4a98b8bdc618d8858a19b38f698833024542,ethiopian cofee leaf dataset/test/Healthy/C10P35E1.jpg
+healthy/32ea593ed2a30131ed58.jpg,Healthy,0,1138,32ea593ed2a30131ed58a001ec1cf62e14270a9e051f79f102c8a56927b5371f,ethiopian cofee leaf dataset/train aug/Healthy/1212.jpg
+healthy/33cccbd217bab656c0fb.jpg,Healthy,0,1138,33cccbd217bab656c0fbb73f1c871138c2db07f585d72d5d7f372139a6f514db,ethiopian cofee leaf dataset/train aug/Healthy/1209.jpg
+healthy/359ff4023c4fb403ff6d.jpg,Healthy,0,1138,359ff4023c4fb403ff6d95869ea11e200f3e7e9e5bcec496e2cc1d81eaa26081,ethiopian cofee leaf dataset/train aug/Healthy/1185.jpg
+healthy/36c34654dbaa0e0728cc.jpg,Healthy,0,1138,36c34654dbaa0e0728ccf8f58b700d5df49f5366fbc5a174fa0bd02558f55f80,ethiopian cofee leaf dataset/train aug/Healthy/1190.jpg
+healthy/374778c0fdef9e64fefa.jpg,Healthy,0,459,374778c0fdef9e64fefacd55544baf374ae8faf8781732b454e972860220681d,ethiopian cofee leaf dataset/test/Healthy/C8P25E2.jpg
+healthy/37eec259581ad07032b2.jpg,Healthy,0,1130,37eec259581ad07032b2c4148785673a4e67eb8b733ea81c147abe642293bfdb,ethiopian cofee leaf dataset/train aug/Healthy/923.jpg
+healthy/3dda9e6af3dcf09836ab.jpg,Healthy,0,465,3dda9e6af3dcf09836ab57b4129808254c97b2e5364150c77214876dcafd194a,ethiopian cofee leaf dataset/test/Healthy/C8P28H1.jpg
+healthy/44eac8031bc87e1f6793.jpg,Healthy,0,1138,44eac8031bc87e1f679301ec17f4cd44c4f273c3b5ad395374018e936e253d11,ethiopian cofee leaf dataset/train aug/Healthy/1215.jpg
+healthy/47a92a1a12a36f22ca03.jpg,Healthy,0,1245,47a92a1a12a36f22ca033c4df8acae63837a109321685c127526876736f4d022,ethiopian cofee leaf dataset/train aug/Healthy/C1P5E1.jpg
+healthy/487c8fa58faa70d60426.jpg,Healthy,0,1138,487c8fa58faa70d6042688531a6aca73253eb8985e8e513e50370d29ed307570,ethiopian cofee leaf dataset/train aug/Healthy/1211.jpg
+healthy/48f5ad7544c2600769d2.jpg,Healthy,0,1293,48f5ad7544c2600769d26b5fb407bb8126a5d72810742c2bca14a5b1d5df7784,ethiopian cofee leaf dataset/train aug/Healthy/C2P38E1.jpg
+healthy/4a35792b652457d12c00.jpg,Healthy,0,431,4a35792b652457d12c0070cd191501d37ce12c82a445bdc8e019ad255e9bb6b0,ethiopian cofee leaf dataset/test/Healthy/C12P6H1.jpg
+healthy/4ac2b5e3ebd3c85ed10d.jpg,Healthy,0,1166,4ac2b5e3ebd3c85ed10de79024eb07d6333567d1d54790248ebeedaa89ce1530,ethiopian cofee leaf dataset/train aug/Healthy/1428.jpg
+healthy/4d267401e961718f58fe.jpg,Healthy,0,1138,4d267401e961718f58fe4dad8ea85a0117cfb42cd86c654165543303d67bbd97,ethiopian cofee leaf dataset/train aug/Healthy/1173.jpg
+healthy/53503e1939f4aea51fec.jpg,Healthy,0,1130,53503e1939f4aea51fecca68f281ab7798d28c662e4eefc3c5bad09fa98d782b,ethiopian cofee leaf dataset/train aug/Healthy/1079.jpg
+healthy/5d97aa40f529e6d3f804.jpg,Healthy,0,467,5d97aa40f529e6d3f8043079692c27db040d007d1e1a5c278146ae03dc383af1,ethiopian cofee leaf dataset/test/Healthy/C8P29H1.jpg
+healthy/6412178d2b3bfd44adcf.jpg,Healthy,0,500,6412178d2b3bfd44adcf3919a235ba4c0daabb96faa4a48d8be700beef8c3ef9,ethiopian cofee leaf dataset/test/Healthy/C9P19E2.jpg
+healthy/64a8fe4b9955ea05bb8f.jpg,Healthy,0,1266,64a8fe4b9955ea05bb8f5aabeff23f4282d9c505d98c3486d9513ef2b1032503,ethiopian cofee leaf dataset/train aug/Healthy/C2P16E1.jpg
+healthy/66fe42951ecb125e994a.jpg,Healthy,0,1130,66fe42951ecb125e994a6da1729400678b1592b19f35560dc00d9523636ba9b8,ethiopian cofee leaf dataset/train aug/Healthy/1078.jpg
+healthy/6cf717b87ac174c6eeee.jpg,Healthy,0,1270,6cf717b87ac174c6eeee60f36428bd9b44c13d7967641927f0552b5ffcc7bf23,ethiopian cofee leaf dataset/train aug/Healthy/C2P19E1.jpg
+healthy/6d6f385455d90a1bd538.jpg,Healthy,0,1130,6d6f385455d90a1bd538e02c6587a86d67120fe9431b25b05e826ed08fd4aeaf,ethiopian cofee leaf dataset/train aug/Healthy/1076.jpg
+healthy/6f33f8cc2859ea86334a.jpg,Healthy,0,367,6f33f8cc2859ea86334af67a8b627964771b5527a2273287d27a24c7cfac0f33,ethiopian cofee leaf dataset/test/Healthy/C11P24E1.jpg
+healthy/6fa1e410e50477dd8ed0.jpg,Healthy,0,505,6fa1e410e50477dd8ed07a533d12490c8fcd440c380d0aae3e214fbf46590198,ethiopian cofee leaf dataset/test/Healthy/C9P21H2.jpg
+healthy/71a02db8aa6da46db4ad.jpg,Healthy,0,1138,71a02db8aa6da46db4ad6c3a53ce335ca6b043ed475804e927bda4681d7c83ce,ethiopian cofee leaf dataset/train aug/Healthy/1183.jpg
+healthy/7ca85e8d9315fab446c9.jpg,Healthy,0,425,7ca85e8d9315fab446c9e630f85675ccc9c0c8e0cb1c3cc7442b6869b5a06386,ethiopian cofee leaf dataset/test/Healthy/C12P36E1.jpg
+healthy/7ed85305bd94a7fff492.jpg,Healthy,0,1138,7ed85305bd94a7fff492fcccfa446d2f74eb86eaa0688e369bd0c86e1d000e18,ethiopian cofee leaf dataset/train aug/Healthy/1187.jpg
+healthy/7f7367f8c0bf661b3979.jpg,Healthy,0,358,7f7367f8c0bf661b3979696e850d8fd443f74b683a9f7cd802470c3c64b5b9cd,ethiopian cofee leaf dataset/test/Healthy/C11P18E1.jpg
+healthy/8144ebca06893db5eede.jpg,Healthy,0,298,8144ebca06893db5eedef2257ededff1a909ea568f1a898697de6ae6d3e5ddc4,ethiopian cofee leaf dataset/test/Healthy/C12P25H1.jpg
+healthy/82a1bd62ba1d2436b039.jpg,Healthy,0,1154,82a1bd62ba1d2436b03989fc7bb35fd1d3ae6b028d5645af9ba1ee894b27aa51,ethiopian cofee leaf dataset/train aug/Healthy/1382.jpg
+healthy/86105993d89d60ea6bbd.jpg,Healthy,0,1166,86105993d89d60ea6bbdcfc607eceb0651b3a24045e86b53d361c859c05352f4,ethiopian cofee leaf dataset/train aug/Healthy/1429.jpg
+healthy/87f7aaa156912af5cf5c.jpg,Healthy,0,1138,87f7aaa156912af5cf5c2e41a5c937d6a040f6694b87e37fcbf99ce57d386e32,ethiopian cofee leaf dataset/train aug/Healthy/1208.jpg
+healthy/8a58d86ff75eb4e1711a.jpg,Healthy,0,1252,8a58d86ff75eb4e1711a40b0799188477cad4d4617df375f926519fa53198bb9,ethiopian cofee leaf dataset/train aug/Healthy/C1P8H1.jpg
+healthy/8c3d842d48a53a98eef8.jpg,Healthy,0,1154,8c3d842d48a53a98eef8cd8cdf3919aec40fa380538b3a16526720d04fe47ac6,ethiopian cofee leaf dataset/train aug/Healthy/1383.jpg
+healthy/8d6d7d823697ecf03320.jpg,Healthy,0,273,8d6d7d823697ecf03320a1a3b7bb874bc2d6cb3be92ac92fe6a281ae6c03f430,ethiopian cofee leaf dataset/test/Healthy/C10P10E1.jpg
+healthy/8e3c6c47b6073982dba9.jpg,Healthy,0,429,8e3c6c47b6073982dba98d9841af0cab2e573acd1109ce19699e1fba21c9ba17,ethiopian cofee leaf dataset/test/Healthy/C12P4H1.jpg
+healthy/90dd3acc99b4e84b2a92.jpg,Healthy,0,332,90dd3acc99b4e84b2a925b90a94a5dacac019565f8a4deebe60e3e20013b01eb,ethiopian cofee leaf dataset/test/Healthy/C10P3E2.jpg
+healthy/90fcfd4a055068bcfac6.jpg,Healthy,0,316,90fcfd4a055068bcfac6591269215396a065597409e38b848bf8670ad1caf848,ethiopian cofee leaf dataset/test/Healthy/C10P33E2.jpg
+healthy/9271eb29fb2666959183.jpg,Healthy,0,1256,9271eb29fb26669591837908432de065a99034acdeafe3c3568186d0c87d1fc7,ethiopian cofee leaf dataset/train aug/Healthy/C2P10H1.jpg
+healthy/940ac9de4c35b4bc1f79.jpg,Healthy,0,406,940ac9de4c35b4bc1f7977f513eace9bc25110ca611a8d1092177edf64f328b3,ethiopian cofee leaf dataset/test/Healthy/C12P12H1.jpg
+healthy/956f02a068d2ce6c21e3.jpg,Healthy,0,1171,956f02a068d2ce6c21e3893c40c30b36a63c2fc53c08dc08e7535c58571123ce,ethiopian cofee leaf dataset/train aug/Healthy/749.jpg
+healthy/96dd0c7b47be8f6beaca.jpg,Healthy,0,515,96dd0c7b47be8f6beaca38d972c33bfa01699bfebedd2b80f90a9fd282cc47fa,ethiopian cofee leaf dataset/test/Healthy/C9P26E2.jpg
+healthy/9e210f42d35342f1fc2d.jpg,Healthy,0,1171,9e210f42d35342f1fc2dcbde560b4904aaf70a6b5d02206e8afcc776cf831194,ethiopian cofee leaf dataset/train aug/Healthy/750.jpg
+healthy/9f5c5835e703ff421cc7.jpg,Healthy,0,470,9f5c5835e703ff421cc740d50021ea55d267bf5a216038d26ba0caf17fd76c18,ethiopian cofee leaf dataset/test/Healthy/C8P31E1.jpg
+healthy/a2d60aea649f2db4d044.jpg,Healthy,0,1138,a2d60aea649f2db4d0444e20f0ed45d2ff3fd69e42dac2ffc3100fca435f3b1a,ethiopian cofee leaf dataset/train aug/Healthy/1213.jpg
+healthy/a4bfe54df5f5ebf106e1.jpg,Healthy,0,1304,a4bfe54df5f5ebf106e11f08ddf39dda05656b356ab4398d67ec61c6e9fecbdf,ethiopian cofee leaf dataset/train aug/Healthy/C2P9E1.jpg
+healthy/a6020264065feb9a0c00.jpg,Healthy,0,1138,a6020264065feb9a0c00418ded66c31e7eb61daef439c84d0889d580bcf1e7da,ethiopian cofee leaf dataset/train aug/Healthy/1205.jpg
+healthy/ad10b376ea9e5b5ba2b7.jpg,Healthy,0,1279,ad10b376ea9e5b5ba2b715eb5b6335dd697941b74a1692207d348d40e342f67f,ethiopian cofee leaf dataset/train aug/Healthy/C2P24E1.jpg
+healthy/ae48ca0e9c4a6c14b1e2.jpg,Healthy,0,1138,ae48ca0e9c4a6c14b1e2ac4545460506a0d56ac6464b3164c198a3d5e4788634,ethiopian cofee leaf dataset/train aug/Healthy/1214.jpg
+healthy/ae638d6b585ae3cd77bf.jpg,Healthy,0,1138,ae638d6b585ae3cd77bf670840b7422b2ad83ab2d26456cc597a1bedce20620f,ethiopian cofee leaf dataset/train aug/Healthy/1188.jpg
+healthy/ae950318a5c82dbfc327.jpg,Healthy,0,1138,ae950318a5c82dbfc32773b075ea5743032d7fe44aefe4c8637c0e4bbc22fb5c,ethiopian cofee leaf dataset/train aug/Healthy/1191.jpg
+healthy/afa435cd9dfd89f4376d.jpg,Healthy,0,1130,afa435cd9dfd89f4376db6f09444375c722f26d9bdbabf0583cc05c7c1f0ee48,ethiopian cofee leaf dataset/train aug/Healthy/922.jpg
+healthy/b01e3eddc88f489f41ba.jpg,Healthy,0,1154,b01e3eddc88f489f41ba1ef2984aeca65a415c91b0c486ad0a7f6fb0a424c7db,ethiopian cofee leaf dataset/train aug/Healthy/1380.jpg
+healthy/b33c8cefb007a4911094.jpg,Healthy,0,1137,b33c8cefb007a4911094bb22a2de57748d49be8b917bec2025323de23b7b0b2c,ethiopian cofee leaf dataset/train aug/Healthy/765.jpg
+healthy/b748d2fc7c0dbcc478c8.jpg,Healthy,0,1130,b748d2fc7c0dbcc478c8f4847fa7de03bea1a58c47a07d1e489b25b6336644c5,ethiopian cofee leaf dataset/train aug/Healthy/1077.jpg
+healthy/b8c1ab1c39822ce8954d.jpg,Healthy,0,298,b8c1ab1c39822ce8954d7d5ea8fbc9b2027d54c0b54b05cbb528918c4b10a09e,ethiopian cofee leaf dataset/test/Healthy/C10P23H1.jpg
+healthy/bcaa75fc82fef61b8cdc.jpg,Healthy,0,504,bcaa75fc82fef61b8cdcd16cbe1f583eef32c76a5e0bd247e5375c2a92469baf,ethiopian cofee leaf dataset/test/Healthy/C9P21E2.jpg
+healthy/c233512d171f916883a8.jpg,Healthy,0,454,c233512d171f916883a88d23d060cf581f045855817e5d512c1ee383bac0d362,ethiopian cofee leaf dataset/test/Healthy/C3P7H2.jpg
+healthy/c81c58ffa856caec119d.jpg,Healthy,0,1137,c81c58ffa856caec119da5998a7d121bd6629bf2192ae9d06314a89316860d2a,ethiopian cofee leaf dataset/train aug/Healthy/1171.jpg
+healthy/c85619862ae96b028f10.jpg,Healthy,0,1171,c85619862ae96b028f10d938552085742d2523a149c8088b397e7722d119e74f,ethiopian cofee leaf dataset/train aug/Healthy/748.jpg
+healthy/c9aded6bb6d247a7ab63.jpg,Healthy,0,1280,c9aded6bb6d247a7ab631aa98a183a2142dfa0a8dcb5ddde841fabf355700572,ethiopian cofee leaf dataset/train aug/Healthy/C2P24H1.jpg
+healthy/c9c1ab7fc790e6b913fa.jpg,Healthy,0,1138,c9c1ab7fc790e6b913fa0bdc3e9c65e5dba3e8235fe60be0b1971a08101128b8,ethiopian cofee leaf dataset/train aug/Healthy/1181.jpg
+healthy/c9c4526d6492d5db3c07.jpg,Healthy,0,1224,c9c4526d6492d5db3c07b5681de0d326d093a8f827dfb2c8fca0564a19be52fc,ethiopian cofee leaf dataset/train aug/Healthy/C1P28H1.jpg
+healthy/cd12bc31cb3c95a215b6.jpg,Healthy,0,526,cd12bc31cb3c95a215b6c47d2932347223906de35b3d372bbb96729d425d393d,ethiopian cofee leaf dataset/test/Healthy/C9P34H2.jpg
+healthy/cd3b6adb1bb300378033.jpg,Healthy,0,1137,cd3b6adb1bb3003780334cd1d656683405514cfea6e032aaa9ef1c4c70a94b3a,ethiopian cofee leaf dataset/train aug/Healthy/764.jpg
+healthy/d1acf257024de17d7e0a.jpg,Healthy,0,1138,d1acf257024de17d7e0a1a64532a2dffc13426feded7019e815cf9535853857d,ethiopian cofee leaf dataset/train aug/Healthy/1182.jpg
+healthy/d570b884e3d044e2caca.jpg,Healthy,0,437,d570b884e3d044e2caca2e1e1c3cb60d7e7ca11476b394a7e8426c6c34abfd54,ethiopian cofee leaf dataset/test/Healthy/C2P39E1.jpg
+healthy/d80c9f7a04a946ea9964.jpg,Healthy,0,1138,d80c9f7a04a946ea9964266fc6adc245a2871dcef02787fadcaf7ded7fef6971,ethiopian cofee leaf dataset/train aug/Healthy/1204.jpg
+healthy/da1a1fd27a8cc7fd370c.jpg,Healthy,0,1130,da1a1fd27a8cc7fd370c182cdf8df5ec82fa74297ba756c824f4631ecd859f8b,ethiopian cofee leaf dataset/train aug/Healthy/921.jpg
+healthy/dbaa6718fcd646d4fd2b.jpg,Healthy,0,1138,dbaa6718fcd646d4fd2b81b0953e03c64a4278b1e827db90e497d52fa72b3e30,ethiopian cofee leaf dataset/train aug/Healthy/1175.jpg
+healthy/dfa29f56c336a3f9d1ae.jpg,Healthy,0,1171,dfa29f56c336a3f9d1aec5518b7e6b153ec5b4b0ca315d47b681e822eb9c7f74,ethiopian cofee leaf dataset/train aug/Healthy/751.jpg
+healthy/e1ba80aaafe3019397ee.jpg,Healthy,0,1166,e1ba80aaafe3019397eea93728cca4369904c0d8d2877a64cefffba270273ef5,ethiopian cofee leaf dataset/train aug/Healthy/1430.jpg
+healthy/e1f66690e6ce70df7a36.jpg,Healthy,0,418,e1f66690e6ce70df7a36c01367563c4cf9596cfa7163c608add604150640914e,ethiopian cofee leaf dataset/test/Healthy/C12P18H1.jpg
+healthy/e2e0e2eaf25b7780a7ee.jpg,Healthy,0,296,e2e0e2eaf25b7780a7eef3b72c9559d5b06846d08f84c53c1dfc3a54352e183c,ethiopian cofee leaf dataset/test/Healthy/C10P22H1.jpg
+healthy/e551709604bec82a9bd7.jpg,Healthy,0,1251,e551709604bec82a9bd74832fa79045afdba308be9568e5df44ef3fd64485974,ethiopian cofee leaf dataset/train aug/Healthy/C1P8E1.jpg
+healthy/e66561d01abd64aaa7e5.jpg,Healthy,0,1266,e66561d01abd64aaa7e590dddbde84c9ad8fa33cfbc3212d80c5cefa528d9ca2,ethiopian cofee leaf dataset/train aug/Healthy/C2P17E1.jpg
+healthy/eb96789835763008f715.jpg,Healthy,0,460,eb96789835763008f7153fe0a3198344a7d925484143d1a3ecfce86207c19c3f,ethiopian cofee leaf dataset/test/Healthy/C8P25H1.jpg
+healthy/ed76e2e0f210371eba45.jpg,Healthy,0,1154,ed76e2e0f210371eba455570e0df3908c8b65b76884b2f08469835758e60674f,ethiopian cofee leaf dataset/train aug/Healthy/1381.jpg
+healthy/f1b3cd1659cccbdef0e0.jpg,Healthy,0,391,f1b3cd1659cccbdef0e050c39a3c6db5e31902ce3b14abb5193c6b72475669d1,ethiopian cofee leaf dataset/test/Healthy/C11P38E1.jpg
+healthy/f2c6806c7421e6e8a9f4.jpg,Healthy,0,357,f2c6806c7421e6e8a9f485eb1feffa59d740b14a7de840bc69754e99a523897b,ethiopian cofee leaf dataset/test/Healthy/C11P15H1.jpg
+healthy/f38ace32425062ffb336.jpg,Healthy,0,1138,f38ace32425062ffb3369f65abf09f64333911c53678e5405144fb4e07448e2b,ethiopian cofee leaf dataset/train aug/Healthy/1210.jpg
+healthy/f59450f97937a5fec8b8.jpg,Healthy,0,277,f59450f97937a5fec8b8a58c4d9168173f88e0f722d53e5bb157bcd2e8f7785b,ethiopian cofee leaf dataset/test/Healthy/C10P12E1.jpg
+healthy/f7ed03fe9e32fe5b9c31.jpg,Healthy,0,1138,f7ed03fe9e32fe5b9c3113e7748c96cb2e5a1d442b2b1a6a8a7e166d0ea67cdd,ethiopian cofee leaf dataset/train aug/Healthy/1189.jpg
+healthy/f89350c74dd9b47f6162.jpg,Healthy,0,457,f89350c74dd9b47f6162cbad6088081daf0aa64db8a5c7948d294c91e8dad447,ethiopian cofee leaf dataset/test/Healthy/C3P9E1.jpg
+healthy/fa0aa132272287406bfb.jpg,Healthy,0,1219,fa0aa132272287406bfb3d19c94c42dd38d0479e6fb87b78f6ee0eea298b825f,ethiopian cofee leaf dataset/train aug/Healthy/C1P26E1.jpg
+healthy/fabf20344bd8787dc72d.jpg,Healthy,0,1137,fabf20344bd8787dc72d01688aca9b561fd2b7b5fa59ad39b3b6c722dbf9773e,ethiopian cofee leaf dataset/train aug/Healthy/1168.jpg
+healthy/fba2e5559531c35865af.jpg,Healthy,0,1138,fba2e5559531c35865af84841671ae386e08e1add29619ac6e3998227c9708c1,ethiopian cofee leaf dataset/train aug/Healthy/1207.jpg
+leaf_rust/03f28b595f8f91512bc2.jpg,Leaf Rust,2,764,03f28b595f8f91512bc2db81374c1108acf47a13467cbabcae3945a9f4b33049,ethiopian cofee leaf dataset/test/Leaf rust/C1P11H2.jpg
+leaf_rust/0c91f84def931c8b9b27.jpg,Leaf Rust,2,1563,0c91f84def931c8b9b2784aa928b67da7319c07096a773acd1f3cabc14fc25bc,ethiopian cofee leaf dataset/train aug/Leaf rust/20231122_155031.jpg
+leaf_rust/0f35eab50a93737f0e4d.jpg,Leaf Rust,2,1585,0f35eab50a93737f0e4d467690da7396f25f545846112cbeae08c52d31244293,ethiopian cofee leaf dataset/train aug/Leaf rust/20231122_155355.jpg
+leaf_rust/10697845672965366ffe.jpg,Leaf Rust,2,560,10697845672965366ffed04348c9fc78137b36feda473572969001f7cba13cbc,ethiopian cofee leaf dataset/test/Leaf rust/20231123_102959.jpg
+leaf_rust/12693ef6367b59ea8aad.jpg,Leaf Rust,2,566,12693ef6367b59ea8aad34497443c2f707b393526b70f5f7508ad2eab351edfc,ethiopian cofee leaf dataset/test/Leaf rust/20231123_103239.jpg
+leaf_rust/13447f45c9aef7cda8f3.jpg,Leaf Rust,2,621,13447f45c9aef7cda8f33f922f2d9beda4bbcfbc4444f545ee2cfa45944c65d8,ethiopian cofee leaf dataset/test/Leaf rust/20231123_111534.jpg
+leaf_rust/146b830504dd5747d451.jpg,Leaf Rust,2,1346,146b830504dd5747d4512f5bee3cc24823c747262c85174548ae73c19507d42e,ethiopian cofee leaf dataset/train aug/Leaf rust/1591.jpg
+leaf_rust/15a3699e1612597b5d91.jpg,Leaf Rust,2,1310,15a3699e1612597b5d91c5e1936438e9f5dce337468ca6d0e9faa9bd391743bb,ethiopian cofee leaf dataset/train aug/Leaf rust/1280.jpg
+leaf_rust/163ab9690b7d6dfe5951.jpg,Leaf Rust,2,683,163ab9690b7d6dfe59515b3d8313b395aabaee081864646edf271b1cdbf928e9,ethiopian cofee leaf dataset/test/Leaf rust/20231123_121518.jpg
+leaf_rust/17653796c274f9b51c11.jpg,Leaf Rust,2,1345,17653796c274f9b51c11774ec8f97f0651ae76c8b8c41df501796af162e95699,ethiopian cofee leaf dataset/train aug/Leaf rust/1583.jpg
+leaf_rust/18b629c642957f1618b9.jpg,Leaf Rust,2,796,18b629c642957f1618b90a3cb7be91cb767d6af528a0317a154c0e912e990060,ethiopian cofee leaf dataset/test/Leaf rust/C1P6E2.jpg
+leaf_rust/1b38a119027fc37e792d.jpg,Leaf Rust,2,550,1b38a119027fc37e792d3b5e6f709feeb9ee100a727f9d416cc94e0ad2be0e7b,ethiopian cofee leaf dataset/test/Leaf rust/20231123_101620.jpg
+leaf_rust/1b983f24aab81991b339.jpg,Leaf Rust,2,1654,1b983f24aab81991b339966456132a90b6adc6369b94a87d5fa891c35982f09c,ethiopian cofee leaf dataset/train aug/Leaf rust/20231123_100658.jpg
+leaf_rust/1c928a741034cfe30d3a.jpg,Leaf Rust,2,768,1c928a741034cfe30d3a0ab50db2d203d8084fad76b0a565da72ce257762bd16,ethiopian cofee leaf dataset/test/Leaf rust/C1P13H2.jpg
+leaf_rust/21661ebd974b8ad100ad.jpg,Leaf Rust,2,1314,21661ebd974b8ad100ad29169348f520b6d6a73b54490a63cc0c9257ea9de99c,ethiopian cofee leaf dataset/train aug/Leaf rust/1438.jpg
+leaf_rust/21a95787ccab0cc62327.jpg,Leaf Rust,2,662,21a95787ccab0cc62327b03389b971c57e159fdd930dd142a4bfc010a774019c,ethiopian cofee leaf dataset/test/Leaf rust/20231123_120650.jpg
+leaf_rust/232585eca867feb8d8c4.jpg,Leaf Rust,2,1402,232585eca867feb8d8c44dff9e12530b3c0dc6dd95a368cb4f72b6a73b0a2db2,ethiopian cofee leaf dataset/train aug/Leaf rust/20231122_135807.jpg
+leaf_rust/23f150dfbf34fc8318c0.jpg,Leaf Rust,2,1586,23f150dfbf34fc8318c0198ebd4ac1a59a82e1eb09a958ad49aa3cb94f9111e4,ethiopian cofee leaf dataset/train aug/Leaf rust/20231122_155414.jpg
+leaf_rust/246de462f96fb1af71ed.jpg,Leaf Rust,2,673,246de462f96fb1af71edae447fe0da313625261b04f865cddf295d796420d9a6,ethiopian cofee leaf dataset/test/Leaf rust/20231123_121258.jpg
+leaf_rust/259a0507f46fcc6172fe.jpg,Leaf Rust,2,718,259a0507f46fcc6172fed103ab3f4835e683dd94bc021cd437de03c8deadca21,ethiopian cofee leaf dataset/test/Leaf rust/20231123_123037.jpg
+leaf_rust/26019d4e9fda7921ff0f.jpg,Leaf Rust,2,1574,26019d4e9fda7921ff0ff15a98aec1bd19ccf332b3f6416faf8186293b8a2701,ethiopian cofee leaf dataset/train aug/Leaf rust/20231122_155229.jpg
+leaf_rust/2609d706c37be55bb731.jpg,Leaf Rust,2,1650,2609d706c37be55bb731127b4baf8da722a74de676c89210c756a3044cec0039,ethiopian cofee leaf dataset/train aug/Leaf rust/20231123_100429.jpg
+leaf_rust/27a155495490134711ef.jpg,Leaf Rust,2,1345,27a155495490134711ef64f8fb18896af022c47b3cc8395fde4450585446212d,ethiopian cofee leaf dataset/train aug/Leaf rust/1580.jpg
+leaf_rust/2981fde87f9b4375d121.jpg,Leaf Rust,2,1407,2981fde87f9b4375d1214d91c8201d3b0e25fe597a33d6e7df52abd0af772496,ethiopian cofee leaf dataset/train aug/Leaf rust/20231122_135931.jpg
+leaf_rust/2ec226049a821ecd4cd2.jpg,Leaf Rust,2,830,2ec226049a821ecd4cd21d42910de605e9b64ac285bf3f1f83a5919db5ec6f6c,ethiopian cofee leaf dataset/test/Leaf rust/C9P7H1.jpg
+leaf_rust/2fafe635a1ce5ad43cd2.jpg,Leaf Rust,2,1657,2fafe635a1ce5ad43cd2bd93d034e1f89cb95b4f01a4a5070ab82b8b6cbae1ce,ethiopian cofee leaf dataset/train aug/Leaf rust/20231123_100759.jpg
+leaf_rust/3367125b1d423f72f99b.jpg,Leaf Rust,2,584,3367125b1d423f72f99b860b994c10a7a61074f215d829fd73daca0a43a08a3a,ethiopian cofee leaf dataset/test/Leaf rust/20231123_104545.jpg
+leaf_rust/357d82d6c80f2a9ae307.jpg,Leaf Rust,2,1638,357d82d6c80f2a9ae3075cfcdc9415b5b56cc39c9c750b57e199e9fd074d8f50,ethiopian cofee leaf dataset/train aug/Leaf rust/20231122_162228.jpg
+leaf_rust/35ffd7ef505422e27cad.jpg,Leaf Rust,2,1446,35ffd7ef505422e27cad13fe9b48acab56a33dfd4cb83876717bc149ed39e1ac,ethiopian cofee leaf dataset/train aug/Leaf rust/20231122_141228.jpg
+leaf_rust/36efe78baf863a1c1283.jpg,Leaf Rust,2,765,36efe78baf863a1c1283e2e18a16403f0e1b59a20e8f99fe6e74b3621d9fa608,ethiopian cofee leaf dataset/test/Leaf rust/C1P12E2.jpg
+leaf_rust/39a2ba25635788be8e53.jpg,Leaf Rust,2,730,39a2ba25635788be8e539d01fa1565a22128cbed3414fd706eb6ede1969a34bd,ethiopian cofee leaf dataset/test/Leaf rust/C10P19E2.jpg
+leaf_rust/39acb04c94c3aefc0cba.jpg,Leaf Rust,2,588,39acb04c94c3aefc0cbad31a4f86df1bf352ffd972f8661468891b83a408be94,ethiopian cofee leaf dataset/test/Leaf rust/20231123_105016.jpg
+leaf_rust/3df3f75bf2c6da08986e.jpg,Leaf Rust,2,716,3df3f75bf2c6da08986eefd1c9cf25e7c6160b1b1baafaa95515af2a419f9f74,ethiopian cofee leaf dataset/test/Leaf rust/20231123_123025.jpg
+leaf_rust/3ed4a70c4f362a9787ec.jpg,Leaf Rust,2,692,3ed4a70c4f362a9787ecb4fac123426590ab6c68339c5f138494601f408c750a,ethiopian cofee leaf dataset/test/Leaf rust/20231123_121833.jpg
+leaf_rust/3ef33d8773494919e567.jpg,Leaf Rust,2,1346,3ef33d8773494919e56747decbc438a4a0fe135cf4529ad8b7fab106dd0eaf8a,ethiopian cofee leaf dataset/train aug/Leaf rust/1590.jpg
+leaf_rust/3fc3fea8bce293fb89f6.jpg,Leaf Rust,2,711,3fc3fea8bce293fb89f6c04341999051130cc061d62b59d8116f7561a3779c43,ethiopian cofee leaf dataset/test/Leaf rust/20231123_122706.jpg
+leaf_rust/401f198ed35604534dea.jpg,Leaf Rust,2,784,401f198ed35604534dea3c4cf825242aab2589b4b58f3babaaee7ec478d0f35c,ethiopian cofee leaf dataset/test/Leaf rust/C1P34E2.jpg
+leaf_rust/473999bd6123b9ab2a68.jpg,Leaf Rust,2,1351,473999bd6123b9ab2a68eb8f4d98b7b1d381393a1957114aae38049e321ee98a,ethiopian cofee leaf dataset/train aug/Leaf rust/1616.jpg
+leaf_rust/4dd5ab2133b7fd483d07.jpg,Leaf Rust,2,1669,4dd5ab2133b7fd483d07f365bcb5d9bd59ddbd8c9627150d12992f369f42112f,ethiopian cofee leaf dataset/train aug/Leaf rust/991.jpg
+leaf_rust/4e4c4408e60de2d3d533.jpg,Leaf Rust,2,1448,4e4c4408e60de2d3d533dd4c5d3e466c059b0f04aa4603daa59d38febc79a44a,ethiopian cofee leaf dataset/train aug/Leaf rust/20231122_141300.jpg
+leaf_rust/4eff81cb43cb61ae0760.jpg,Leaf Rust,2,1410,4eff81cb43cb61ae0760f7c14baf6b3dbf6d83f9d067760b2e73bddcb4643c7f,ethiopian cofee leaf dataset/train aug/Leaf rust/20231122_135948.jpg
+leaf_rust/518fec6acd9414551907.jpg,Leaf Rust,2,1655,518fec6acd9414551907c5f13f6bdb62af192464876f43b62a0f23ad0dee919c,ethiopian cofee leaf dataset/train aug/Leaf rust/20231123_100713.jpg
+leaf_rust/5c4950b4067cdf3f2951.jpg,Leaf Rust,2,682,5c4950b4067cdf3f2951601078cf83411d6ce3108267f7a8bca7d17ae3b20dd9,ethiopian cofee leaf dataset/test/Leaf rust/20231123_121506.jpg
+leaf_rust/5ddf6d43142e6c202c15.jpg,Leaf Rust,2,1346,5ddf6d43142e6c202c15b2a446f7b6f2f61076bf8a496c77048abd995063bb60,ethiopian cofee leaf dataset/train aug/Leaf rust/1589.jpg
+leaf_rust/5ee0016adf70842c6319.jpg,Leaf Rust,2,1310,5ee0016adf70842c6319eb0aec22d59d62e295443d851a09877f685bebcc9cc7,ethiopian cofee leaf dataset/train aug/Leaf rust/1282.jpg
+leaf_rust/6190688aa705fd2b77cb.jpg,Leaf Rust,2,746,6190688aa705fd2b77cb6944fdf55d8ddf5f0b98c0d0c282d3ae5e2fef7a8015,ethiopian cofee leaf dataset/test/Leaf rust/C11P13H2.jpg
+leaf_rust/6248456a654b89de5de9.jpg,Leaf Rust,2,1626,6248456a654b89de5de9dee53a35b1d6bcc5c4402298403242f2ebdc4a6734f9,ethiopian cofee leaf dataset/train aug/Leaf rust/20231122_161546.jpg
+leaf_rust/63091548f1d1dbfe4649.jpg,Leaf Rust,2,798,63091548f1d1dbfe46496b88b6902668c1810624e9b4a9c9159a825575e79519,ethiopian cofee leaf dataset/test/Leaf rust/C1P7E2.jpg
+leaf_rust/65e66d63f83eb547fb15.jpg,Leaf Rust,2,749,65e66d63f83eb547fb15b160df407cae3ab962db5282914059a3bc8307a5f0ff,ethiopian cofee leaf dataset/test/Leaf rust/C11P23E2.jpg
+leaf_rust/6d6d1ff23bdd4f744159.jpg,Leaf Rust,2,1351,6d6d1ff23bdd4f74415916ab50839bf28e1283922cce92f9c8d7c4a1e4d5b6dd,ethiopian cofee leaf dataset/train aug/Leaf rust/1617.jpg
+leaf_rust/7144c9c1676d9696dd1c.jpg,Leaf Rust,2,590,7144c9c1676d9696dd1cb0a143602bbf1ce032296166c7c251e103c384d2f433,ethiopian cofee leaf dataset/test/Leaf rust/20231123_105056.jpg
+leaf_rust/75bfe5128a32b8009532.jpg,Leaf Rust,2,1319,75bfe5128a32b8009532dec3ea9fc5b150652f6812aa4b127c29d8c3f2ffa609,ethiopian cofee leaf dataset/train aug/Leaf rust/1457.jpg
+leaf_rust/772ed55e35c982e6e1ca.jpg,Leaf Rust,2,1314,772ed55e35c982e6e1ca0bd1329ac2cf2d997bd36c692a7dfeeb86e417a88e33,ethiopian cofee leaf dataset/train aug/Leaf rust/1437.jpg
+leaf_rust/79ae1abb008237dffcf8.jpg,Leaf Rust,2,734,79ae1abb008237dffcf83bac1a21b46ccfd10a2c21bef0647674b4343cfafcd7,ethiopian cofee leaf dataset/test/Leaf rust/C10P2H1.jpg
+leaf_rust/7a45924b74a60643373c.jpg,Leaf Rust,2,1568,7a45924b74a60643373c3aad2047ec56704f21fa1a69e086ba2f8fb37ecbf1a8,ethiopian cofee leaf dataset/train aug/Leaf rust/20231122_155129.jpg
+leaf_rust/7b51d728e6119bee8896.jpg,Leaf Rust,2,1606,7b51d728e6119bee88960531445f1182b5b2c4f8acb6f3a3cc7f778177126728,ethiopian cofee leaf dataset/train aug/Leaf rust/20231122_160914.jpg
+leaf_rust/7babc39f66a26f2e39a3.jpg,Leaf Rust,2,1319,7babc39f66a26f2e39a33cbb7803be78186d9acc9fe462ae84b4ee9522d220d8,ethiopian cofee leaf dataset/train aug/Leaf rust/1458.jpg
+leaf_rust/80f12575c508646628c6.jpg,Leaf Rust,2,1651,80f12575c508646628c69f7d4bc76708cb1a3278bcad2d68cc24b3d03e3f7949,ethiopian cofee leaf dataset/train aug/Leaf rust/20231123_100443.jpg
+leaf_rust/81d632f7f4bd6fba5b38.jpg,Leaf Rust,2,600,81d632f7f4bd6fba5b382424bc5cbc887084f2976aaa83deacb7d478a93574a8,ethiopian cofee leaf dataset/test/Leaf rust/20231123_110046.jpg
+leaf_rust/83197f0b2bd1f4eb072f.jpg,Leaf Rust,2,1678,83197f0b2bd1f4eb072f6a344ef625a5d01b67501761de0333426b685b1bdd02,ethiopian cofee leaf dataset/train aug/Leaf rust/C1P28H2.jpg
+leaf_rust/889d9f60943bcd343291.jpg,Leaf Rust,2,1322,889d9f60943bcd343291000c3003d98644172d6f778770e98908e2c4ddc94d1f,ethiopian cofee leaf dataset/train aug/Leaf rust/1469.jpg
+leaf_rust/88f6e4aaea406500d6e4.jpg,Leaf Rust,2,691,88f6e4aaea406500d6e45b34fe7e6e0a3b6c42590956380778d9b7beb58059d9,ethiopian cofee leaf dataset/test/Leaf rust/20231123_121823.jpg
+leaf_rust/8a1526416291d7397f14.jpg,Leaf Rust,2,729,8a1526416291d7397f142f6f8a21b1b55caee07dcecf58a1705d3f6e74363a14,ethiopian cofee leaf dataset/test/Leaf rust/C10P15H2.jpg
+leaf_rust/8afbb5c0ded1217fb2c8.jpg,Leaf Rust,2,1346,8afbb5c0ded1217fb2c870a2ed56a98459ad879be79903fe6a6e663d159ade77,ethiopian cofee leaf dataset/train aug/Leaf rust/1588.jpg
+leaf_rust/8d6c8889af6de40559ca.jpg,Leaf Rust,2,574,8d6c8889af6de40559ca8caf7e5e066bca1593978f7fcdd740f3a2b182ed0fbf,ethiopian cofee leaf dataset/test/Leaf rust/20231123_103910.jpg
+leaf_rust/8d9bbc9a8db14c99d1d8.jpg,Leaf Rust,2,650,8d9bbc9a8db14c99d1d8031144be5ba41c23c59589233397122aeb699c9fa78f,ethiopian cofee leaf dataset/test/Leaf rust/20231123_120030.jpg
+leaf_rust/8e7bd7a3ef53da786952.jpg,Leaf Rust,2,1669,8e7bd7a3ef53da786952e16bd2ca5ecae8a6be6c4e7a5378d56049bb6f14b061,ethiopian cofee leaf dataset/train aug/Leaf rust/990.jpg
+leaf_rust/8ecfbedbe56f08838e9a.jpg,Leaf Rust,2,1596,8ecfbedbe56f08838e9ab7993cc763526bd3a54bce2b228a3cce29df6c0f9224,ethiopian cofee leaf dataset/train aug/Leaf rust/20231122_160117.jpg
+leaf_rust/931c6e518325514e358b.jpg,Leaf Rust,2,1361,931c6e518325514e358b07f886021bd3b6485ec6d5ebc55a6120e404530fb1a6,ethiopian cofee leaf dataset/train aug/Leaf rust/20231122_131305.jpg
+leaf_rust/977d3fd62d3e2284e93a.jpg,Leaf Rust,2,626,977d3fd62d3e2284e93a2ff9b79432d0662d7d0d2cfd4eba9b11c0d66c38104a,ethiopian cofee leaf dataset/test/Leaf rust/20231123_111639.jpg
+leaf_rust/98a50ed4c54d45937c42.jpg,Leaf Rust,2,809,98a50ed4c54d45937c421561c77628da5870fe736f120986a249656cdc0aec39,ethiopian cofee leaf dataset/test/Leaf rust/C7P20H2.jpg
+leaf_rust/9936bee2c7da23cf14e5.jpg,Leaf Rust,2,1345,9936bee2c7da23cf14e52a20aaeb7b193c1d4b4241fce1e69d4668a84451eaae,ethiopian cofee leaf dataset/train aug/Leaf rust/1581.jpg
+leaf_rust/996e2f955c81decb02b6.jpg,Leaf Rust,2,821,996e2f955c81decb02b67a761ba97757e79d8ef9d3b4b037968f89ba3a2ffa8a,ethiopian cofee leaf dataset/test/Leaf rust/C9P23E1.jpg
+leaf_rust/9b18b8ac187bcc5c2160.jpg,Leaf Rust,2,1669,9b18b8ac187bcc5c216089db4270de7b5210007668a1ce8631b7eff5d243c376,ethiopian cofee leaf dataset/train aug/Leaf rust/989.jpg
+leaf_rust/9b52d2968bdfdc41cacb.jpg,Leaf Rust,2,785,9b52d2968bdfdc41cacb1e3ef0d3dc909d4989602d0d87bcd48a59a5650d89f9,ethiopian cofee leaf dataset/test/Leaf rust/C1P35E2.jpg
+leaf_rust/9de3e88b424fb44b32e0.jpg,Leaf Rust,2,1423,9de3e88b424fb44b32e0d743322544cf8508c88477f4b5d0924d2c2f7fb31904,ethiopian cofee leaf dataset/train aug/Leaf rust/20231122_140444 (2).jpg
+leaf_rust/a20f6164fbf1d7967d39.jpg,Leaf Rust,2,783,a20f6164fbf1d7967d393c24c021bed57326b58ed6e6d28da89c18c5087e9431,ethiopian cofee leaf dataset/test/Leaf rust/C1P33H2.jpg
+leaf_rust/a684f3843f42bc6eca60.jpg,Leaf Rust,2,1421,a684f3843f42bc6eca6033ca47f436bba75b134e53cdc40110e83f04f54dc50c,ethiopian cofee leaf dataset/train aug/Leaf rust/20231122_140230.jpg
+leaf_rust/a71274ecc36fce24498d.jpg,Leaf Rust,2,1319,a71274ecc36fce24498d92af4f8fb5efb6e1125fa25a79f51013860b3d81db64,ethiopian cofee leaf dataset/train aug/Leaf rust/1456.jpg
+leaf_rust/aa11a086709de9ab5414.jpg,Leaf Rust,2,1351,aa11a086709de9ab54141663412707653a7c4083a600b4d1a62653830fb3de0d,ethiopian cofee leaf dataset/train aug/Leaf rust/1619.jpg
+leaf_rust/ac4b80fce34e6903362c.jpg,Leaf Rust,2,1469,ac4b80fce34e6903362c2cb93563f1941e2345936c7fd8d66f27c5d5db3a84ca,ethiopian cofee leaf dataset/train aug/Leaf rust/20231122_142043.jpg
+leaf_rust/b26c28e9204a5553d339.jpg,Leaf Rust,2,782,b26c28e9204a5553d339b175acbe509b781405fc0875735680f524422d3e2312,ethiopian cofee leaf dataset/test/Leaf rust/C1P2H2.jpg
+leaf_rust/b37ce315805276d70dc7.jpg,Leaf Rust,2,814,b37ce315805276d70dc716250e5aa60521cb2584744977fbf4d2bdc16848457a,ethiopian cofee leaf dataset/test/Leaf rust/C8P24E2.jpg
+leaf_rust/b3c23882a54077c96a9b.jpg,Leaf Rust,2,705,b3c23882a54077c96a9b4a90462edf07cb1ea6ca017dac1ceef991243b823b9f,ethiopian cofee leaf dataset/test/Leaf rust/20231123_122347.jpg
+leaf_rust/b705dffc993917689467.jpg,Leaf Rust,2,1551,b705dffc993917689467f1c363ae1903979728ad430fe18ed7bb7739b3f82fa4,ethiopian cofee leaf dataset/train aug/Leaf rust/20231122_154458.jpg
+leaf_rust/bb2c2718d213fcfd0dfe.jpg,Leaf Rust,2,593,bb2c2718d213fcfd0dfebba2feb574918951cc3146deeafd120dbc117020cd1c,ethiopian cofee leaf dataset/test/Leaf rust/20231123_105455.jpg
+leaf_rust/bc544c7d2f522f02e1b6.jpg,Leaf Rust,2,1669,bc544c7d2f522f02e1b633871c288ab1a26558ae8deb1b063ace4dd0f714bc7c,ethiopian cofee leaf dataset/train aug/Leaf rust/988.jpg
+leaf_rust/bd6b46c6fba279442ace.jpg,Leaf Rust,2,637,bd6b46c6fba279442acea2333fd37bfd6cdc8d01c521c50a6cdb0c361c3e3469,ethiopian cofee leaf dataset/test/Leaf rust/20231123_111946.jpg
+leaf_rust/be65a53c024aed4fe418.jpg,Leaf Rust,2,826,be65a53c024aed4fe41864f3efadfeecba1897204a0fd652799068d2678e9417,ethiopian cofee leaf dataset/test/Leaf rust/C9P31H1.jpg
+leaf_rust/c04fa33fafea686d1aac.jpg,Leaf Rust,2,1418,c04fa33fafea686d1aac968047671b675bd6b2cdfe4c6e611828e62e9fb8c203,ethiopian cofee leaf dataset/train aug/Leaf rust/20231122_140047.jpg
+leaf_rust/c2de3a054ccd5f7ca036.jpg,Leaf Rust,2,820,c2de3a054ccd5f7ca036fff47aa759f02d70a6d5a816c2c0f7d57495267bd283,ethiopian cofee leaf dataset/test/Leaf rust/C9P17H1.jpg
+leaf_rust/c3b2fd5145bcc085923a.jpg,Leaf Rust,2,823,c3b2fd5145bcc085923a6d86d8a7b97b7232c0b95b2dd62bad599cecb1444a7b,ethiopian cofee leaf dataset/test/Leaf rust/C9P29E1.jpg
+leaf_rust/c407cd28bfdf60900daf.jpg,Leaf Rust,2,1509,c407cd28bfdf60900daf82c9fdbc1dd2b98541a55868967a46654c2222243937,ethiopian cofee leaf dataset/train aug/Leaf rust/20231122_152046.jpg
+leaf_rust/c4dfe102a45c0b854382.jpg,Leaf Rust,2,619,c4dfe102a45c0b854382503f8321a4bc7ab932158155d2cfba302690690ee379,ethiopian cofee leaf dataset/test/Leaf rust/20231123_111408.jpg
+leaf_rust/c6495befcccdeea89a99.jpg,Leaf Rust,2,562,c6495befcccdeea89a9905a5ed2f38e6c7af1f0e97df14bec2671dc18e5d1692,ethiopian cofee leaf dataset/test/Leaf rust/20231123_103023.jpg
+leaf_rust/c6c2f4c39b50136e5e23.jpg,Leaf Rust,2,746,c6c2f4c39b50136e5e238f7a323d503d38f5a981cda31919b87a24547c479ac6,ethiopian cofee leaf dataset/test/Leaf rust/C12P23H2.jpg
+leaf_rust/c741063be224265f6a41.jpg,Leaf Rust,2,1492,c741063be224265f6a41ea70aac41deb57a763db58356a6cdacca610d588b754,ethiopian cofee leaf dataset/train aug/Leaf rust/20231122_143925.jpg
+leaf_rust/c851a4a4ac63988dd4ee.jpg,Leaf Rust,2,588,c851a4a4ac63988dd4eee57b74400352afd321838418f672afbfd192c243c52e,ethiopian cofee leaf dataset/test/Leaf rust/20231123_105010.jpg
+leaf_rust/c8fb846530661233ef6b.jpg,Leaf Rust,2,1310,c8fb846530661233ef6b24f43e94702d8d9caae8e88d7115d1027417f62a5daa,ethiopian cofee leaf dataset/train aug/Leaf rust/1281.jpg
+leaf_rust/cdac39756011b077b7b9.jpg,Leaf Rust,2,1658,cdac39756011b077b7b9504473377a2b07fc8168ded18afa3b42ed6f1f2e9f5c,ethiopian cofee leaf dataset/train aug/Leaf rust/20231123_100804.jpg
+leaf_rust/cf24981d6271e2bb9baa.jpg,Leaf Rust,2,1633,cf24981d6271e2bb9baa97d46b7a95ef4218a0c5db41b0337fa5c755da1a11d6,ethiopian cofee leaf dataset/train aug/Leaf rust/20231122_162020.jpg
+leaf_rust/cf6bbe9881ddff0f800c.jpg,Leaf Rust,2,1387,cf6bbe9881ddff0f800c7bc22bac9ae102a6063044c952f7a752fa5113d63bd1,ethiopian cofee leaf dataset/train aug/Leaf rust/20231122_135410.jpg
+leaf_rust/d2bffb8e46d6dc75af6d.jpg,Leaf Rust,2,1322,d2bffb8e46d6dc75af6d21c4cd2d387c7b2ca9b4b354799cc6152d7cb07efc89,ethiopian cofee leaf dataset/train aug/Leaf rust/1468.jpg
+leaf_rust/d5eb3241b0a704b5a635.jpg,Leaf Rust,2,1675,d5eb3241b0a704b5a635c972e32bc17baf4ed7d67f50827a5bae2492e0a15d8c,ethiopian cofee leaf dataset/train aug/Leaf rust/C1P27E2.jpg
+leaf_rust/d5edeb7eb57daf2e38a3.jpg,Leaf Rust,2,1310,d5edeb7eb57daf2e38a387140a720463435adbe3b086bdc8032810962369dc77,ethiopian cofee leaf dataset/train aug/Leaf rust/1283.jpg
+leaf_rust/d94005e9b05a142923a7.jpg,Leaf Rust,2,1680,d94005e9b05a142923a7b3c7f3b68e30018faa0113bded569eec2c83acc7d1c5,ethiopian cofee leaf dataset/train aug/Leaf rust/C1P29H2.jpg
+leaf_rust/e100fc8f8304850df13f.jpg,Leaf Rust,2,1351,e100fc8f8304850df13f98c0815f2b93a7b8067f8df14744a300a0591475444c,ethiopian cofee leaf dataset/train aug/Leaf rust/1618.jpg
+leaf_rust/e2e0ec9d2b20e58c9aa2.jpg,Leaf Rust,2,1345,e2e0ec9d2b20e58c9aa2f580395c8e83f20ed98ee6b7bcd42fcad4b2cc879304,ethiopian cofee leaf dataset/train aug/Leaf rust/1582.jpg
+leaf_rust/e385a90eae679ef9d7d5.jpg,Leaf Rust,2,804,e385a90eae679ef9d7d58a43eb3b9e2953ed0e9722614af6e8234dc9acda9332,ethiopian cofee leaf dataset/test/Leaf rust/C7P15E1.jpg
+leaf_rust/e4c9f5004ea6b85fb186.jpg,Leaf Rust,2,1456,e4c9f5004ea6b85fb186abb90e7367106909af4814814356ebfa350e841f6aa1,ethiopian cofee leaf dataset/train aug/Leaf rust/20231122_141735.jpg
+leaf_rust/e581a87368ae9dd0a69d.jpg,Leaf Rust,2,1557,e581a87368ae9dd0a69d3060d72d11a741be6179c076cdb9a3f4492afa64f07e,ethiopian cofee leaf dataset/train aug/Leaf rust/20231122_154805.jpg
+leaf_rust/e5fe831a9fb98bb03222.jpg,Leaf Rust,2,1459,e5fe831a9fb98bb03222fd72c73a30a3bf82fed2d4d13e16f5d581b035467a6c,ethiopian cofee leaf dataset/train aug/Leaf rust/20231122_141825.jpg
+leaf_rust/e931a841fe7f3f1c44d6.jpg,Leaf Rust,2,1314,e931a841fe7f3f1c44d6a9560afd81ac673159640a67a64d74f7cec455675222,ethiopian cofee leaf dataset/train aug/Leaf rust/1439.jpg
+leaf_rust/eb167b83b4332bbb907d.jpg,Leaf Rust,2,1424,eb167b83b4332bbb907db9fb94c8815a16d18e8fc769e4c08adb33afd744ce94,ethiopian cofee leaf dataset/train aug/Leaf rust/20231122_140517.jpg
+leaf_rust/eddb1abbf28cc444a0bb.jpg,Leaf Rust,2,748,eddb1abbf28cc444a0bb179aacb78603a6d8ddb2aaa58e524da6b5a5e24ef1a2,ethiopian cofee leaf dataset/test/Leaf rust/C11P15E2.jpg
+leaf_rust/ef8549603de52948623f.jpg,Leaf Rust,2,1322,ef8549603de52948623f6ba93beeda07cdc163d2681e503300a1fed4230b7617,ethiopian cofee leaf dataset/train aug/Leaf rust/1471.jpg
+leaf_rust/efabc746594db645be5c.jpg,Leaf Rust,2,661,efabc746594db645be5ca88e16b2cf3087b15f0c18f769903c9ae7de76f5e02d,ethiopian cofee leaf dataset/test/Leaf rust/20231123_120642.jpg
+leaf_rust/f0bf60e4325eb19c552f.jpg,Leaf Rust,2,1322,f0bf60e4325eb19c552fb849e7fba3ad77b8eb67c66cf208633e30b7b3028d2b,ethiopian cofee leaf dataset/train aug/Leaf rust/1470.jpg
+leaf_rust/f1df18610d7c40afbf16.jpg,Leaf Rust,2,1319,f1df18610d7c40afbf16c26216926c286e65987911d9227833c2e13cf145f815,ethiopian cofee leaf dataset/train aug/Leaf rust/1459.jpg
+leaf_rust/f1f17f811bd0a4b5f08d.jpg,Leaf Rust,2,558,f1f17f811bd0a4b5f08d31dbe1bab93ba5dab9d93dda119ac620e9013d91f661,ethiopian cofee leaf dataset/test/Leaf rust/20231123_102918.jpg
+leaf_rust/f762ebc6005eedd358e1.jpg,Leaf Rust,2,1468,f762ebc6005eedd358e1b948e831250d12cf857786f7e4e3820c9dd2bc06c671,ethiopian cofee leaf dataset/train aug/Leaf rust/20231122_142007.jpg
+leaf_rust/f7b51b6029767139be7d.jpg,Leaf Rust,2,774,f7b51b6029767139be7dcb336751b84c9a6ff2c811dbe2bde24e5d9d17bfbc15,ethiopian cofee leaf dataset/test/Leaf rust/C1P19H2.jpg
+leaf_rust/f8adbc74374f41a1dad2.jpg,Leaf Rust,2,627,f8adbc74374f41a1dad20eb95b273aee344be334f75aff95d6a2990dcaed48f3,ethiopian cofee leaf dataset/test/Leaf rust/20231123_111642.jpg
+leaf_rust/f902290482864643c604.jpg,Leaf Rust,2,1599,f902290482864643c604e6f255a16d0fe6eeba2ae0b9327fb0002a2058dddb9d,ethiopian cofee leaf dataset/train aug/Leaf rust/20231122_160324.jpg
+leaf_rust/fcf7208d74c2d93ff417.jpg,Leaf Rust,2,755,fcf7208d74c2d93ff41726a74fc79ee947bc60bdbdaad72f34572d880733efab,ethiopian cofee leaf dataset/test/Leaf rust/C12P15E2.jpg
+leaf_rust/ffc090503d14ec40c357.jpg,Leaf Rust,2,759,ffc090503d14ec40c357915364cfbed3e359d9aebdac48a42190e58fa86cf452,ethiopian cofee leaf dataset/test/Leaf rust/C12P9E2.jpg
+phoma/0054426dd80367f02b9a.jpg,Phoma,3,887,0054426dd80367f02b9aefbaa9dfbf06ae2cc338e6b63ceb556e41fe21408c55,ethiopian cofee leaf dataset/test/Phoma/436.jpg
+phoma/03bddff8c952fd0dc1e3.jpg,Phoma,3,1711,03bddff8c952fd0dc1e35bdd02eea1a8b6a80d42df721f314b053b0356d341e9,ethiopian cofee leaf dataset/train aug/Phoma/623.jpg
+phoma/03e39ed8f1b748a42813.jpg,Phoma,3,900,03e39ed8f1b748a42813602e9641358a112cdc7d4b5123f1f8319939ed44a58d,ethiopian cofee leaf dataset/test/Phoma/488.jpg
+phoma/06ae86dcbdf6dbebaff3.jpg,Phoma,3,890,06ae86dcbdf6dbebaff32b9734de3a5a42181c0d7c48a393f94f0dd2a94abfd8,ethiopian cofee leaf dataset/test/Phoma/450.jpg
+phoma/08be02513f0bf740fbef.jpg,Phoma,3,1724,08be02513f0bf740fbefac7c0425caa5c7021205d5c191240d516a06c3251b30,ethiopian cofee leaf dataset/train aug/Phoma/708.jpg
+phoma/0faa697de321d84dead1.jpg,Phoma,3,1701,0faa697de321d84dead1af105967db790d2cf7768ff6231a66966d6ddf8f5bde,ethiopian cofee leaf dataset/train aug/Phoma/566.jpg
+phoma/117b1ad580aaeb4cdd69.jpg,Phoma,3,904,117b1ad580aaeb4cdd69a2da9c879371e6452abc98dd672f84913b9a03a692e0,ethiopian cofee leaf dataset/test/Phoma/739.jpg
+phoma/1edb32c19fc62c6683c0.jpg,Phoma,3,855,1edb32c19fc62c6683c0e17e10f71cdebd954f02b68e07d2fb0c27a7b9fc4feb,ethiopian cofee leaf dataset/test/Phoma/305.jpg
+phoma/1f3d31648bed61b51ce6.jpg,Phoma,3,1711,1f3d31648bed61b51ce6ff9342830926923430cba34a32bd8ea90c029490e1bf,ethiopian cofee leaf dataset/train aug/Phoma/620.jpg
+phoma/1f6cffc3fc0fce7e6636.jpg,Phoma,3,887,1f6cffc3fc0fce7e66360a44955a7ca75e345befde7ed6beff1f78c0fa9f4260,ethiopian cofee leaf dataset/test/Phoma/438.jpg
+phoma/203f356dc8587ec4e8c4.jpg,Phoma,3,890,203f356dc8587ec4e8c4870d70e387e8842da6dbfecec5a82e95e062dfa34f30,ethiopian cofee leaf dataset/test/Phoma/451.jpg
+phoma/2514d2d67273dfd15298.jpg,Phoma,3,1724,2514d2d67273dfd152982929f237199f8eb5e53e09c092544814ed9e13fa1946,ethiopian cofee leaf dataset/train aug/Phoma/709.jpg
+phoma/26b5534bd3f657bcb7db.jpg,Phoma,3,887,26b5534bd3f657bcb7dbe5ae9edf3e4fde1558526e38d5d3ab727339d4ca6cf8,ethiopian cofee leaf dataset/test/Phoma/439.jpg
+phoma/297e43b186a7434e975b.jpg,Phoma,3,896,297e43b186a7434e975be20cb344e0e25d32c1e2a8d4688ef3ed033a27f650e2,ethiopian cofee leaf dataset/test/Phoma/472.jpg
+phoma/2bed43046bb80fa85a7a.jpg,Phoma,3,1721,2bed43046bb80fa85a7ad5365590eaedf641881da14993ee10231766b6694124,ethiopian cofee leaf dataset/train aug/Phoma/668.jpg
+phoma/2d54e18173de6322e53d.jpg,Phoma,3,896,2d54e18173de6322e53dbb6a059c9eddaef5b2448a0fea1abac36f89d2c6fe77,ethiopian cofee leaf dataset/test/Phoma/474.jpg
+phoma/2fa583b68fe472025313.jpg,Phoma,3,901,2fa583b68fe472025313416c59bce08593473b33eb75941ffc07787850e57473,ethiopian cofee leaf dataset/test/Phoma/494.jpg
+phoma/3bf23ce1740ef5b6d4fc.jpg,Phoma,3,1724,3bf23ce1740ef5b6d4fc1f128b7d6726975987eacd3d874637500deb98bea0aa,ethiopian cofee leaf dataset/train aug/Phoma/711.jpg
+phoma/3c6ac50e276d7bece297.jpg,Phoma,3,884,3c6ac50e276d7bece2975a508e0d2c2a1f222b88ddc6a8ee886c254fed8ca41b,ethiopian cofee leaf dataset/test/Phoma/427.jpg
+phoma/40f9e102a8e3e52f1a62.jpg,Phoma,3,1689,40f9e102a8e3e52f1a6259b9b3f0d3e1d71b468a33a09df85ba59c079b386704,ethiopian cofee leaf dataset/train aug/Phoma/519.jpg
+phoma/4d1d50efe1b079fd58dc.jpg,Phoma,3,850,4d1d50efe1b079fd58dc88f53112c844ba1a0237ddac028a3f6de1ab9b1dec70,ethiopian cofee leaf dataset/test/Phoma/286.jpg
+phoma/51bfb9c87149850f7da4.jpg,Phoma,3,901,51bfb9c87149850f7da47400f53ad9eed3a8d16ca839e7b04e0fde39e69848af,ethiopian cofee leaf dataset/test/Phoma/493.jpg
+phoma/54b73376c81b6cfe3a91.jpg,Phoma,3,901,54b73376c81b6cfe3a91375268cec110398354f97f3a75077e2024445fbcd47d,ethiopian cofee leaf dataset/test/Phoma/492.jpg
+phoma/57697ffcd3a96b23e4de.jpg,Phoma,3,887,57697ffcd3a96b23e4de701d03ebab4aa96dd3d61505ece79a632c751743179c,ethiopian cofee leaf dataset/test/Phoma/437.jpg
+phoma/5d6b795e1f84492bc5ab.jpg,Phoma,3,1721,5d6b795e1f84492bc5ab9fb11f845cee969adc1cfeab52c3cab8725865404b05,ethiopian cofee leaf dataset/train aug/Phoma/669.jpg
+phoma/5e99437739ef02c8661c.jpg,Phoma,3,855,5e99437739ef02c8661cc19eba2bd01f8c9602884f1e8e004faf5a2f8bae80b2,ethiopian cofee leaf dataset/test/Phoma/304.jpg
+phoma/628d3bf7ab455480cb4d.jpg,Phoma,3,1689,628d3bf7ab455480cb4dc6dc9bd8d7c5c75e8269fa4f6018fa1ac024f81b6b08,ethiopian cofee leaf dataset/train aug/Phoma/517.jpg
+phoma/65919beed99975130f9a.jpg,Phoma,3,1701,65919beed99975130f9a2a7dcb96f4e6036c0ea71d15cb55bd2097a6129ab2c1,ethiopian cofee leaf dataset/train aug/Phoma/564.jpg
+phoma/70dbd8bd503dd036def2.jpg,Phoma,3,1689,70dbd8bd503dd036def23f950005c5778d1ad9a9c0bae46499399ea2c04d930e,ethiopian cofee leaf dataset/train aug/Phoma/516.jpg
+phoma/71ee2a88fc6828bfaf7d.jpg,Phoma,3,884,71ee2a88fc6828bfaf7df7b6228b28c849c5cf52752fb4bd38b608d30d069760,ethiopian cofee leaf dataset/test/Phoma/426.jpg
+phoma/7211db11c3410abf4288.jpg,Phoma,3,1709,7211db11c3410abf428888198ef94d91f99292b91d1eafedb0335b6a05b64dd4,ethiopian cofee leaf dataset/train aug/Phoma/613.jpg
+phoma/752a172e28fb21022e68.jpg,Phoma,3,900,752a172e28fb21022e687ec16bff790c02c358ab0e018b192b5678978343bc27,ethiopian cofee leaf dataset/test/Phoma/490.jpg
+phoma/7ebbe669eaeb43fb4db4.jpg,Phoma,3,900,7ebbe669eaeb43fb4db4bded4204d8f2e883312d9d536b6eab53e58878c8c495,ethiopian cofee leaf dataset/test/Phoma/491.jpg
+phoma/8122908881552f8e26ef.jpg,Phoma,3,1701,8122908881552f8e26efab60301c1e61f0cadff001edcfdc5aebe95c5de0d52f,ethiopian cofee leaf dataset/train aug/Phoma/565.jpg
+phoma/82f7a552ce14eadaffa6.jpg,Phoma,3,835,82f7a552ce14eadaffa6e7738bbc073c0febb496b3900e117ec26daf0b8625fa,ethiopian cofee leaf dataset/test/Phoma/20231121_122451.jpg
+phoma/8825f9a908d6d5f29f01.jpg,Phoma,3,1703,8825f9a908d6d5f29f012aa733a3af465b3db1b16360636239f94b221911947d,ethiopian cofee leaf dataset/train aug/Phoma/573.jpg
+phoma/88a83ee32a4ca8b976cc.jpg,Phoma,3,1721,88a83ee32a4ca8b976cc63a4f50d4b485d9909843eaec7936b79bb2693811095,ethiopian cofee leaf dataset/train aug/Phoma/670.jpg
+phoma/8e993885dbc80fb53a2b.jpg,Phoma,3,1709,8e993885dbc80fb53a2b608f78a75a8c693613c21a7bc10dee91e95b6daa417f,ethiopian cofee leaf dataset/train aug/Phoma/615.jpg
+phoma/8fba4fb3a16b76778977.jpg,Phoma,3,900,8fba4fb3a16b767789776ea7955643c2acbeda9e44d6f2bf0e599676318a72e0,ethiopian cofee leaf dataset/test/Phoma/489.jpg
+phoma/901e2543fb392d04a3a2.jpg,Phoma,3,1711,901e2543fb392d04a3a248e29c8895d690df15ec2223c40967b2535fcaf4fdd2,ethiopian cofee leaf dataset/train aug/Phoma/622.jpg
+phoma/9170e371f99676bba944.jpg,Phoma,3,1689,9170e371f99676bba94400f6f24ff4acda774c1eb6acc2ad154ac49437f758ab,ethiopian cofee leaf dataset/train aug/Phoma/518.jpg
+phoma/91db9ab1ced0b225e777.jpg,Phoma,3,850,91db9ab1ced0b225e7778965230e076f40af8abcb47737938d33257c0da1f2f1,ethiopian cofee leaf dataset/test/Phoma/287.jpg
+phoma/94b4fb99fe83e94ceeaf.jpg,Phoma,3,904,94b4fb99fe83e94ceeaf25171e339f50b55265419b5d790e82a472f9a971489b,ethiopian cofee leaf dataset/train aug/Phoma/737.jpg
+phoma/99b28380afa2770e51fa.jpg,Phoma,3,1724,99b28380afa2770e51fa7b88eb7a93cafc42a41652bc8b1c1b0d153934d4cb0c,ethiopian cofee leaf dataset/train aug/Phoma/710.jpg
+phoma/a3cb5bcb3d5398c79622.jpg,Phoma,3,1701,a3cb5bcb3d5398c79622f62afcc89e0f971c9750c12c4e9b74a37a90d6c32719,ethiopian cofee leaf dataset/train aug/Phoma/567.jpg
+phoma/a74c8fb0de8f603a3225.jpg,Phoma,3,850,a74c8fb0de8f603a32253e9c38c7ab5b31acd3014c64b7253d8d84ddb91021f2,ethiopian cofee leaf dataset/test/Phoma/284.jpg
+phoma/ad47b08ff91c9b78f7c6.jpg,Phoma,3,901,ad47b08ff91c9b78f7c6717103bc3280362f0e752951da77a03019fe4de669b9,ethiopian cofee leaf dataset/test/Phoma/495.jpg
+phoma/ad8091b9aef04526d91e.jpg,Phoma,3,896,ad8091b9aef04526d91e9c4784c5951667aa8fc5c339bd9dd58ced1b8a444e2f,ethiopian cofee leaf dataset/test/Phoma/475.jpg
+phoma/ae834909619a2839aaf3.jpg,Phoma,3,1706,ae834909619a2839aaf36eb328e3a227b1558dd369a05336f5a09f062d40a12d,ethiopian cofee leaf dataset/train aug/Phoma/603.jpg
+phoma/afa3ab01712ccd1ba971.jpg,Phoma,3,884,afa3ab01712ccd1ba9718a589ae44988c56429b090e3e55ed22865af5a61321a,ethiopian cofee leaf dataset/test/Phoma/425.jpg
+phoma/b07c8a0e5ede40acf521.jpg,Phoma,3,1703,b07c8a0e5ede40acf521a4dba575580ef7870cc2697667e66a8b40d34b70d85a,ethiopian cofee leaf dataset/train aug/Phoma/574.jpg
+phoma/b1fbdf0fe6595f946900.jpg,Phoma,3,890,b1fbdf0fe6595f946900d9cbff725f217b49c3e9010449d657beb33a2ecd3a29,ethiopian cofee leaf dataset/test/Phoma/449.jpg
+phoma/b2225c16ab7c57b04ccf.jpg,Phoma,3,904,b2225c16ab7c57b04ccf607e990f4388fd8427cdac6fb6a13f40acfab3be02b7,ethiopian cofee leaf dataset/test/Phoma/738.jpg
+phoma/b5e21ee412f2b613d22d.jpg,Phoma,3,1721,b5e21ee412f2b613d22da9fae441c2f17782092fda967b91e60b1cc13fb3cd71,ethiopian cofee leaf dataset/train aug/Phoma/671.jpg
+phoma/b92682e48bbecb182f24.jpg,Phoma,3,1709,b92682e48bbecb182f24911f6ffd2479bc77e8690b88ae448a19900299881141,ethiopian cofee leaf dataset/train aug/Phoma/614.jpg
+phoma/bacef14791150a369395.jpg,Phoma,3,1703,bacef14791150a369395f1178c4d97c2927510b3ea24cff8265762f9c30d1878,ethiopian cofee leaf dataset/train aug/Phoma/572.jpg
+phoma/be62846727dce9c1fee9.jpg,Phoma,3,1706,be62846727dce9c1fee92243fb4023a39cec7109ae0819a0dcbdeb7bc8b94f17,ethiopian cofee leaf dataset/train aug/Phoma/600.jpg
+phoma/bea382a235a6de0315eb.jpg,Phoma,3,1725,bea382a235a6de0315eb85e83ded9fbce215f0a1eb9c8ada6e05e0a618090fbd,ethiopian cofee leaf dataset/train aug/Phoma/DSC_0448.JPG
+phoma/bf0014b6d2dab8ac3eb1.jpg,Phoma,3,855,bf0014b6d2dab8ac3eb187cde1e76a33f819ba7c90597bea1331803f96b015db,ethiopian cofee leaf dataset/test/Phoma/307.jpg
+phoma/c430ea32b5b98fe878d8.jpg,Phoma,3,904,c430ea32b5b98fe878d8025be59ba9f4a08b8b45f0682452af89c66bc24aaa53,ethiopian cofee leaf dataset/train aug/Phoma/736.jpg
+phoma/c7d0683d045dc77c5a2d.jpg,Phoma,3,890,c7d0683d045dc77c5a2df86fbafcb6797737a38aff864803df8181c1cd4e8087,ethiopian cofee leaf dataset/test/Phoma/448.jpg
+phoma/cb26b4ce40f86b0a853f.jpg,Phoma,3,1706,cb26b4ce40f86b0a853f20872ddd8945c435a0e096a2364cf2775dc6f58eec70,ethiopian cofee leaf dataset/train aug/Phoma/601.jpg
+phoma/d0244dfd45cb02bfcac8.jpg,Phoma,3,850,d0244dfd45cb02bfcac8bb2bb38edfa0c0982c082dad1628359ef5ec682fd8f1,ethiopian cofee leaf dataset/test/Phoma/285.jpg
+phoma/d143f93772076dca946f.jpg,Phoma,3,884,d143f93772076dca946f91113414f3d8ab87d47eb03cb8f6dcbfb9d20d4fd5f3,ethiopian cofee leaf dataset/test/Phoma/424.jpg
+phoma/d3705bd2240b7a6c4898.jpg,Phoma,3,1703,d3705bd2240b7a6c489894ca204bfa1c35867e9f5aa3eb51acba24df69e3aee2,ethiopian cofee leaf dataset/train aug/Phoma/575.jpg
+phoma/ea709db12111050e6abb.jpg,Phoma,3,1711,ea709db12111050e6abb97e449bbb09ac384be2473f006adef7147c6668e7430,ethiopian cofee leaf dataset/train aug/Phoma/621.jpg
+phoma/f4b4c4fcbbd219b56d30.jpg,Phoma,3,1706,f4b4c4fcbbd219b56d30c9d6c74754e74d87a396e0b39522bdbbc2a24724a8f5,ethiopian cofee leaf dataset/train aug/Phoma/602.jpg
+phoma/faf5fccf1c78332c4223.jpg,Phoma,3,1709,faf5fccf1c78332c422320f5689f3ed1151c7e62ec2276a27a8c5640bd2aac7b,ethiopian cofee leaf dataset/train aug/Phoma/612.jpg
+phoma/fd710ebc3efe6b6b7a09.jpg,Phoma,3,855,fd710ebc3efe6b6b7a095673d4a23487517aa546501671b6141a80b2c8ee7f67,ethiopian cofee leaf dataset/test/Phoma/306.jpg
+phoma/ff85308e14d410ca8f9a.jpg,Phoma,3,896,ff85308e14d410ca8f9a44694cf2fec1dc1b8abcd517c61c5a73750c432f8e24,ethiopian cofee leaf dataset/test/Phoma/473.jpg

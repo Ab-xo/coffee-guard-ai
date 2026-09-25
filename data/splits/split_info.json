@@ -1,0 +1,67 @@
+{
+  "n_files": 12000,
+  "dedup": {
+    "excluded_by_name_pattern": 8509,
+    "exact_duplicates_removed": 902,
+    "exact_conflicts_removed": 36,
+    "near_duplicate_pairs": 1523,
+    "near_duplicate_cross_class_pairs": 18,
+    "embedding_similar_pairs": 1108,
+    "embedding_similar_cross_class_pairs_ignored": 1,
+    "near_conflicts_removed": 33,
+    "groups": 1728,
+    "largest_group": 30,
+    "group_size_histogram": {
+      "1": 1457,
+      "2": 38,
+      "3": 11,
+      "4": 215,
+      "5": 1,
+      "7": 1,
+      "8": 3,
+      "28": 1,
+      "30": 1
+    },
+    "status_counts": {
+      "excluded_pattern": 8509,
+      "ok": 2520,
+      "duplicate": 902,
+      "conflict": 69
+    }
+  },
+  "used_embeddings": true,
+  "fingerprint": "53320bd30430396d",
+  "balance": {
+    "Healthy": {
+      "train": 499,
+      "val": 108,
+      "test": 108,
+      "total": 715
+    },
+    "Cercospora": {
+      "train": 354,
+      "val": 76,
+      "test": 75,
+      "total": 505
+    },
+    "Leaf Rust": {
+      "train": 587,
+      "val": 124,
+      "test": 126,
+      "total": 837
+    },
+    "Phoma": {
+      "train": 324,
+      "val": 69,
+      "test": 70,
+      "total": 463
+    },
+    "total": {
+      "train": 1764,
+      "val": 377,
+      "test": 379,
+      "total": 2520
+    }
+  },
+  "invalid_issues": {}
+}

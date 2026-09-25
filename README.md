@@ -3,8 +3,8 @@
 > **Intelligent Coffee Leaf Disease Detection System for Ethiopian Coffee**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
-[![Project Status](https://img.shields.io/badge/status-Phase%201-orange.svg)]()
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![Project Status](https://img.shields.io/badge/status-Phase%202%20in%20progress-orange.svg)](docs/PROGRESS.md)
 
 An AI-powered computer vision system for detecting and classifying coffee leaf diseases in Ethiopian coffee plants using deep learning, explainable AI, and production-ready deployment.
 
@@ -12,14 +12,13 @@ An AI-powered computer vision system for detecting and classifying coffee leaf d
 
 ## 📋 Table of Contents
 
-- [Overview](#overview)
-- [Key Features](#key-features)
-- [Project Structure](#project-structure)
-- [Getting Started](#getting-started)
-- [Team & Contributions](#team--contributions)
-- [Development Status](#development-status)
-- [Documentation](#documentation)
-- [License](#license)
+- [Overview](#-overview)
+- [Key Features](#-key-features)
+- [Project Structure](#-project-structure)
+- [Getting Started](#-getting-started)
+- [Development Status](#-development-status)
+- [Documentation](#-documentation)
+- [License](#-license)
 
 ---
 
@@ -36,9 +35,9 @@ An AI-powered computer vision system for detecting and classifying coffee leaf d
 
 - **Type**: Computer Vision + Deep Learning + AI Engineering
 - **Timeline**: 4-7 days intensive development
-- **Model**: EfficientNetV2-B0 with transfer learning
-- **Deployment**: FastAPI + Streamlit
-- **Dataset**: [Ethiopian Coffee Leaf Disease Dataset](https://www.kaggle.com/datasets/biniyamyoseph/ethiopian-coffee-leaf-disease/data)
+- **Model**: EfficientNetV2-B0 with transfer learning (LP-FT)
+- **Deployment**: FastAPI + Streamlit, ONNX Runtime serving
+- **Dataset**: [Ethiopian Coffee Leaf Disease Dataset](https://www.kaggle.com/datasets/biniyamyoseph/ethiopian-coffee-leaf-disease/data) (CC0)
 
 ---
 
@@ -54,11 +53,11 @@ An AI-powered computer vision system for detecting and classifying coffee leaf d
 
 ### 🛠 Engineering Excellence
 
-- **Data Quality Pipeline**: Automated validation, duplicate detection, corruption checks
-- **Stratified Splitting**: Leakage-safe 70/15/15 train/val/test splits
-- **Confidence Analysis**: High/low confidence error analysis
-- **Model Comparison**: Benchmark multiple architectures
-- **Production-Ready API**: FastAPI inference service
+- **Data Quality Pipeline**: Validation, exact / near / rotated-copy duplicate detection, label-issue audit
+- **Leakage-safe Splitting**: Group-aware stratified 70/15/15 split — copies of one leaf never cross splits
+- **Confidence Analysis**: Calibration, conformal prediction sets, high/low confidence error analysis
+- **Model Comparison**: Benchmark multiple architectures on accuracy, latency, size and robustness
+- **Production-Ready API**: FastAPI inference service on a slim ONNX Runtime bundle
 - **Interactive UI**: Streamlit web application
 
 ---
@@ -67,56 +66,26 @@ An AI-powered computer vision system for detecting and classifying coffee leaf d
 
 ```
 coffee-guard-ai/
-├── 📂 apps/                    # Application layer
-│   ├── api/                    # FastAPI service
-│   └── web/                    # Streamlit UI
-│
-├── 📂 ml/                      # Machine learning core
-│   ├── data/                   # Data ingestion, validation, splitting
-│   ├── preprocessing/          # Image transforms and augmentation
-│   ├── models/                 # Model architectures
-│   ├── training/               # Training loops and fine-tuning
-│   ├── evaluation/             # Metrics and evaluation
-│   ├── explainability/         # Grad-CAM and interpretability
-│   ├── robustness/             # Perturbation testing
-│   └── ood/                    # Out-of-distribution detection
-│
-├── 📂 data/                    # Data storage
-│   ├── raw/                    # Original Kaggle dataset
-│   ├── processed/              # Cleaned and validated data
-│   ├── splits/                 # Train/val/test splits
-│   ├── manifests/              # Data tracking manifests
-│   └── interim/                # Intermediate processing outputs
-│
-├── 📂 notebooks/               # Jupyter notebooks for experiments
-│
-├── 📂 tests/                   # Test suite
-│   ├── unit/                   # Unit tests
-│   ├── integration/            # Integration tests
-│   └── fixtures/               # Test fixtures
-│
-├── 📂 configs/                 # Configuration files
-│
-├── 📂 artifacts/               # Training outputs
-│   ├── checkpoints/            # Model checkpoints
-│   ├── metrics/                # Evaluation metrics
-│   ├── figures/                # Visualizations
-│   └── reports/                # Analysis reports
-│
-├── 📂 scripts/                 # Utility scripts
-│
-├── 📂 docs/                    # Documentation
-│   ├── architecture/           # System design docs
-│   ├── decisions/              # Architectural Decision Records
-│   ├── experiments/            # Experiment logs
-│   └── PROJECT_SPECIFICATION.md
-│
-└── 📂 .github/                 # GitHub workflows and templates
-    ├── workflows/              # CI/CD pipelines
-    └── ISSUE_TEMPLATE/         # Issue templates
+├── src/coffeeguard/          # Python package (installed; CLI: `coffeeguard`)
+│   ├── cli.py                # every pipeline step is one command
+│   ├── config.py             # typed (pydantic) configs
+│   ├── data/                 # download, scan/validate, dedup, split, report, dataset
+│   ├── embeddings/           # DINOv2 embeddings, label audit, probe baseline
+│   ├── models/ training/     # timm factory, multi-stage trainer, Kaggle GPU runner
+│   ├── evaluation/ export/   # metrics, ONNX export + parity check
+│   ├── explainability/ robustness/ ood/
+│   ├── inference/            # slim runtime: preprocessing, quality, ONNX predictor
+│   └── utils/
+├── apps/api/                 # FastAPI service
+├── apps/web/                 # Streamlit UI
+├── configs/                  # data.yaml, train/*.yaml recipes
+├── kaggle/                   # GPU kernel template
+├── data/                     # raw/ processed/ manifests/ (git-ignored), splits/ (committed)
+├── artifacts/                # figures, reports, metrics, model bundles
+├── notebooks/                # narrative only
+├── tests/                    # unit + integration (synthetic fixtures)
+└── docs/                     # plan, progress log, specification, decisions
 ```
-
-For detailed structure explanation, see [CoffeeGuard_AI_Project_Structure.md](CoffeeGuard_AI_Project_Structure.md)
 
 ---
 
@@ -124,122 +93,103 @@ For detailed structure explanation, see [CoffeeGuard_AI_Project_Structure.md](Co
 
 ### Prerequisites
 
-- Python 3.9 or higher
-- Git
-- 4GB+ available disk space for dataset
-- (Optional) GPU for faster training
+- [uv](https://docs.astral.sh/uv/) (manages Python 3.12 and all dependencies)
+- A Kaggle account and API token (for the dataset and free GPU training)
+- ~8 GB free disk space
 
 ### Installation
 
 ```bash
-# Clone the repository
-git clone https://github.com/YOUR_USERNAME/coffee-guard-ai.git
+git clone https://github.com/Ab-xo/coffee-guard-ai.git
 cd coffee-guard-ai
-
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
-pip install -e .
+uv sync --all-extras          # creates .venv with Python 3.12
+uv run coffeeguard --help
 ```
 
-### Quick Start
+Kaggle authentication: run `kaggle auth login`, or save your token from
+<https://www.kaggle.com/settings/api> as `~/.kaggle/access_token`.
+
+### Pipeline
 
 ```bash
-# 1. Download dataset from Kaggle
-# Place it in data/raw/
-
-# 2. Run data validation
-python -m ml.data.validation
-
-# 3. Train baseline model
-python -m ml.training.baseline
-
-# 4. Start API server
-python -m apps.api.app
-
-# 5. Launch Streamlit UI
-streamlit run apps/web/app.py
+uv run coffeeguard data download        # Kaggle -> data/raw
+uv run coffeeguard data prepare         # scan, embed, dedup/group, split
+uv run coffeeguard data report          # EDA figures + eda_summary.json
+uv run coffeeguard embed audit          # label-issue audit + DINOv2 probe baseline
+uv run coffeeguard train -c configs/train/effnetv2_b0.yaml            # local (CPU/GPU)
+uv run coffeeguard remote train -c configs/train/effnetv2_b0.yaml --seeds 0,1,2  # Kaggle GPU
+uv run coffeeguard export --run runs/<run-dir>                        # ONNX bundle
 ```
 
----
+### Tests and lint
 
-## 👥 Team & Contributions
-
-This is a **collaborative team project** with **6 members**. We follow a structured contribution workflow to ensure code quality and smooth collaboration.
-
-### How to Contribute
-
-1. Read [CONTRIBUTING.md](CONTRIBUTING.md) for detailed workflow
-2. Pick an issue or create one
-3. Create a feature branch
-4. Submit a pull request
-5. Get code review approval
-6. Merge to main
-
-### Team Workflow
-
-- **Branching Strategy**: GitFlow (main, develop, feature/_, bugfix/_)
-- **Code Review**: Required before merge
-- **Commits**: Follow conventional commits format
-- **Communication**: Use GitHub issues and PR discussions
+```bash
+uv run pytest -m "not slow"   # fast unit tests
+uv run pytest                 # + train/export smoke test
+uv run ruff check . && uv run ruff format --check .
+```
 
 ---
 
 ## 🔄 Development Status
 
-### Phase 1: Project Setup ✅ (Current)
+### Current Progress: Phase 2 (Training Infrastructure)
 
-- [x] Repository structure
-- [x] Documentation foundation
-- [x] Team workflow guidelines
-- [ ] Development environment setup
-- [ ] CI/CD pipeline configuration
+| Phase  | Description           |       Status       | Key Deliverables                                                                                                                                                                |
+| :----: | --------------------- | :----------------: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **0**  | **Foundation**        |  ✅ **Complete**   | • Modern tooling (uv, ruff, pre-commit)<br>• CI/CD pipeline<br>• Type-safe configuration<br>• CLI interface                                                                     |
+| **1**  | **Data Engineering**  |  ✅ **Complete**   | • Dataset validation & cleaning<br>• Duplicate detection (exact/near/rotated)<br>• Leakage-safe splitting (70/15/15)<br>• EDA reports & visualizations<br>• Label quality audit |
+| **2**  | **Training Pipeline** | 🔄 **In Progress** | • Multi-stage trainer (LP → FT)<br>• Kaggle GPU integration<br>• Model factory (timm)<br>• Smoke tests passing                                                                  |
+| **3**  | **Baseline Training** |    ⏳ **Next**     | • EfficientNetV2-B0 training<br>• Linear probe + fine-tuning<br>• 3-seed ensemble                                                                                               |
+| **4**  | **Evaluation**        |     ⏳ Planned     | • Calibration analysis<br>• Conformal prediction<br>• Error analysis                                                                                                            |
+| **5**  | **Explainability**    |     ⏳ Planned     | • Grad-CAM visualizations<br>• Feature importance                                                                                                                               |
+| **6**  | **Robustness & OOD**  |     ⏳ Planned     | • Perturbation testing<br>• Out-of-distribution detection                                                                                                                       |
+| **7**  | **Model Comparison**  |     ⏳ Planned     | • Multi-architecture benchmark<br>• ONNX export                                                                                                                                 |
+| **8**  | **FastAPI Service**   |     ⏳ Planned     | • REST API<br>• ONNX Runtime serving                                                                                                                                            |
+| **9**  | **Streamlit UI**      |     ⏳ Planned     | • Interactive web interface<br>• Explainability dashboard                                                                                                                       |
+| **10** | **Deployment**        |     ⏳ Planned     | • Docker containers<br>• Final documentation                                                                                                                                    |
 
-### Phase 2: Data Engineering (Upcoming)
+**Legend:** ✅ Complete • 🔄 In Progress • ⏳ Planned
 
-- [ ] Dataset download and validation
-- [ ] EDA and quality analysis
-- [ ] Duplicate detection
-- [ ] Stratified splitting
-- [ ] Data manifests
+### What's Been Accomplished
 
-### Phase 3: Model Development
+#### ✅ Phase 0 & 1 Complete (Foundation + Data)
 
-- [ ] Baseline model
-- [ ] Transfer learning pipeline
-- [ ] Fine-tuning strategy
-- [ ] Hyperparameter optimization
+- **107 files changed:** 67 added, 11 modified, 29 removed
+- **Production-ready data pipeline** with validation, deduplication, and group-aware splitting
+- **Comprehensive test suite** (5 unit tests + 1 integration test)
+- **Complete ML infrastructure** ready for training (models, trainers, exporters)
+- **Baseline established:** DINOv2 probe classifier + label quality audit
 
-### Phase 4: Evaluation & Analysis
+#### 🔄 Phase 2 In Progress (Training)
 
-- [ ] Metrics computation
-- [ ] Error analysis
-- [ ] Confidence analysis
-- [ ] Grad-CAM implementation
+- Training code complete and smoke-tested
+- Ready for full EfficientNetV2-B0 training runs
 
-### Phase 5: Robustness & OOD
+### Quick Status Check
 
-- [ ] Perturbation testing
-- [ ] OOD detection
-- [ ] Model comparison
+```bash
+# See detailed progress with decisions and results
+cat docs/PROGRESS.md
 
-### Phase 6: Deployment
+# See all changes in this release
+cat CHANGELOG.md
 
-- [ ] FastAPI service
-- [ ] Streamlit UI
-- [ ] Docker containerization
-- [ ] Documentation finalization
+# Verify everything works
+uv run pytest -m "not slow"  # Fast unit tests only
+```
+
+For detailed technical decisions, experiment results, and step-by-step progress: [docs/PROGRESS.md](docs/PROGRESS.md).
 
 ---
 
 ## 📚 Documentation
 
-- **[Project Specification](CoffeeGuard_AI_Project_Structure.md)**: Complete technical specification
-- **[Contributing Guide](CONTRIBUTING.md)**: Team workflow and guidelines
-- **[Architecture Docs](docs/architecture/)**: System design documents
-- **[Experiment Logs](docs/experiments/)**: Training experiments and results
+- **[📝 CHANGELOG](CHANGELOG.md)** — what changed in each release, organized by phase
+- **[🗺️ Implementation Plan](docs/IMPLEMENTATION_PLAN.md)** — phases, design decisions, success targets
+- **[📊 Progress Log](docs/PROGRESS.md)** — what was built, results and decisions, step by step
+- **[📋 Technical Specification](docs/PROJECT_SPECIFICATION.md)** — original requirements baseline
+- **[🤝 Contributing](CONTRIBUTING.md)** — development workflow and conventions
 
 ---
 
@@ -252,14 +202,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🙏 Acknowledgments
 
 - **Dataset**: [Ethiopian Coffee Leaf Disease Dataset](https://www.kaggle.com/datasets/biniyamyoseph/ethiopian-coffee-leaf-disease/data) by Biniyam Yoseph
-- **EfficientNet**: Google Research
-- **Community**: PyTorch, FastAPI, and Streamlit communities
-
----
-
-## 📧 Contact
-
-For questions or suggestions, please open an issue or contact the project maintainers.
+- **EfficientNet**: Google Research · **DINOv2**: Meta AI
+- **Community**: PyTorch, timm, FastAPI, and Streamlit communities
 
 ---
 

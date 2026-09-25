@@ -1,0 +1,40 @@
+{
+  "n_images": 2520,
+  "n_label_issues": 19,
+  "issue_rate": 0.00753968253968254,
+  "issues_by_given_label": {
+    "Cercospora": 8,
+    "Leaf Rust": 8,
+    "Phoma": 2,
+    "Healthy": 1
+  },
+  "issues_by_pair": [
+    {
+      "label": "Cercospora",
+      "predicted": "Leaf Rust",
+      "n": 8
+    },
+    {
+      "label": "Healthy",
+      "predicted": "Leaf Rust",
+      "n": 1
+    },
+    {
+      "label": "Leaf Rust",
+      "predicted": "Cercospora",
+      "n": 7
+    },
+    {
+      "label": "Leaf Rust",
+      "predicted": "Healthy",
+      "n": 1
+    },
+    {
+      "label": "Phoma",
+      "predicted": "Leaf Rust",
+      "n": 2
+    }
+  ],
+  "oof_accuracy": 0.9738095238095238,
+  "oof_macro_f1": 0.9756504248158601
+}

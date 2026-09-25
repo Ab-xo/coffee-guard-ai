@@ -1,0 +1,27 @@
+# Comparison candidate: EfficientNet-B0 (v1).
+name: efficientnet_b0
+model: efficientnet_b0.ra_in1k
+img_size: 224
+drop_rate: 0.2
+drop_path_rate: 0.1
+batch_size: 64
+num_workers: 4
+preload: true
+label_smoothing: 0.1
+ema_decay: 0.999
+stages:
+  - name: head            # linear probe: backbone frozen
+    trainable: head
+    epochs: 8
+    lr: 1.0e-3
+    weight_decay: 1.0e-4
+    warmup_epochs: 0.5
+    patience: 4
+  - name: finetune
+    trainable: all
+    layer_decay: 0.75     # lower layers get geometrically smaller LRs
+    epochs: 25
+    lr: 3.0e-4
+    weight_decay: 0.05
+    warmup_epochs: 1
+    patience: 5
