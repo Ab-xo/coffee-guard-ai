@@ -6,7 +6,9 @@ Every pipeline step is one command. Commands are grouped by phase; heavy imports
 
 from __future__ import annotations
 
+import contextlib
 import json
+import sys
 from pathlib import Path
 from typing import Annotated
 
@@ -14,6 +16,14 @@ import typer
 
 from coffeeguard.config import DataConfig, TrainConfig, load_config
 from coffeeguard.utils.log import setup_logging
+
+# Windows pipes/redirects default to the ANSI code page (cp1252), which cannot encode the
+# "×", "→" etc. used in help and log text; rendering --help would crash with
+# UnicodeEncodeError. Switch to UTF-8 before Typer prints anything.
+for _stream in (sys.stdout, sys.stderr):
+    if (getattr(_stream, "encoding", "") or "").lower().replace("-", "") != "utf8":
+        with contextlib.suppress(AttributeError, ValueError):
+            _stream.reconfigure(encoding="utf-8", errors="replace")
 
 app = typer.Typer(
     name="coffeeguard",
@@ -110,6 +120,28 @@ def data_report(
     make_report(_data_cfg(config, overrides))
 
 
+@data_app.command("aug-preview")
+def data_aug_preview(
+    config: Annotated[Path, typer.Option("--config", "-c", help="Training recipe YAML.")] = Path(
+        "configs/train/effnetv2_b0.yaml"
+    ),
+    overrides: SetOpt = None,
+    out: Annotated[Path, typer.Option(help="Output PNG.")] = Path(
+        "artifacts/figures/augmentation_preview.png"
+    ),
+) -> None:
+    """Save a grid of training augmentations (check that lesions survive)."""
+    from coffeeguard.data.dataset import read_split
+    from coffeeguard.data.report import fig_augmentation_preview
+    from coffeeguard.utils.paths import resolve
+
+    tcfg = load_config(TrainConfig, config, overrides)
+    dcfg = load_config(DataConfig, tcfg.data_config)
+    train_df = read_split(dcfg.splits_dir, "train")
+    path = fig_augmentation_preview(train_df, dcfg, tcfg.augment, tcfg.img_size, resolve(out))
+    typer.echo(str(path))
+
+
 @embed_app.command("audit")
 def embed_audit(
     config: ConfigOpt = Path("configs/data.yaml"),
@@ -136,6 +168,17 @@ def train(
         extra.append(f"seed={seed}")
     run_dir = run_train(load_config(TrainConfig, config, extra))
     typer.echo(str(run_dir))
+
+
+@app.command()
+def curves(
+    run: Annotated[Path, typer.Option("--run", "-r", help="Run directory.")],
+) -> None:
+    """Plot a run's training curves → <run>/figures/training_curves.png."""
+    from coffeeguard.training.curves import plot_curves
+    from coffeeguard.utils.paths import resolve
+
+    typer.echo(str(plot_curves(resolve(run))))
 
 
 @app.command()

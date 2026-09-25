@@ -46,6 +46,10 @@ def test_train_smoke(synthetic_raw: Path, tmp_path: Path):
     assert ckpt["classes"] == ["Healthy", "Cercospora", "Leaf Rust", "Phoma"]
     assert ckpt["data_fingerprint"] is not None
 
+    from coffeeguard.training.curves import plot_curves
+
+    assert plot_curves(run_dir).stat().st_size > 0
+
     # --- export to ONNX and predict through the slim runtime
     from PIL import Image
 

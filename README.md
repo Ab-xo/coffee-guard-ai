@@ -4,7 +4,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![Project Status](https://img.shields.io/badge/status-Phase%202%20in%20progress-orange.svg)](docs/PROGRESS.md)
+[![Project Status](https://img.shields.io/badge/status-Phase%203%20next-orange.svg)](docs/PROGRESS.md)
 
 An AI-powered computer vision system for detecting and classifying coffee leaf diseases in Ethiopian coffee plants using deep learning, explainable AI, and production-ready deployment.
 
@@ -121,6 +121,17 @@ uv run coffeeguard remote train -c configs/train/effnetv2_b0.yaml --seeds 0,1,2 
 uv run coffeeguard export --run runs/<run-dir>                        # ONNX bundle
 ```
 
+### Serve and try it
+
+```bash
+# API (http://localhost:8000/docs)
+MODEL_BUNDLE=artifacts/models/<bundle> uv run uvicorn app.main:app --app-dir apps/api
+# UI (http://localhost:8501), in a second terminal
+uv run streamlit run apps/web/streamlit_app.py
+```
+
+PowerShell: `$env:MODEL_BUNDLE = "artifacts/models/<bundle>"` before the `uvicorn` line.
+
 ### Tests and lint
 
 ```bash
@@ -133,13 +144,13 @@ uv run ruff check . && uv run ruff format --check .
 
 ## 🔄 Development Status
 
-### Current Progress: Phase 2 (Training Infrastructure)
+### Current Progress: Phase 3 next (main model training)
 
 | Phase  | Description           |       Status       | Key Deliverables                                                                                                                                                                |
 | :----: | --------------------- | :----------------: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **0**  | **Foundation**        |  ✅ **Complete**   | • Modern tooling (uv, ruff, pre-commit)<br>• CI/CD pipeline<br>• Type-safe configuration<br>• CLI interface                                                                     |
 | **1**  | **Data Engineering**  |  ✅ **Complete**   | • Dataset validation & cleaning<br>• Duplicate detection (exact/near/rotated)<br>• Leakage-safe splitting (70/15/15)<br>• EDA reports & visualizations<br>• Label quality audit |
-| **2**  | **Training Pipeline** | 🔄 **In Progress** | • Multi-stage trainer (LP → FT)<br>• Kaggle GPU integration<br>• Model factory (timm)<br>• Smoke tests passing                                                                  |
+| **2** | **Training Pipeline** | ✅ **Complete** | • Multi-stage trainer (LP → FT)<br>• Quality-equalising augmentation<br>• MobileNetV3-Small baseline: val macro-F1 **0.991**<br>• Walking skeleton: ONNX → FastAPI → Streamlit |
 | **3**  | **Baseline Training** |    ⏳ **Next**     | • EfficientNetV2-B0 training<br>• Linear probe + fine-tuning<br>• 3-seed ensemble                                                                                               |
 | **4**  | **Evaluation**        |     ⏳ Planned     | • Calibration analysis<br>• Conformal prediction<br>• Error analysis                                                                                                            |
 | **5**  | **Explainability**    |     ⏳ Planned     | • Grad-CAM visualizations<br>• Feature importance                                                                                                                               |
@@ -161,10 +172,12 @@ uv run ruff check . && uv run ruff format --check .
 - **Complete ML infrastructure** ready for training (models, trainers, exporters)
 - **Baseline established:** DINOv2 probe classifier + label quality audit
 
-#### 🔄 Phase 2 In Progress (Training)
+#### ✅ Phase 2 Complete (Training pipeline + walking skeleton)
 
-- Training code complete and smoke-tested
-- Ready for full EfficientNetV2-B0 training runs
+- **Baseline trained:** MobileNetV3-Small reaches val macro-F1 **0.991** / accuracy 0.992 (DINOv2 probe reference: 0.961)
+- **End to end:** ONNX bundle (torch parity 100%) served by FastAPI (`/health`, `/predict`), used by a Streamlit page
+- **Fixed:** classifier initialisation that kept the linear-probe stage at chance
+- **Next (Phase 3):** EfficientNetV2-B0 on the Kaggle GPU (needs phone verification on the Kaggle account)
 
 ### Quick Status Check
 

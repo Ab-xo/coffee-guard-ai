@@ -10,6 +10,7 @@ import sys
 from pathlib import Path
 
 JOBS = json.loads("""__JOBS__""")
+GIT = json.loads("""__GIT__""")  # local git state at push time (no checkout here)
 
 INPUT = Path("/kaggle/input")
 WORK = Path("/kaggle/working")
@@ -59,10 +60,28 @@ link.symlink_to(processed, target_is_directory=True)
 
 os.chdir(WORK)
 os.environ["COFFEEGUARD_ROOT"] = str(WORK)
-sh("nvidia-smi")
+if GIT.get("sha"):
+    os.environ["COFFEEGUARD_GIT_SHA"] = GIT["sha"]
+    os.environ["COFFEEGUARD_GIT_DIRTY"] = "1" if GIT.get("dirty") else "0"
+
+# Check the accelerator through PyTorch: newer Kaggle images don't put nvidia-smi on PATH.
+import torch  # noqa: E402
+
+print("torch", torch.__version__, "| CUDA build", torch.version.cuda, flush=True)
+if not torch.cuda.is_available():
+    raise SystemExit(
+        "No CUDA GPU attached to this session; refusing to train on CPU. Kaggle only gives "
+        "GPUs (and internet) to phone-verified accounts: https://www.kaggle.com/settings"
+    )
+print("GPU:", torch.cuda.get_device_name(0), flush=True)
+if smi := shutil.which("nvidia-smi"):
+    sh(smi)
+
 for job in JOBS:
     cmd = [
-        "coffeeguard",
+        sys.executable,
+        "-m",
+        "coffeeguard.cli",
         "train",
         "-c",
         job["config"],

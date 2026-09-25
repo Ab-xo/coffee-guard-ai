@@ -9,6 +9,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Phase 2 Completed - Training Pipeline, Baseline, Walking Skeleton ✅
+
+#### Added - Training
+- `src/coffeeguard/data/transforms.py` - `QualityDegrade` (random downscale/upscale + JPEG re-compression, against the class/photo-quality confound) and `RandomRotateFill` (rotation without black corners)
+- `src/coffeeguard/training/curves.py` - training-curve figure; CLI `coffeeguard curves --run <dir>`
+- CLI `coffeeguard data aug-preview` - augmentation preview grid (`artifacts/figures/augmentation_preview.png`)
+
+#### Added - Baseline
+- MobileNetV3-Small (LP-FT, seed 0, trained on CPU): val macro-F1 **0.991**, accuracy 0.992
+  - `artifacts/metrics/baseline_mobilenetv3_small_val.json`, `artifacts/figures/training/mobilenetv3_small-s0.png`
+  - `artifacts/models/coffeeguard-mnv3s-baseline/bundle.json` (ONNX weights are git-ignored)
+
+#### Added - Walking Skeleton
+- `apps/api/app/` - FastAPI service: `GET /health`, `POST /predict`, upload validation (magic bytes, size, pixel count, full decode), one error format
+- `apps/web/streamlit_app.py` - upload or camera → prediction + probability chart
+- `tests/fixtures/bundle.py` - hand-built ONNX bundle so API tests need no trained model
+- `tests/integration/test_api.py`, `tests/integration/test_web.py`, `tests/unit/test_models.py`, `tests/unit/test_transforms.py`
+
+#### Changed - Kaggle Runner
+- `remote upload-data` uploads only the 2,520 clean images (59 MB)
+- remote runs record the local git SHA; the kernel checks the GPU via PyTorch and fails fast; failures show the kernel log
+
+#### Fixed
+- New classifier is zero-initialised: timm's EfficientNet-family init gave logits with std ~6 for 4 classes and a linear probe stuck at chance
+- `coffeeguard --help` crashed with `UnicodeEncodeError` in Windows pipes
+- Streamlit page reported a loaded model while the API was down (cached health check)
+
 ### Phase 1 Completed - Data Pipeline ✅
 
 #### Added - Data Engineering
@@ -179,7 +206,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 |-------|-------------|--------|---------------|
 | **Phase 0** | Foundation - tooling, structure, CI | ✅ Complete | ~25 files |
 | **Phase 1** | Data engineering - validation, dedup, split, EDA | ✅ Complete | ~82 files |
-| **Phase 2** | Training pipeline, baseline, walking skeleton | 🔄 Code complete | - |
+| **Phase 2** | Training pipeline, baseline, walking skeleton | ✅ Complete | ~30 files |
 | **Phase 3** | EfficientNetV2-B0 training (LP-FT, 3 seeds) | ⏳ Planned | - |
 | **Phase 4** | Evaluation, calibration, conformal prediction | ⏳ Planned | - |
 | **Phase 5** | Explainability and robustness | ⏳ Planned | - |

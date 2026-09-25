@@ -26,6 +26,7 @@ from pathlib import Path
 from coffeeguard.config import DataConfig
 from coffeeguard.utils.log import get_logger
 from coffeeguard.utils.paths import project_root, resolve
+from coffeeguard.utils.runs import git_info
 
 log = get_logger(__name__)
 
@@ -85,14 +86,28 @@ def _wait_dataset_ready(api, ref: str, timeout: int = 900) -> None:
 
 
 def upload_data(data_cfg: DataConfig) -> str:
-    """Upload the processed image cache as ``<user>/coffeeguard-processed``."""
+    """Upload the cached images used by the splits as ``<user>/coffeeguard-processed``.
+
+    The local cache also holds excluded files (the author's ``aug_*`` copies, duplicates),
+    so only images referenced by ``train/val/test.csv`` are staged.
+    """
+    import pandas as pd
+
     api = _api()
     ref = f"{kaggle_username(api)}/{DATA_SLUG}"
     stage = resolve(BUILD) / "data"
     if stage.exists():
         shutil.rmtree(stage)
     target = stage / "processed"
-    shutil.copytree(data_cfg.processed_dir, target)
+    images = pd.concat(
+        pd.read_csv(data_cfg.splits_dir / f"{s}.csv", usecols=["image"])
+        for s in ("train", "val", "test")
+    )["image"]
+    for rel in images:
+        dst = target / rel
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(data_cfg.processed_dir / rel, dst)
+    log.info("Staged %d images for upload", len(images))
     (target / "PROCESSED_MARKER").write_text("coffeeguard processed cache\n", "utf-8")
     info = data_cfg.splits_dir / "split_info.json"
     fp = json.loads(info.read_text("utf-8")).get("fingerprint") if info.exists() else "unknown"
@@ -140,8 +155,12 @@ def push_training(jobs: list[dict], gpu: str = "NvidiaTeslaT4") -> str:
     if kernel_dir.exists():
         shutil.rmtree(kernel_dir)
     kernel_dir.mkdir(parents=True)
+    git = git_info()
+    if git["dirty"]:
+        log.warning("Working tree has uncommitted changes; runs will record dirty=true")
     template = (project_root() / "kaggle" / "run_template.py").read_text("utf-8")
-    (kernel_dir / "run.py").write_text(template.replace("__JOBS__", json.dumps(jobs)), "utf-8")
+    script = template.replace("__JOBS__", json.dumps(jobs)).replace("__GIT__", json.dumps(git))
+    (kernel_dir / "run.py").write_text(script, "utf-8")
     meta = {
         "id": kernel_ref,
         "title": KERNEL_SLUG,
@@ -162,6 +181,20 @@ def push_training(jobs: list[dict], gpu: str = "NvidiaTeslaT4") -> str:
     return kernel_ref
 
 
+def _log_tail(api, kernel_ref: str, lines: int = 40) -> str:
+    """Download a finished kernel's log and return its last lines (for error messages)."""
+    out = resolve("runs") / "_kaggle" / (time.strftime("%Y%m%d-%H%M%S") + "-failed")
+    try:
+        out.mkdir(parents=True, exist_ok=True)
+        api.kernels_output(kernel_ref, path=str(out))
+        log_file = next(out.glob("*.log"))
+        entries = json.loads(log_file.read_text("utf-8"))
+        text = "".join(e.get("data", "") for e in entries)
+    except Exception as exc:  # the log is a convenience; never mask the real failure
+        return f"(could not fetch the kernel log: {exc})"
+    return "\n".join(text.rstrip().splitlines()[-lines:])
+
+
 def wait_and_fetch(kernel_ref: str, poll: int = 60, timeout: int = 6 * 3600) -> Path:
     """Poll the kernel until it finishes, then download its output into runs/."""
     api = _api()
@@ -174,7 +207,8 @@ def wait_and_fetch(kernel_ref: str, poll: int = 60, timeout: int = 6 * 3600) -> 
         if "error" in status or "cancel" in status:
             raise RuntimeError(
                 f"Kernel {kernel_ref} ended with status {status}; "
-                f"see https://www.kaggle.com/code/{kernel_ref}"
+                f"see https://www.kaggle.com/code/{kernel_ref}\n"
+                f"--- end of kernel log ---\n{_log_tail(api, kernel_ref)}"
             )
         if time.time() - t0 > timeout:
             raise TimeoutError(f"Kernel {kernel_ref} still running after {timeout}s")

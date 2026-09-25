@@ -278,3 +278,124 @@ Checks at this point: `ruff check` clean, `ruff format --check` clean, `pytest` 
 2. `feat: phase 1 data pipeline …` — data pipeline, EDA/audit, committed splits and reports, README update, this log, plus the smoke-tested Phase 2 groundwork.
 
 Committed data products: `data/splits/*` (split CSVs, `split_info.json`, `data_config.yaml`), `artifacts/figures/eda/*`, `artifacts/reports/*`, `artifacts/metrics/baseline_dinov2_probe_val.json`. Not pushed.
+
+---
+
+## Session 2 — Phase 2: training pipeline, baseline, walking skeleton
+
+Branch: `phase/2-training` (from `eleni-changes`, which holds the Phase 0 and Phase 1 commits).
+
+### 2.0 CLI crash on Windows pipes (bug fix)
+
+**What & why:** `coffeeguard --help` crashed with `UnicodeEncodeError` whenever its output went through a pipe or redirect (e.g. `coffeeguard --help | more`, CI logs): Windows then uses the ANSI code page (cp1252), which can't encode the `↔`/`×` characters in help text. `cli.py` now switches stdout/stderr to UTF-8 at import, before Typer prints anything.
+
+### 2.1 Quality-equalising augmentation + augmentation preview
+
+**What & why:** EDA showed photo quality predicts the class (Healthy/Phoma 2048 px and sharp; Cercospora/Leaf Rust 1024 px and heavily compressed). Two new picklable train-time transforms in `data/transforms.py`:
+
+| Transform | What it does | Default |
+|---|---|---|
+| `QualityDegrade` | with p = 0.5 downscale to 35–100 % of the size and back up (loses fine detail); independently with p = 0.5 re-encode as JPEG at quality 30–95 | `augment.downscale_p/downscale_min/jpeg_p/jpeg_quality_min` in `config.py` |
+| `RandomRotateFill` | ±20° rotation that fills the exposed corners with the image's mean border colour | replaces torchvision `RandomRotation` |
+
+Degradation can only go one way (a blurry photo can't be sharpened), so it pulls the sharp classes towards the compressed ones — quality stops separating classes. Whether this worked is measured in Phase 5 (error rate by quality quantile, shortcut test).
+
+**Found with the preview:** the first preview grid showed **black corner wedges** from torchvision's rotation. They never occur at eval time, so the model could use "has black corners" as a train-only cue. `RandomRotateFill` continues the background (paper, soil, foliage) instead.
+
+**New command:** `uv run coffeeguard data aug-preview [-c configs/train/<recipe>.yaml]` → `artifacts/figures/augmentation_preview.png` (2 photos per class, original + 5 augmentations). Checked by eye: lesions (Cercospora spots with halos, rust pustules, Phoma dark patches) survive every augmentation.
+
+**Tests:** `tests/unit/test_transforms.py` — degradation lowers sharpness and keeps the size; disabled = identity; rotation of a pale image has no dark pixels; the full train transform pickles (Windows spawn workers) and outputs `(3, S, S)`.
+
+### 2.2 Kaggle runner fixes before the first live run
+
+- **Upload only the clean images.** The local cache (`data/processed/`, 1.4 GB, 11,099 files) also holds the author's `aug_*` copies and duplicates. `remote upload-data` now stages only the 2,520 images referenced by the split CSVs → **59 MB** zip.
+- **Git SHA on remote runs.** Kaggle has no git checkout, so `env.json` would have recorded `sha: null`. The launcher now embeds the local git state in the kernel script, which exports `COFFEEGUARD_GIT_SHA/DIRTY`; `git_info()` reads them first.
+
+**Done:** `uv run coffeeguard remote upload-data` → private dataset **`eleniandualem/coffeeguard-processed`** (2,520 images, fingerprint `53320bd30430396d`).
+
+### 2.3 Walking skeleton: FastAPI service + Streamlit UI
+
+**API** (`apps/api/app/`, run with `uv run uvicorn app.main:app --app-dir apps/api`):
+
+| File | Purpose |
+|---|---|
+| `settings.py` | `pydantic-settings`: `MODEL_BUNDLE`, `MAX_UPLOAD_MB` (10), `MAX_PIXELS` (100 MP), `ORT_THREADS`, `CORS_ORIGINS` — from env vars or `.env` |
+| `main.py` | `create_app(settings)`: lifespan loads the ONNX bundle once (a missing bundle fails start-up loudly), CORS for the UI, one error shape `{"error": code, "detail": …}` for every failure incl. FastAPI's own 422 |
+| `api/routes.py` | `GET /health`, `POST /predict` (sync handler → runs in FastAPI's threadpool so ONNX Runtime doesn't block the event loop; reads at most limit + 1 bytes) |
+| `services/images.py` | upload validation: empty → 400, too big → 413, **magic-byte sniffing** (JPEG/PNG/WebP; the client's Content-Type is not trusted) → 415, pixel-count limit → 413, full decode (truncated files) → 400 |
+| `schemas/prediction.py` | typed responses, shown in `/docs` |
+
+**Bug found by the tests:** routes read the global settings instead of the ones passed to `create_app`, so the upload limits given in tests were ignored. Settings now live on `app.state`.
+
+**Tests** (`tests/integration/test_api.py`, 9 tests, ~2 s): run against a **hand-built 4-class ONNX model** (`tests/fixtures/bundle.py`, made with `onnx.helper`: mean colour → fixed linear layer, same three outputs as a real export), so CI never needs a trained model. Covers health, green → Healthy / red → Cercospora predictions, probabilities summing to 1, fake image with an image content type, truncated JPEG, empty file, oversized file, too many pixels, missing field.
+
+**UI** (`apps/web/streamlit_app.py`, run with `uv run streamlit run apps/web/streamlit_app.py`): upload or camera → `/predict` → predicted class, confidence and probability bar chart; clear message when the API is down. `API_URL` env var (default `http://localhost:8000`).
+
+`pyproject.toml`: pytest `pythonpath = [".", "apps/api"]` so tests import the API package `app`.
+
+### 2.4 First live Kaggle run — attempt 1 failed, runner hardened
+
+`uv run coffeeguard remote train -c configs/train/mobilenetv3_small.yaml --seeds 0` built the wheel, uploaded `eleniandualem/coffeeguard-code`, pushed the private kernel `eleniandualem/coffeeguard-train` and polled it. After 2 minutes: status `error`, no message.
+
+**Cause (from the downloaded kernel log):** the script called `nvidia-smi` to print the GPU, and Kaggle's current image (Python 3.12 at `/usr/bin/python3`) doesn't have it on `PATH` → `FileNotFoundError`. The kernel metadata on the server was correct (`enable_gpu: true`, `machine_shape: NvidiaTeslaT4`) and the account has a 6 h/week GPU quota (0 used).
+
+**Fixes**
+- `kaggle/run_template.py` checks the GPU through PyTorch (`torch.cuda.is_available()`, device name) and **stops with a clear message if no GPU is attached** (a silent CPU fallback would burn hours); `nvidia-smi` is only called if it exists.
+- Jobs run as `python -m coffeeguard.cli train …` (no dependence on the console script being on `PATH`).
+- `remote train` / `remote fetch`: when a kernel fails, the kernel log is downloaded and its last 40 lines are shown in the error, instead of a bare `status error`.
+
+**Attempt 2** (with the fixes): the kernel stopped at the new GPU check — `torch 2.10.0+cpu | CUDA build None`. The session ran in Kaggle's **CPU image** (`gcr.io/kaggle-images/python`, not `kaggle-gpu-images`).
+
+**Diagnosis** (a one-off diagnostic version of the same kernel, pushed with `enable_gpu: true`, `machine_shape: NvidiaTeslaT4`, `enable_internet: true`; the push response had no error): `cuda False`, no `/dev/nvidia*`, and **no internet** (`Temporary failure in name resolution`). GPU *and* internet silently missing is Kaggle's behaviour for accounts **without phone verification**. The weekly quota still shows 6 GPU-hours, but it can't be used until the phone number is verified at <https://www.kaggle.com/settings>. The kernel's no-GPU message now says this.
+
+**CPU speed on this laptop** (8 threads, batch 32 at 224 px, forward + backward): MobileNetV3-Small 3.5 s/batch ≈ 3.2 min per training epoch; EfficientNetV2-B0 7.2 s/batch ≈ 6.6 min per epoch. The small baseline is feasible locally (~1–1.5 h); the Phase 3 runs (EffV2-B0 × ablation × 3 seeds + comparison models) are not.
+
+**Decision:** train the MobileNetV3-Small baseline **locally on CPU** now so the walking skeleton can be finished; all Phase 3 training waits for the Kaggle GPU. The run's `env.json` records `device: cpu`.
+
+### 2.5 Bug found by the first real run: classifier initialisation
+
+**Symptom:** first linear-probe epoch of the CPU baseline: train loss **6.05** (chance level for 4 classes is ln 4 ≈ 1.39), train accuracy 0.26 (= chance), val macro-F1 0.36 — on ImageNet features that a linear probe normally separates immediately (the DINOv2 probe reaches 0.96).
+
+**Diagnosis:** on 16 real training images, the pretrained features were normal (pre-logits std 0.72) but the **new classifier's weights had std 0.287** and the initial **logits std 6.3** (max 16.6). timm's EfficientNet/MobileNet init draws Linear weights from U(±1/√fan_out) with fan_out = number of classes — ±0.03 for ImageNet's 1,000 classes, but **±0.5 for our 4**. The probe stage spent its whole budget shrinking random weights instead of learning. The same init is used by EfficientNet-B0 and EfficientNetV2-B0, so every planned model was affected; the synthetic smoke test couldn't reveal it (it only checks that training runs).
+
+**Fix:** `models/factory.py` → `zero_init_classifier()` after `timm.create_model`: weight and bias start at 0, i.e. a uniform prediction with loss exactly ln 4 — the usual LP-FT starting point. Gradients are still non-zero because the features differ between images. Test: `tests/unit/test_models.py` (zero logits and loss = ln 4 at start for MobileNetV3 and EfficientNet; `head` mode trains only the classifier).
+
+The broken run was stopped and deleted; the baseline was restarted.
+
+### 2.6 Baseline: MobileNetV3-Small (CPU, seed 0)
+
+**Command:** `uv run coffeeguard train -c configs/train/mobilenetv3_small.yaml --seed 0 --set device=cpu --set num_workers=3 --set batch_size=32` (batch 32 instead of 64 to keep RAM use low on this laptop). Run dir `runs/20260925-211837-mobilenetv3_small-s0` (git `855755e` + uncommitted Phase 2 changes, i.e. `dirty: true`; data fingerprint `53320bd30430396d`). **27.7 min** on CPU.
+
+| Stage | Epochs run | Best val macro-F1 |
+|---|---:|---:|
+| `head` (linear probe, backbone frozen, ~37 s/epoch) | 8 | 0.924 |
+| `finetune` (all layers, layer decay 0.75, ~93 s/epoch) | 14 (early stop, patience 5) | **0.991** (epoch 9, EMA weights) |
+
+**Best checkpoint (val, 377 images):** accuracy **0.992**, macro-F1 **0.991**, macro precision 0.991, macro recall 0.992 — above the DINOv2 linear-probe reference (0.961). EMA weights beat the raw weights at most fine-tuning epochs (they smooth out the epoch-to-epoch dips). Curves: `artifacts/figures/training/mobilenetv3_small-s0.png`; metrics: `artifacts/metrics/baseline_mobilenetv3_small_val.json`.
+
+**Caution before reading too much into 0.99:** this is one seed on 377 val images (3 errors), and the EDA confound (photo source/quality differs by class) may be inflating it. The robustness sweep and shortcut test (Phase 5) exist to check exactly that; the test split stays sealed until Phase 4.
+
+New command: `uv run coffeeguard curves --run runs/<run>` → `<run>/figures/training_curves.png` (loss and val macro-F1 per epoch across stages, raw vs. EMA, best point marked); covered by the smoke test.
+
+### 2.7 Walking skeleton, end to end
+
+1. **Export:** `uv run coffeeguard export --run runs/20260925-211837-mobilenetv3_small-s0 --name coffeeguard-mnv3s-baseline` → `artifacts/models/coffeeguard-mnv3s-baseline/` (`model.onnx` 6.1 MB). Parity torch ↔ ONNX: max |Δlogit| **1.8e-6**, argmax agreement **100%**. `cam_exact: false` for MobileNetV3 (extra layer after pooling), as expected. Only `bundle.json` is committed; the ONNX/NumPy files are git-ignored.
+2. **API:** `MODEL_BUNDLE=artifacts/models/coffeeguard-mnv3s-baseline uv run uvicorn app.main:app --app-dir apps/api`. Sent 8 **original full-resolution** val photos (2 per class, from `data/raw/`, as a user would upload them): **8/8 correct**, confidence 0.75–0.95, **15–30 ms** model latency on this CPU (150 ms for the first request). A non-image file → `415 unsupported_media_type`. Confidences top out around 0.93–0.95 because of label smoothing (0.1); calibration (temperature scaling) is Phase 4.
+3. **UI:** rendered headlessly with Streamlit's `AppTest` against the live API (model name in the sidebar, input choice shown) and with the API down.
+   - **Bug found:** with the API down, the page still said the model was loaded — `api_health()` was cached with `st.cache_data` and had no arguments, so it returned the first result. The cache was removed (one tiny request per rerun).
+   - Tests: `tests/integration/test_web.py` (API down → clear error and nothing else rendered; API up with `httpx` mocked → model name + input choice).
+
+### Phase 2 status ✅ (with one open item)
+
+| Gate item | Status |
+|---|---|
+| Transforms + augmentation preview checked by eye | ✅ |
+| Dataset / DataLoader, model factory, multi-stage trainer | ✅ (classifier-init bug fixed) |
+| Baseline MobileNetV3-Small trained, val metrics recorded | ✅ val macro-F1 0.991 — **trained on CPU**, not Kaggle |
+| Export → Predictor → FastAPI → Streamlit | ✅ |
+| CPU smoke test (train → export → predict) + API tests | ✅ |
+| Remote runner (`remote train`) end to end | ⏳ upload + push work; **blocked on Kaggle phone verification** (no GPU/internet granted) |
+
+Checks: `ruff check` / `ruff format --check` clean; `pytest` **47 passed** (incl. the slow train→export smoke test).
+
+**For you to do:** verify a phone number at <https://www.kaggle.com/settings> so Kaggle kernels get a GPU and internet. Phase 3 (EfficientNetV2-B0 ablation + 3 seeds, comparison models) needs it: on this laptop one EffV2-B0 epoch takes ~6.6 min.

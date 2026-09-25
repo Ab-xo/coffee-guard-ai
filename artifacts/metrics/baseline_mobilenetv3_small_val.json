@@ -1,0 +1,23 @@
+{
+  "model": "mobilenetv3_small_100.lamb_in1k",
+  "run": "20260925-211837-mobilenetv3_small-s0",
+  "split": "val",
+  "device": "cpu",
+  "git": {
+    "sha": "855755e0e6b5736120408a2c85f44f2f72a43373",
+    "dirty": true
+  },
+  "data_fingerprint": "53320bd30430396d",
+  "best_val_macro_f1": 0.9913039524791292,
+  "stage": "finetune",
+  "epoch": 9,
+  "weights": "ema",
+  "val": {
+    "accuracy": 0.9920424403183024,
+    "macro_f1": 0.9913039524791292,
+    "macro_precision": 0.990506329113924,
+    "macro_recall": 0.9923445535296868,
+    "loss": 0.11105705797672272
+  },
+  "minutes": 27.72
+}
