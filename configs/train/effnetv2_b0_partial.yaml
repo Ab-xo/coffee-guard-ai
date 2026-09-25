@@ -1,0 +1,27 @@
+# Main model, variant A (spec): fine-tune only the last 3 stages + head.
+name: effnetv2_b0_partial
+model: tf_efficientnetv2_b0.in1k
+img_size: 224
+drop_rate: 0.2
+drop_path_rate: 0.1
+batch_size: 64
+num_workers: 4
+preload: true
+label_smoothing: 0.1
+ema_decay: 0.999
+stages:
+  - name: head            # linear probe: backbone frozen
+    trainable: head
+    epochs: 8
+    lr: 1.0e-3
+    weight_decay: 1.0e-4
+    warmup_epochs: 0.5
+    patience: 4
+  - name: finetune
+    trainable: last_n
+    last_n_stages: 3      # spec: unfreeze the last 2-3 blocks (+ conv_head)
+    epochs: 25
+    lr: 1.0e-4
+    weight_decay: 0.05
+    warmup_epochs: 1
+    patience: 5

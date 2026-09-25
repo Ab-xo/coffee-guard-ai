@@ -1,0 +1,15 @@
+# CPU smoke test: tiny model, no pretrained download, 1 batch per epoch.
+name: smoke
+model: mobilenetv3_small_050
+pretrained: false
+img_size: 64
+drop_path_rate: 0.0
+batch_size: 8
+num_workers: 0
+device: cpu
+ema_decay: 0.99
+max_train_batches: 2
+max_eval_batches: 2
+stages:
+  - {name: head, trainable: head, epochs: 1, lr: 1.0e-3, patience: 1}
+  - {name: finetune, trainable: all, layer_decay: 0.75, epochs: 2, lr: 1.0e-3, patience: 2}

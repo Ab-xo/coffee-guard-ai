@@ -1,0 +1,45 @@
+{
+  "model": "vit_small_patch14_dinov2.lvd142m (frozen) + logistic regression",
+  "split": "val",
+  "accuracy": 0.9575596816976127,
+  "macro_f1": 0.9613191836293102,
+  "per_class": {
+    "Healthy": {
+      "precision": 0.9310344827586207,
+      "recall": 1.0,
+      "f1-score": 0.9642857142857143,
+      "support": 108.0
+    },
+    "Cercospora": {
+      "precision": 0.9146341463414634,
+      "recall": 0.9868421052631579,
+      "f1-score": 0.9493670886075949,
+      "support": 76.0
+    },
+    "Leaf Rust": {
+      "precision": 0.990909090909091,
+      "recall": 0.8790322580645161,
+      "f1-score": 0.9316239316239316,
+      "support": 124.0
+    },
+    "Phoma": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 69.0
+    },
+    "accuracy": 0.9575596816976127,
+    "macro avg": {
+      "precision": 0.9591444300022938,
+      "recall": 0.9664685908319185,
+      "f1-score": 0.9613191836293102,
+      "support": 377.0
+    },
+    "weighted avg": {
+      "precision": 0.9600441552589112,
+      "recall": 0.9575596816976127,
+      "f1-score": 0.957071945353851,
+      "support": 377.0
+    }
+  }
+}
