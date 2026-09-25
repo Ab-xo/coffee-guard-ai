@@ -1,0 +1,47 @@
+# Data pipeline configuration (validated by coffeeguard.config.DataConfig).
+# Class order defines class_id; never reorder after a model is trained.
+classes: [Healthy, Cercospora, Leaf Rust, Phoma]
+
+# Raw Kaggle folder names -> canonical class (matching is case-insensitive).
+class_aliases:
+  Cerscospora: Cercospora   # typo in the Kaggle dataset
+
+kaggle_dataset: biniyamyoseph/ethiopian-coffee-leaf-disease
+
+raw_dir: data/raw
+processed_dir: data/processed
+manifest_path: data/manifests/manifest.parquet
+splits_dir: data/splits
+
+# Validation
+allowed_formats: [JPEG, PNG]
+min_side: 100
+aspect_warn: [0.5, 2.0]
+
+# Resized training cache
+cache_long_side: 384
+cache_quality: 95
+
+# Duplicate detection
+phash_max_distance: 5      # Hamming distance on 64-bit pHash
+embed_similarity: 0.97     # cosine similarity on DINOv2 embeddings (same-class links only;
+                           # 0.95 chained unrelated same-source photos into a 238-image group)
+embed_model: vit_small_patch14_dinov2.lvd142m
+
+# Group-aware stratified split: 20 folds -> 3 test, 3 val, 14 train = 15/15/70
+split:
+  train: 0.70
+  val: 0.15
+  test: 0.15
+  n_folds: 20
+  seed: 42
+
+# Images removed after manual review (label audit, conflicts). Keep the reason.
+exclude: []
+
+# The Kaggle "train aug" folder mixes original photos with the author's pre-generated
+# augmentations (aug_*.jpeg / aug_*.jpg, ~70-88% of each class). They are not real
+# photos and some are copies of test images, so they are excluded; augmentation is
+# done on the fly during training instead.
+exclude_name_patterns:
+  - '^aug_'

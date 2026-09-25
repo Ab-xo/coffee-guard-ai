@@ -96,3 +96,21 @@ logs/
 
 # Distribution / packaging
 *.whl
+
+# CoffeeGuard pipeline outputs
+.venv/
+runs/
+data/raw/*
+data/processed/*
+!data/processed/.gitkeep
+data/ood/
+data/manifests/*.npy
+data/manifests/*.npz
+data/manifests/*.parquet
+!data/manifests/.gitkeep
+artifacts/models/**/*.onnx
+artifacts/models/**/*.npy
+kaggle/_build/
+.ruff_cache/
+.cache/
+logs/
