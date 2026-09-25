@@ -133,29 +133,63 @@ uv run ruff check . && uv run ruff format --check .
 
 ## 🔄 Development Status
 
-| Phase | Status |
-|---|---|
-| 0 — Foundation (uv, ruff, CI, typed config, CLI) | ✅ |
-| 1 — Data engineering (validation, dedup, split, EDA, label audit) | ✅ |
-| 2 — Training pipeline, baseline, walking skeleton | 🔄 code written, smoke-tested |
-| 3 — EfficientNetV2-B0 (LP-FT, 3 seeds) | ⏳ |
-| 4 — Evaluation, calibration, conformal prediction | ⏳ |
-| 5 — Explainability and robustness | ⏳ |
-| 6 — OOD gate | ⏳ |
-| 7 — Model comparison and export | ⏳ |
-| 8–10 — API, UI, Docker, documentation | ⏳ |
+### Current Progress: Phase 2 (Training Infrastructure)
 
-Details, numbers and decisions for every step: [docs/PROGRESS.md](docs/PROGRESS.md).
+| Phase  | Description           |       Status       | Key Deliverables                                                                                                                                                                |
+| :----: | --------------------- | :----------------: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **0**  | **Foundation**        |  ✅ **Complete**   | • Modern tooling (uv, ruff, pre-commit)<br>• CI/CD pipeline<br>• Type-safe configuration<br>• CLI interface                                                                     |
+| **1**  | **Data Engineering**  |  ✅ **Complete**   | • Dataset validation & cleaning<br>• Duplicate detection (exact/near/rotated)<br>• Leakage-safe splitting (70/15/15)<br>• EDA reports & visualizations<br>• Label quality audit |
+| **2**  | **Training Pipeline** | 🔄 **In Progress** | • Multi-stage trainer (LP → FT)<br>• Kaggle GPU integration<br>• Model factory (timm)<br>• Smoke tests passing                                                                  |
+| **3**  | **Baseline Training** |    ⏳ **Next**     | • EfficientNetV2-B0 training<br>• Linear probe + fine-tuning<br>• 3-seed ensemble                                                                                               |
+| **4**  | **Evaluation**        |     ⏳ Planned     | • Calibration analysis<br>• Conformal prediction<br>• Error analysis                                                                                                            |
+| **5**  | **Explainability**    |     ⏳ Planned     | • Grad-CAM visualizations<br>• Feature importance                                                                                                                               |
+| **6**  | **Robustness & OOD**  |     ⏳ Planned     | • Perturbation testing<br>• Out-of-distribution detection                                                                                                                       |
+| **7**  | **Model Comparison**  |     ⏳ Planned     | • Multi-architecture benchmark<br>• ONNX export                                                                                                                                 |
+| **8**  | **FastAPI Service**   |     ⏳ Planned     | • REST API<br>• ONNX Runtime serving                                                                                                                                            |
+| **9**  | **Streamlit UI**      |     ⏳ Planned     | • Interactive web interface<br>• Explainability dashboard                                                                                                                       |
+| **10** | **Deployment**        |     ⏳ Planned     | • Docker containers<br>• Final documentation                                                                                                                                    |
+
+**Legend:** ✅ Complete • 🔄 In Progress • ⏳ Planned
+
+### What's Been Accomplished
+
+#### ✅ Phase 0 & 1 Complete (Foundation + Data)
+
+- **107 files changed:** 67 added, 11 modified, 29 removed
+- **Production-ready data pipeline** with validation, deduplication, and group-aware splitting
+- **Comprehensive test suite** (5 unit tests + 1 integration test)
+- **Complete ML infrastructure** ready for training (models, trainers, exporters)
+- **Baseline established:** DINOv2 probe classifier + label quality audit
+
+#### 🔄 Phase 2 In Progress (Training)
+
+- Training code complete and smoke-tested
+- Ready for full EfficientNetV2-B0 training runs
+
+### Quick Status Check
+
+```bash
+# See detailed progress with decisions and results
+cat docs/PROGRESS.md
+
+# See all changes in this release
+cat CHANGELOG.md
+
+# Verify everything works
+uv run pytest -m "not slow"  # Fast unit tests only
+```
+
+For detailed technical decisions, experiment results, and step-by-step progress: [docs/PROGRESS.md](docs/PROGRESS.md).
 
 ---
 
 ## 📚 Documentation
 
-- **[Implementation Plan](docs/IMPLEMENTATION_PLAN.md)** — phases, design decisions, success targets
-- **[Progress Log](docs/PROGRESS.md)** — what was built, results and decisions, step by step
-- **[Technical Specification](docs/PROJECT_SPECIFICATION.md)** — original requirements baseline
-- **[Project Brief](CoffeeGuard_AI_Project_Structure.md)** — original project outline
-- **[Contributing](CONTRIBUTING.md)** — development workflow and conventions
+- **[📝 CHANGELOG](CHANGELOG.md)** — what changed in each release, organized by phase
+- **[🗺️ Implementation Plan](docs/IMPLEMENTATION_PLAN.md)** — phases, design decisions, success targets
+- **[📊 Progress Log](docs/PROGRESS.md)** — what was built, results and decisions, step by step
+- **[📋 Technical Specification](docs/PROJECT_SPECIFICATION.md)** — original requirements baseline
+- **[🤝 Contributing](CONTRIBUTING.md)** — development workflow and conventions
 
 ---
 
