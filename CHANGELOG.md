@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Phase 3 Completed - Main Model (EfficientNetV2-B0) ✅
+
+#### Added - Results
+- Variant ablation (seed 0, Kaggle T4): A = fine-tune last 3 stages 0.9848 vs. B = all layers + layer decay 0.9839 val macro-F1 (same accuracy) → **A chosen**
+- Main model EfficientNetV2-B0: val macro-F1 **0.9848**, accuracy 0.9841
+- Comparison models, same recipe: EfficientNet-B0 0.9843, MobileNetV3-Small 0.9843, MobileNetV3-Large 0.9794
+- `artifacts/metrics/phase3_val_summary.json`, training curves in `artifacts/figures/training/`
+
+#### Changed - Training Recipes
+- All recipes (except the variant-B record) use the chosen schedule: 5-epoch linear probe, then ≤ 15 epochs fine-tuning the last 3 stages at LR 1e-4, early stopping (patience 4)
+- One seed per run; headline metrics will use bootstrap confidence intervals (plan updated)
+
 ### Phase 2 Completed - Training Pipeline, Baseline, Walking Skeleton ✅
 
 #### Added - Training
@@ -207,7 +219,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 | **Phase 0** | Foundation - tooling, structure, CI | ✅ Complete | ~25 files |
 | **Phase 1** | Data engineering - validation, dedup, split, EDA | ✅ Complete | ~82 files |
 | **Phase 2** | Training pipeline, baseline, walking skeleton | ✅ Complete | ~30 files |
-| **Phase 3** | EfficientNetV2-B0 training (LP-FT, 3 seeds) | ⏳ Planned | - |
+| **Phase 3** | EfficientNetV2-B0 training (LP-FT, 1 seed) + comparison runs | ✅ Complete | ~15 files |
 | **Phase 4** | Evaluation, calibration, conformal prediction | ⏳ Planned | - |
 | **Phase 5** | Explainability and robustness | ⏳ Planned | - |
 | **Phase 6** | OOD detection gate | ⏳ Planned | - |

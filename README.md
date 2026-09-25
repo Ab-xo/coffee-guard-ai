@@ -4,7 +4,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![Project Status](https://img.shields.io/badge/status-Phase%203%20next-orange.svg)](docs/PROGRESS.md)
+[![Project Status](https://img.shields.io/badge/status-Phase%204%20next-orange.svg)](docs/PROGRESS.md)
 
 An AI-powered computer vision system for detecting and classifying coffee leaf diseases in Ethiopian coffee plants using deep learning, explainable AI, and production-ready deployment.
 
@@ -144,15 +144,15 @@ uv run ruff check . && uv run ruff format --check .
 
 ## 🔄 Development Status
 
-### Current Progress: Phase 3 next (main model training)
+### Current Progress: Phase 4 next (evaluation)
 
 | Phase  | Description           |       Status       | Key Deliverables                                                                                                                                                                |
 | :----: | --------------------- | :----------------: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **0**  | **Foundation**        |  ✅ **Complete**   | • Modern tooling (uv, ruff, pre-commit)<br>• CI/CD pipeline<br>• Type-safe configuration<br>• CLI interface                                                                     |
 | **1**  | **Data Engineering**  |  ✅ **Complete**   | • Dataset validation & cleaning<br>• Duplicate detection (exact/near/rotated)<br>• Leakage-safe splitting (70/15/15)<br>• EDA reports & visualizations<br>• Label quality audit |
 | **2** | **Training Pipeline** | ✅ **Complete** | • Multi-stage trainer (LP → FT)<br>• Quality-equalising augmentation<br>• MobileNetV3-Small baseline: val macro-F1 **0.991**<br>• Walking skeleton: ONNX → FastAPI → Streamlit |
-| **3**  | **Baseline Training** |    ⏳ **Next**     | • EfficientNetV2-B0 training<br>• Linear probe + fine-tuning<br>• 3-seed ensemble                                                                                               |
-| **4**  | **Evaluation**        |     ⏳ Planned     | • Calibration analysis<br>• Conformal prediction<br>• Error analysis                                                                                                            |
+| **3** | **Main Model Training** | ✅ **Complete** | • EfficientNetV2-B0, LP-FT (last 3 stages): val macro-F1 **0.985**<br>• Variant ablation A vs. B (tie → A)<br>• Comparison runs: EfficientNet-B0, MobileNetV3-L/S<br>• Kaggle T4 GPU, 1 seed, ~3–4 min per run |
+| **4**  | **Evaluation**        |     ⏳ **Next**     | • Calibration analysis<br>• Conformal prediction<br>• Error analysis                                                                                                            |
 | **5**  | **Explainability**    |     ⏳ Planned     | • Grad-CAM visualizations<br>• Feature importance                                                                                                                               |
 | **6**  | **Robustness & OOD**  |     ⏳ Planned     | • Perturbation testing<br>• Out-of-distribution detection                                                                                                                       |
 | **7**  | **Model Comparison**  |     ⏳ Planned     | • Multi-architecture benchmark<br>• ONNX export                                                                                                                                 |
@@ -177,7 +177,12 @@ uv run ruff check . && uv run ruff format --check .
 - **Baseline trained:** MobileNetV3-Small reaches val macro-F1 **0.991** / accuracy 0.992 (DINOv2 probe reference: 0.961)
 - **End to end:** ONNX bundle (torch parity 100%) served by FastAPI (`/health`, `/predict`), used by a Streamlit page
 - **Fixed:** classifier initialisation that kept the linear-probe stage at chance
-- **Next (Phase 3):** EfficientNetV2-B0 on the Kaggle GPU (needs phone verification on the Kaggle account)
+
+#### ✅ Phase 3 Complete (Main model)
+
+- **EfficientNetV2-B0** (linear probe → fine-tune last 3 stages) reaches val macro-F1 **0.985** in under 4 min on a Kaggle T4
+- Comparison models trained with the same recipe: EfficientNet-B0 0.984, MobileNetV3-Small 0.984, MobileNetV3-Large 0.979 — within 1–3 validation images of each other
+- Model choice is decided in Phases 4–7 on test-set confidence intervals, calibration, robustness, speed and size
 
 ### Quick Status Check
 

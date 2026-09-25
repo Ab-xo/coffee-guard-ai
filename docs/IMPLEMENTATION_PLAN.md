@@ -215,6 +215,7 @@ Model: `tf_efficientnetv2_b0.in1k`, 224 px, `drop_rate=0.2`, `drop_path_rate=0.1
 
    ≤ 25 epochs, cosine with warmup, EMA, early stop on val macro-F1.
 3. Pick the winning variant on val macro-F1, then train it with **3 seeds**.
+   *Revised in Phase 3 (see PROGRESS.md 3.1): one seed for all runs, shorter schedule (5 probe + ≤ 15 fine-tune epochs, early stopping); headline test metrics use bootstrap 95% CIs instead of mean ± std over seeds. A and B tied on val; A was chosen.*
 4. In parallel on Kaggle, launch the comparison candidates (Phase 7) with the same recipe: MobileNetV3-Large (`mobilenetv3_large_100.ra_in1k`), EfficientNet-B0 (`efficientnet_b0.ra_in1k`).
 5. Training-curve figures (loss, macro-F1, LR) per run.
 

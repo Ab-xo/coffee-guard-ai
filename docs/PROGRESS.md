@@ -399,3 +399,88 @@ New command: `uv run coffeeguard curves --run runs/<run>` → `<run>/figures/tra
 Checks: `ruff check` / `ruff format --check` clean; `pytest` **47 passed** (incl. the slow train→export smoke test).
 
 **For you to do:** verify a phone number at <https://www.kaggle.com/settings> so Kaggle kernels get a GPU and internet. Phase 3 (EfficientNetV2-B0 ablation + 3 seeds, comparison models) needs it: on this laptop one EffV2-B0 epoch takes ~6.6 min.
+
+---
+
+## Session 2 (continued) — Phase 3: EfficientNetV2-B0
+
+Branch: `phase/3-effnetv2` (from the pushed Phase 2 commit `552851e`).
+
+### 3.0 Kaggle account switch
+
+Phone verification on the first account (`eleniandualem`) was blocked by Kaggle's rate limit ("You've sent too many requests"). You created a second account and replaced the token in `C:\Users\pc\.kaggle\access_token.txt`. Nothing in the code is tied to an account (the username comes from the token), so the only step was re-uploading the data:
+
+- `uv run coffeeguard remote upload-data` → private dataset **`fevenabebe1616/coffeeguard-processed`** (2,520 images, 59 MB, fingerprint `53320bd30430396d`).
+- GPU quota on the new account: 6 h/week.
+
+**Why train on Kaggle at all when the data is local?** For the GPU, not the data. This laptop has no CUDA GPU; measured CPU speed is ~6.6 min per EfficientNetV2-B0 training epoch, so the ~7 Phase 3 runs would take ~18–20 hours on CPU versus ~1.5–2 hours on a Kaggle T4. Only the small 384 px image cache (59 MB) is uploaded; everything else (data prep, evaluation, API, UI) stays local.
+
+### 3.1 Variant ablation A vs. B (seed 0)
+
+Launched both variants in one GPU session (runs record git `552851e`, clean tree):
+
+```bash
+uv run coffeeguard remote train -c configs/train/effnetv2_b0_partial.yaml -c configs/train/effnetv2_b0.yaml --seeds 0
+```
+
+- **A (spec):** after the linear probe, fine-tune only the last 3 stages + `conv_head`, LR 1e-4.
+- **B (modern):** after the linear probe, fine-tune everything, LR 3e-4 with layer-wise decay 0.75, weight decay 0.05.
+
+**Results** (Kaggle **Tesla T4**, git `552851e`, clean tree; ~10 s per epoch; whole runs took **3.9 min (A)** and **3.0 min (B)** — versus ~2.5–3 h each projected on the laptop CPU):
+
+| Variant | Trainable in fine-tune | Best val macro-F1 | Val accuracy | Best epoch | Early stop | s/epoch |
+|---|---|---:|---:|---|---|---:|
+| **A** — last 3 stages (spec) | 5.67 M (97%) | **0.9848** | 0.9841 | finetune 9 (raw) | finetune 14 | 10.1 |
+| **B** — all layers, layer decay 0.75 | 5.86 M (100%) | 0.9839 | 0.9841 | finetune 3 (raw) | finetune 8 | 10.7 |
+
+Curves: `artifacts/figures/training/ablation_A_effnetv2_b0_partial-s0.png`, `…/ablation_B_effnetv2_b0-s0.png`.
+
+**What the numbers say**
+- **Same accuracy (6 errors of 377).** The F1 difference is < 1 image — a tie on val.
+- **"Partial" is not a small model.** EfficientNetV2-B0 keeps 72% of its parameters in the last stage and 97% in the last three, so variant A trains almost every weight. It doesn't meaningfully reduce overfitting capacity, and on the GPU it isn't faster either (data loading dominates: 10.1 vs 10.7 s/epoch).
+- **No harmful overfitting in either run.** B peaks at fine-tune epoch 3 and its val F1 then dips to 0.976–0.979 while train accuracy reaches 0.996 — but that dip is only ~2 images and **B's val loss keeps falling** (0.20 → 0.12), so it is noise, not overfitting. A climbs more slowly and stays flat at 0.980–0.985 over epochs 5–14. In any case early stopping + keeping the best checkpoint means the saved model is the best val epoch, never the last.
+- **The linear probe plateaus by epoch 5** (0.847 → 0.851 over epochs 5–8) and is identical in both runs to four decimals (same seed, same frozen backbone — the pipeline is reproducible).
+- **EMA weights rarely won here** (decay 0.999 with only 27 steps/epoch at batch 64 → the average lags the fast-improving weights); the trainer picks raw or EMA per epoch, so nothing is lost.
+
+**Decisions** (discussed with you before implementing)
+1. **Variant A is the main recipe:** tied on accuracy, a flatter val curve (the result depends less on which epoch is picked), and it's the spec's choice.
+2. **Shorter schedule** for every recipe (except the B record): linear probe 8 → **5** epochs (patience 3), fine-tuning 25 → **15** epochs (patience 4). The best epochs were 3 and 9, so nothing is lost; early stopping still applies.
+3. **One seed** for all runs. Instead of mean ± std over 3 seeds, headline test metrics get a **bootstrap 95% CI** (Phase 4) — no extra training. (Deviation from `IMPLEMENTATION_PLAN.md` §6 Phase 3 step 3.)
+4. The comparison models (MobileNetV3-Large, EfficientNet-B0) and a GPU re-run of MobileNetV3-Small use **the same recipe**, so the comparison differs only in the backbone.
+
+### 3.2 Final Phase 3 batch (seed 0, one GPU session)
+
+```bash
+uv run coffeeguard remote train -c configs/train/effnetv2_b0_partial.yaml -c configs/train/mobilenetv3_large.yaml \
+  -c configs/train/efficientnet_b0.yaml -c configs/train/mobilenetv3_small.yaml --seeds 0
+```
+
+Git state `552851e` + the uncommitted recipe changes above (`dirty: true`); each run's `config.yaml` holds the full resolved recipe, so the runs remain exactly reproducible.
+
+**Results** (val, 377 images, seed 0, Kaggle Tesla T4; `artifacts/metrics/phase3_val_summary.json`):
+
+| Model | Val macro-F1 | Val accuracy | Errors | Best epoch | Fine-tune epochs run | Run time | Checkpoint |
+|---|---:|---:|---:|---|---:|---:|---:|
+| **EfficientNetV2-B0** (main, variant A) | **0.9848** | 0.9841 | 6 | finetune 9 (raw) | 13 | 3.8 min | 23 MB |
+| EfficientNet-B0 | 0.9843 | 0.9841 | 6 | finetune 4 (EMA) | 8 | 3.1 min | 16 MB |
+| MobileNetV3-Small (GPU, same recipe) | 0.9843 | 0.9841 | 6 | finetune 5 (raw) | 9 | 3.0 min | 6 MB |
+| MobileNetV3-Large | 0.9794 | 0.9788 | 8 | finetune 4 (raw) | 8 | 2.9 min | 17 MB |
+| *MobileNetV3-Small — Phase 2 run (CPU, batch 32, all-layer schedule)* | *0.9913* | *0.9920* | *3* | *finetune 9 (EMA)* | *14* | *27.7 min* | *6 MB* |
+
+Curves: `artifacts/figures/training/<model>-s0-gpu.png`.
+
+**Reading the results**
+- **The shorter schedule lost nothing:** the main model reached exactly the ablation's result (0.9848, best at fine-tune epoch 9) in 3.8 instead of 3.9 min, with early stopping at fine-tune epoch 13.
+- **Val cannot separate the models.** Three models make exactly 6 errors of 377, the others 3 and 8. One image is 0.27 pp of accuracy; with one seed these differences are within noise. The Phase 2 CPU run's 0.991 is not evidence that MobileNetV3-Small is better — it differs from the GPU run in batch size (32 vs 64), schedule (all layers + layer decay) and seed-level randomness, and the gap is 3 images.
+- The deployment choice therefore rests on Phases 4–7: **test-set macro-F1 with bootstrap CIs (and a paired bootstrap between the top two)**, calibration, robustness to image corruptions, the shortcut test, OOD detection, CPU latency and size — as the plan intended.
+
+### Phase 3 status ✅ (one seed)
+
+| Gate item | Status |
+|---|---|
+| Stage 1 linear probe + stage 2 fine-tune, variants A vs. B compared on val | ✅ tie on accuracy; **A chosen** (flatter val curve, spec's choice) |
+| Winning variant trained | ✅ seed 0 only — 3 seeds replaced by bootstrap CIs in Phase 4 (decided with you) |
+| Comparison candidates with the same recipe (MobileNetV3-Large, EfficientNet-B0) | ✅ (+ MobileNetV3-Small re-run on GPU) |
+| Training-curve figures per run | ✅ |
+
+GPU time used this week: about 25 min of 6 h (two kernels: 9 + 15 min).

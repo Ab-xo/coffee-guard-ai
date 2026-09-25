@@ -1,0 +1,113 @@
+{
+  "split": "val",
+  "n_images": 377,
+  "seed": 0,
+  "note": "single seed; val cannot separate models (differences of 1-3 images)",
+  "runs": {
+    "effnetv2_b0_partial (main, variant A)": {
+      "run": "20260925-194623-effnetv2_b0_partial-s0",
+      "model": "tf_efficientnetv2_b0.in1k",
+      "device": "Tesla T4",
+      "git": {
+        "sha": "552851ef780b1a1813d010d95bc691b4dae779d1",
+        "dirty": true
+      },
+      "data_fingerprint": "53320bd30430396d",
+      "val_macro_f1": 0.9848,
+      "val_accuracy": 0.9841,
+      "val_errors": 6,
+      "best": "finetune epoch 9 (raw weights)",
+      "minutes": 3.75
+    },
+    "efficientnet_b0": {
+      "run": "20260925-195343-efficientnet_b0-s0",
+      "model": "efficientnet_b0.ra_in1k",
+      "device": "Tesla T4",
+      "git": {
+        "sha": "552851ef780b1a1813d010d95bc691b4dae779d1",
+        "dirty": true
+      },
+      "data_fingerprint": "53320bd30430396d",
+      "val_macro_f1": 0.9843,
+      "val_accuracy": 0.9841,
+      "val_errors": 6,
+      "best": "finetune epoch 4 (ema weights)",
+      "minutes": 3.06
+    },
+    "mobilenetv3_small (GPU)": {
+      "run": "20260925-195704-mobilenetv3_small-s0",
+      "model": "mobilenetv3_small_100.lamb_in1k",
+      "device": "Tesla T4",
+      "git": {
+        "sha": "552851ef780b1a1813d010d95bc691b4dae779d1",
+        "dirty": true
+      },
+      "data_fingerprint": "53320bd30430396d",
+      "val_macro_f1": 0.9843,
+      "val_accuracy": 0.9841,
+      "val_errors": 6,
+      "best": "finetune epoch 5 (raw weights)",
+      "minutes": 3.02
+    },
+    "mobilenetv3_large": {
+      "run": "20260925-195031-mobilenetv3_large-s0",
+      "model": "mobilenetv3_large_100.ra_in1k",
+      "device": "Tesla T4",
+      "git": {
+        "sha": "552851ef780b1a1813d010d95bc691b4dae779d1",
+        "dirty": true
+      },
+      "data_fingerprint": "53320bd30430396d",
+      "val_macro_f1": 0.9794,
+      "val_accuracy": 0.9788,
+      "val_errors": 8,
+      "best": "finetune epoch 4 (raw weights)",
+      "minutes": 2.91
+    },
+    "ablation A effnetv2_b0_partial (8+25 schedule)": {
+      "run": "20260925-192829-effnetv2_b0_partial-s0",
+      "model": "tf_efficientnetv2_b0.in1k",
+      "device": "Tesla T4",
+      "git": {
+        "sha": "552851ef780b1a1813d010d95bc691b4dae779d1",
+        "dirty": false
+      },
+      "data_fingerprint": "53320bd30430396d",
+      "val_macro_f1": 0.9848,
+      "val_accuracy": 0.9841,
+      "val_errors": 6,
+      "best": "finetune epoch 9 (raw weights)",
+      "minutes": 3.93
+    },
+    "ablation B effnetv2_b0 (all layers)": {
+      "run": "20260925-193239-effnetv2_b0-s0",
+      "model": "tf_efficientnetv2_b0.in1k",
+      "device": "Tesla T4",
+      "git": {
+        "sha": "552851ef780b1a1813d010d95bc691b4dae779d1",
+        "dirty": false
+      },
+      "data_fingerprint": "53320bd30430396d",
+      "val_macro_f1": 0.9839,
+      "val_accuracy": 0.9841,
+      "val_errors": 6,
+      "best": "finetune epoch 3 (raw weights)",
+      "minutes": 3.0
+    },
+    "mobilenetv3_small (Phase 2, CPU)": {
+      "run": "20260925-211837-mobilenetv3_small-s0",
+      "model": "mobilenetv3_small_100.lamb_in1k",
+      "device": "cpu",
+      "git": {
+        "sha": "855755e0e6b5736120408a2c85f44f2f72a43373",
+        "dirty": true
+      },
+      "data_fingerprint": "53320bd30430396d",
+      "val_macro_f1": 0.9913,
+      "val_accuracy": 0.992,
+      "val_errors": 3,
+      "best": "finetune epoch 9 (ema weights)",
+      "minutes": 27.72
+    }
+  }
+}
