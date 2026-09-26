@@ -9,8 +9,8 @@
 
 Coffee leaf diseases can be difficult to identify quickly from photographs, especially when images vary in lighting, blur, background, framing and disease severity. CoffeeGuard analyses a photo of one coffee leaf and predicts whether it is **Healthy** or shows **Cercospora**, **Leaf Rust** or **Phoma** — and exposes how **confident** it is, **where it looked**, how **robust** it is, and when it **refuses to answer**.
 
-| Home | Diagnose | Model Analysis |
-|---|---|---|
+| Home                                    | Diagnose                                                                              | Model Analysis                                   |
+| --------------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------ |
 | ![Home page](docs/screenshots/home.jpg) | ![Diagnosis: uncertain answer with heat map](docs/screenshots/diagnose_uncertain.jpg) | ![Model analysis](docs/screenshots/analysis.jpg) |
 
 ---
@@ -38,24 +38,34 @@ uv run streamlit run apps/web/streamlit_app.py          # web app on :8501 (seco
 
 The trained model ships in the repository (`artifacts/models/coffeeguard-effv2b0-v1`, 41 MB), so neither route needs the dataset or a GPU. A 5-minute walkthrough: [`docs/DEMO.md`](docs/DEMO.md).
 
+**Quick tests:**
+
+```bash
+# Run all unit and integration tests
+uv run pytest tests/
+
+# Test model with sample images
+uv run python -c "from pathlib import Path; import httpx; [print(f'{p.name}: {httpx.post(\"http://localhost:8000/predict\", files={\"file\": p.open(\"rb\")}).json()[\"decision\"]}') for p in Path('apps/web/samples').glob('*.jpg')]"
+```
+
 ---
 
 ## 📊 Results
 
 Deployed model: **EfficientNetV2-B0** (transfer learning, background-swap augmentation), evaluated once on **379 held-out test photos**:
 
-| Measure | Value |
-| --- | --- |
-| Macro-F1 [95% bootstrap CI] | **0.974** [0.956, 0.990] — per class 0.964–0.986 |
-| 5-fold group cross-validation | 0.985 ± 0.007 |
-| Calibration error (ECE) | 0.097 → **0.014** after temperature scaling |
-| Answered directly / accuracy of those answers | **90.2% / 99.4%** (5.8% *uncertain* with the likely classes, 4.0% turned away) |
-| Telling coffee leaves from other plant leaves / from non-leaf images | AUROC **0.989 / 1.000** (image sources never used for tuning) |
-| Coffee leaves from **other datasets** (Brazil, Ecuador; incl. vertical and small web images) vs. other plants | AUROC **0.981** |
-| Disease accuracy on another dataset (BRACOL, Brazil) | **0.63** — Healthy, Leaf Rust, Phoma fine; Cercospora mostly called Leaf Rust |
-| Score kept under moderate blur, noise, darkness, JPEG, occlusion … | 97.9% |
-| Heat maps | faithful (deletion test) · 66% of the heat on the leaf |
-| Speed on a CPU server | 15 ms per forward pass · 63 ms for a full 2048 px phone photo |
+| Measure                                                                                                       | Value                                                                          |
+| ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| Macro-F1 [95% bootstrap CI]                                                                                   | **0.974** [0.956, 0.990] — per class 0.964–0.986                               |
+| 5-fold group cross-validation                                                                                 | 0.985 ± 0.007                                                                  |
+| Calibration error (ECE)                                                                                       | 0.097 → **0.014** after temperature scaling                                    |
+| Answered directly / accuracy of those answers                                                                 | **90.2% / 99.4%** (5.8% _uncertain_ with the likely classes, 4.0% turned away) |
+| Telling coffee leaves from other plant leaves / from non-leaf images                                          | AUROC **0.989 / 1.000** (image sources never used for tuning)                  |
+| Coffee leaves from **other datasets** (Brazil, Ecuador; incl. vertical and small web images) vs. other plants | AUROC **0.981**                                                                |
+| Disease accuracy on another dataset (BRACOL, Brazil)                                                          | **0.63** — Healthy, Leaf Rust, Phoma fine; Cercospora mostly called Leaf Rust  |
+| Score kept under moderate blur, noise, darkness, JPEG, occlusion …                                            | 97.9%                                                                          |
+| Heat maps                                                                                                     | faithful (deletion test) · 66% of the heat on the leaf                         |
+| Speed on a CPU server                                                                                         | 15 ms per forward pass · 63 ms for a full 2048 px phone photo                  |
 
 Five models were compared on the same recipe — see the **Model Comparison** page or the [decision record](docs/decisions/001-deployment-model.md).
 

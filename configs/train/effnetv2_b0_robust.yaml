@@ -1,0 +1,59 @@
+# Enhanced robustness config for real-world coffee leaf images
+# Based on effnetv2_b0_bgswap with MORE AGGRESSIVE augmentation for:
+# - Extreme brightness variations (bright web images, overexposed photos)
+# - High resolution PNG images
+# - Different lighting conditions
+# - Web compression artifacts
+
+name: effnetv2_b0_robust
+model: tf_efficientnetv2_b0.in1k
+img_size: 224
+drop_rate: 0.2
+drop_path_rate: 0.1
+batch_size: 64
+num_workers: 4
+preload: true
+label_smoothing: 0.1
+ema_decay: 0.999
+
+augment:
+  bg_swap_p: 0.5         # Keep background swap for setup confound
+  
+  # ENHANCED BRIGHTNESS/EXPOSURE - more aggressive than original (0.2)
+  brightness: 0.4        # ±40% brightness (was 0.2) - handles overexposed images
+  contrast: 0.3          # ±30% contrast (was 0.2) - handles flat/high-contrast
+  saturation: 0.3        # ±30% saturation (was 0.2)
+  hue: 0.0               # NO hue shift - lesion color is diagnostic
+  
+  # ENHANCED QUALITY DEGRADATION - simulate web compression, format conversions
+  downscale_p: 0.6       # Increase from 0.5 - more resolution variation
+  downscale_min: 0.3     # Go lower (was 0.35) - simulate thumbnails
+  jpeg_p: 0.6            # Increase from 0.5 - more compression artifacts
+  jpeg_quality_min: 25   # Go lower (was 30) - simulate heavy web compression
+  
+  # GEOMETRIC AUGMENTATION - handle different angles/crops
+  rotation: 30           # ±30 degrees (keep same)
+  scale_min: 0.75        # Random crop scale range (keep same)
+  hflip: 0.5             # Horizontal flip probability
+  vflip: 0.5             # Vertical flip probability
+  
+  # BLUR - handle focus issues
+  blur_p: 0.3            # Keep same
+
+stages:
+  - name: head            # linear probe: backbone frozen
+    trainable: head
+    epochs: 5
+    lr: 1.0e-3
+    weight_decay: 1.0e-4
+    warmup_epochs: 0.5
+    patience: 3
+    
+  - name: finetune        # fine-tune last 3 stages
+    trainable: last_n
+    last_n_stages: 3
+    epochs: 20            # Increase from 15 - more training with aggressive augmentation
+    lr: 1.0e-4
+    weight_decay: 0.05
+    warmup_epochs: 1
+    patience: 5           # Increase patience - augmentation makes training noisier
