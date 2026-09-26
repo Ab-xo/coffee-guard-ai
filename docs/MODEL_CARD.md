@@ -45,6 +45,10 @@ Validation macro-F1 0.987. Single training seed: differences between models of �
 - **Heat maps are faithful** (hiding the hottest 5% of patches drops confidence 0.97 → 0.72; random 5%: 0.88) and focus on the leaf (66% of CAM mass on a leaf covering 25% of the image).
 - **Photo setup:** each class was photographed in its own setup (blue paper for Cercospora/Leaf Rust, white paper for Healthy/Phoma, field photos for some Healthy/Leaf Rust). Background-swap training made the model rely on the leaf (leaf-only accuracy 0.963; confidence on leaf-less images 0.54), but **blue-paper backgrounds alone still lean towards Cercospora/Leaf Rust**.
 
+## Disease severity (proxy — the dataset has no severity labels)
+
+Lesion coverage was estimated from colour alone (yellow/orange/brown or much-darker-than-the-leaf pixels inside the leaf; photos on paper only; Healthy leaves score a median 0.1%, diseased ones 1.4–10%). Split into thirds per class, the mildest third is **not** handled worse: wrong top class 0–4% in every third, a diseased leaf was called Healthy once (a mild Phoma), and mild cases are answered *uncertain* slightly more often (8–9%) instead of being answered wrongly. **But the mildest photos in this dataset still show visible lesions (about 1–3% of the leaf); very early infection with little or no colour change is not represented, so the model's ability to catch it is unknown.** The proxy misses small dark spots on very dark Cercospora leaves. Details: `artifacts/severity/coffeeguard-effv2b0-v1/`.
+
 ## Out-of-distribution detection (sources never used for tuning)
 
 AUROC 0.993 against other plant leaves (bean), 1.000 against non-leaf images (indoor scenes, text/screenshots, blank/noise frames). End to end, 175 of 182 such test images are rejected; 3 bean leaves were accepted.
@@ -55,4 +59,7 @@ AUROC 0.993 against other plant leaves (bean), 1.000 against non-leaf images (in
 - **Label noise:** 19 images (0.75%) flagged by an automatic audit, mostly Cercospora ↔ Leaf Rust; not removed without expert review.
 - **Only four classes:** any other disease, pest damage, nutrient deficiency or mechanical damage will be forced into one of them unless the OOD gate rejects it.
 - **Single seed, single dataset:** reported uncertainty covers test-set sampling, not training randomness or a new region/season/camera.
+- **Early infection:** see *Disease severity* — performance on leaves with barely visible symptoms is unknown.
+- **Photo conditions not covered by the tests:** colour casts (indoor light, sunset), several leaves or a whole branch in one photo (a second leaf in the frame caused one test error), and heavy noise or JPEG compression (not detected by the quality gate; the model then tends to answer *Healthy*).
+- **Not validated in the field:** every number here comes from photos of the same dataset (same photographers, papers and cameras); robustness was tested with synthetic corruptions. **The key next step is a field test set** — 30–50 farm phone photos per class, labelled by an agronomist — to measure real-world performance.
 - **Not a diagnosis:** treat *Healthy* answers on poor photos with care (see robustness), and confirm any disease finding before treatment.

@@ -319,6 +319,22 @@ def compare(
 
 
 @app.command()
+def severity(
+    bundle: Annotated[Path, typer.Option("--bundle", "-b", help="Bundle dir.")] = Path(
+        "artifacts/models/coffeeguard-effv2b0-v1"
+    ),
+    config: ConfigOpt = Path("configs/data.yaml"),
+    out_root: Annotated[Path, typer.Option(help="Output folder.")] = Path("artifacts/severity"),
+) -> None:
+    """Model behaviour by a colour-based disease-severity proxy (no severity labels exist)."""
+    from coffeeguard.evaluation.severity import run_severity
+    from coffeeguard.utils.paths import resolve
+
+    res = run_severity(resolve(bundle), _data_cfg(config, None), resolve(out_root))
+    typer.echo(json.dumps(res["by_tercile"], indent=2))
+
+
+@app.command()
 def curves(
     run: Annotated[Path, typer.Option("--run", "-r", help="Run directory.")],
 ) -> None:

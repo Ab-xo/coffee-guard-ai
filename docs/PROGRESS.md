@@ -893,3 +893,42 @@ Covered: `/health`, `/model-info`, OpenAPI lists all endpoints; accepted green/r
 | Hardening: type/magic bytes, size and pixel limits, EXIF, one error shape, request ID, JSON logs, CORS | ✅ |
 | Tests against a generated ONNX fixture incl. OOD and blank images | ✅ 23 tests |
 | Served decisions = offline evaluation | ✅ identical counts on 379 + 182 images |
+
+---
+
+## Gap check against the project goal, and a severity proxy (before Phase 9)
+
+**Question from you:** does the system answer the stated goal — predict the disease from a photo that varies in lighting, blur, background, framing and disease severity, while exposing confidence, explanation, robustness and rejection?
+
+| Goal element | Status | Evidence |
+|---|---|---|
+| Predict the disease condition | ✅ | test macro-F1 0.974 [0.956, 0.990]; served by `/predict` |
+| Quickly | ✅ | 37–63 ms per photo on a CPU server (upload dominates for users) |
+| Lighting | ✅ mostly | darkening to ¼ brightness → 0.92 F1; too dark / flat photos get a retake request; colour casts untested |
+| Blur | ✅ mostly | moderate blur 0.95, heavy 0.82 F1; half of heavily blurred photos caught by the gate |
+| Background | ⚠️ partly | background swap → leaf-only accuracy 0.963; blue paper still nudges towards Cercospora/Leaf Rust |
+| Framing | ⚠️ partly | crop/rotation robust (0.93 / 0.89 at severity 5); 40% occlusion 0.67; one leaf per photo only |
+| Disease severity | ⚠️ proxy | see below |
+| Confidence / explanation / robustness / rejection | ✅ | ECE 0.014 + *uncertain*; faithful CAM; 9×5 corruption sweep; quality + OOD gates (AUROC 0.993 / 1.000) |
+
+**Not only "is it a coffee leaf?":** the OOD check is a gatekeeper. Of the 379 genuine test photos, 344 (90.8%) get a disease answer (99.4% correct) and 28 (7.4%) an *uncertain* answer naming the likely diseases; only 7 (1.8%) are turned away (5 as not-a-leaf, 2 as poor quality).
+
+**Biggest caveat:** all results come from one dataset (same photographers, papers, cameras); robustness was tested with synthetic corruptions. A field test set (30–50 farm phone photos per class, labelled by an agronomist) is the key next step — it needs data and domain expertise, so it is recorded as future work.
+
+### Severity proxy — `coffeeguard severity` (`src/coffeeguard/evaluation/severity.py`)
+
+**Why a proxy:** the dataset has no severity labels. Lesion coverage is estimated from colour alone, independent of the model: inside the leaf mask, pixels that are yellow/orange/brown (hue 5–30, saturation ≥ 70) or much darker than the leaf's median brightness (< 50%). Photos with a separable background only (596 of val + test).
+
+**Sanity checks:** Healthy leaves score a median **0.1%** (IQR 0–0.7%) vs. Cercospora 1.4%, Phoma 5.5%, Leaf Rust 10.4%; the example gallery (`artifacts/severity/coffeeguard-effv2b0-v1/figures/severity_examples.png`, lesions in magenta) goes from a few pustules/spots to heavily covered leaves for Leaf Rust and Phoma. **Weak spot:** small dark spots on very dark Cercospora leaves are missed (several mild Cercospora read 0%), and one "51%" case measured a second leaf entering the frame.
+
+**Model behaviour by lesion-coverage third** (release bundle, full decision; values for mild · moderate · severe):
+
+| Class | Median coverage | n | Accepted | Uncertain | Rejected | Wrong top class | Called Healthy |
+|---|---|---|---|---|---|---|---|
+| Cercospora | 0.3% · 1.5% · 7.7% | 51 · 50 · 50 | 0.90 · 0.88 · 0.86 | 0.08 · 0.12 · 0.08 | 0.02 · 0 · 0.06 | 0 · 0.02 · 0 | 0 · 0 · 0 |
+| Leaf Rust | 3.5% · 10.4% · 25.1% | 69 · 68 · 69 | 0.91 · 0.93 · 0.96 | 0.09 · 0.04 · 0.03 | 0 · 0.03 · 0.01 | 0.04 · 0 · 0.03 | 0 · 0 · 0 |
+| Phoma | 3.1% · 5.5% · 10.8% | 47 · 46 · 46 | 0.91 · 0.98 · 0.93 | 0.09 · 0.02 · 0.02 | 0 · 0 · 0.04 | 0.02 · 0 · 0.02 | 0.02 · 0 · 0 |
+
+**Reading:** no drop for the mildest third — wrong answers stay at 0–4% and only one diseased leaf (a mild Phoma) was called Healthy; for Leaf Rust and Phoma, mild cases are answered *uncertain* a bit more often (9% vs. 2–3%), i.e. the system hedges rather than errs. **Limit:** the mildest photos here still show visible lesions (about 1–3% of the leaf); leaves at a very early stage with little colour change aren't in the dataset, so we cannot claim the model catches them. Error counts per third are small (0–3 photos), so these are indications.
+
+**Docs updated:** model card (new *Disease severity* section; limitations now list early infection, colour casts, several leaves per photo, undetected noise/JPEG, and the missing field validation), README (goal-coverage table).

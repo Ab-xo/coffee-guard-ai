@@ -65,3 +65,19 @@ def test_leaf_mask_separates_leaf_from_paper():
     assert (mask == leaf).mean() > 0.97
     bg_only = np.asarray(apply_mask(img, mask, keep=False))
     assert (bg_only[leaf] == 128).all(axis=1).mean() > 0.97  # edges may be shaved
+
+
+def test_severity_proxy_zero_for_clean_leaf_and_grows_with_lesions():
+    from coffeeguard.evaluation.severity import lesion_fraction
+
+    a = np.full((120, 160, 3), (225, 225, 230), np.uint8)
+    yy, xx = np.mgrid[:120, :160]
+    leaf = ((yy - 60) / 35) ** 2 + ((xx - 80) / 60) ** 2 <= 1
+    a[leaf] = (50, 120, 45)
+    clean, leaf_share = lesion_fraction(Image.fromarray(a))
+    assert clean < 0.01 and 0.2 < leaf_share < 0.5
+    spotted = a.copy()
+    for cy, cx in ((50, 60), (65, 95), (58, 110)):  # orange rust-like pustules
+        spotted[(yy - cy) ** 2 + (xx - cx) ** 2 <= 25] = (230, 140, 30)
+    few, _ = lesion_fraction(Image.fromarray(spotted))
+    assert few > 0.01

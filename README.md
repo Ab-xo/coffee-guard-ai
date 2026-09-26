@@ -215,6 +215,17 @@ uv run ruff check . && uv run ruff format --check .
 - **Same answers as the offline evaluation** on all 379 test photos and 182 non-coffee images; 37 ms per request
 - Request IDs, JSON logs, upload checks (type by content, size, pixels, corrupt files, EXIF rotation); 23 tests against a tiny generated model
 
+#### How far does it meet the project goal?
+
+| Goal | Status |
+|---|---|
+| Predict the disease from a leaf photo | ✅ 4 classes, test macro-F1 0.974 |
+| Confidence, explanation, robustness, rejection | ✅ calibrated confidence + *uncertain* answers, faithful heat maps, 9×5 corruption sweep, quality + OOD gates |
+| Lighting and blur | ✅ mostly (darkening and blur tolerated; colour casts untested) |
+| Background and framing | ⚠️ partly (background swap helps; blue-paper cue remains; one leaf per photo) |
+| Disease severity | ⚠️ proxy only — mild cases not worse, but very early infection isn't in the data |
+| Real field photos | ❌ not yet tested — **key next step:** 30–50 farm photos per class labelled by an agronomist |
+
 ### Quick Status Check
 
 ```bash
