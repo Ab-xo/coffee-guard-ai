@@ -45,7 +45,23 @@
   "files": {
     "model.onnx": "3f88d4184b7b171ed12114ef2fc837317909f43754a50930d6174c12a964ecf9",
     "classifier_weight.npy": "4d69f3af0aefba4e3e36bc0caefe92761df5092129b3ba6c50dd056b5439f1d3",
-    "classifier_bias.npy": "c2c6c10f0bc3ebe49c0270923d77b2c2d41382e419cd690291b02d54804343ef"
+    "classifier_bias.npy": "c2c6c10f0bc3ebe49c0270923d77b2c2d41382e419cd690291b02d54804343ef",
+    "ood_class_means.npy": "f92058f18067e18de379ec1103ddceb7b8040e50d753ee0908fbca7755d34e73",
+    "ood_precision.npy": "875491ab179420f6cff9197a9f85d7fc9ec70264d875729cf9f4246168c5cadf"
   },
-  "conformal_alpha": 0.02
+  "conformal_alpha": 0.02,
+  "ood": {
+    "scorer": "mahalanobis",
+    "tau": 5584.58203125,
+    "knn_k": 10,
+    "id_acceptance": 0.995
+  },
+  "tau_conf": 0.9543623328208923,
+  "quality_thresholds": {
+    "min_brightness": 41.31669616699219,
+    "max_brightness": 203.01645462036132,
+    "min_contrast": 9.965937614440918,
+    "min_sharpness": 1.9320937991142273,
+    "min_green_frac": 0.021177119502314816
+  }
 }

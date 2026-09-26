@@ -4,7 +4,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![Project Status](https://img.shields.io/badge/status-Phase%207%20next-orange.svg)](docs/PROGRESS.md)
+[![Project Status](https://img.shields.io/badge/status-Phase%208%20next-orange.svg)](docs/PROGRESS.md)
 
 An AI-powered computer vision system for detecting and classifying coffee leaf diseases in Ethiopian coffee plants using deep learning, explainable AI, and production-ready deployment.
 
@@ -144,7 +144,7 @@ uv run ruff check . && uv run ruff format --check .
 
 ## 🔄 Development Status
 
-### Current Progress: Phase 7 next (model comparison and export)
+### Current Progress: Phase 8 next (FastAPI service)
 
 | Phase  | Description           |       Status       | Key Deliverables                                                                                                                                                                |
 | :----: | --------------------- | :----------------: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -155,8 +155,8 @@ uv run ruff check . && uv run ruff format --check .
 | **4** | **Evaluation** | ✅ **Complete** | • Test macro-F1 **0.979** [0.963, 0.993] (EffV2-B0)<br>• Calibration: ECE 0.098 → 0.012<br>• Conformal 98% sets: coverage 0.987<br>• Error analysis (4/8 errors on audit-flagged labels) |
 | **5** | **Explainability & Robustness** | ✅ **Complete** | • CAM = Grad-CAM (verified), faithful (deletion test)<br>• Relative robustness **0.975** (9 corruptions, sev ≤ 3)<br>• Shortcut test: background-only acc 0.40<br>• Found: blue-paper backgrounds carry class information |
 | **6** | **Quality & OOD gates** | ✅ **Complete** | • KNN OOD detector: AUROC near 0.993 / far 1.000 (unseen sources)<br>• Quality gate fitted to where accuracy drops<br>• Accepted answers 99.4% correct; 96% of non-coffee images rejected |
-| **7**  | **Model Comparison**  |     ⏳ **Next**     | • Multi-architecture benchmark<br>• ONNX export                                                                                                                                 |
-| **8**  | **FastAPI Service**   |     ⏳ Planned     | • REST API<br>• ONNX Runtime serving                                                                                                                                            |
+| **7** | **Model Comparison & Export** | ✅ **Complete** | • 5 models compared (accuracy, leaf reliance, OOD, latency, size)<br>• Chosen: EfficientNetV2-B0 + background swap ([ADR](docs/decisions/001-deployment-model.md))<br>• Release bundle `coffeeguard-effv2b0-v1`, 63 ms per photo on CPU<br>• [Model card](docs/MODEL_CARD.md) |
+| **8**  | **FastAPI Service**   |     ⏳ **Next**     | • REST API<br>• ONNX Runtime serving                                                                                                                                            |
 | **9**  | **Streamlit UI**      |     ⏳ Planned     | • Interactive web interface<br>• Explainability dashboard                                                                                                                       |
 | **10** | **Deployment**        |     ⏳ Planned     | • Docker containers<br>• Final documentation                                                                                                                                    |
 
@@ -202,6 +202,12 @@ uv run ruff check . && uv run ruff format --check .
 - **Rejects what it shouldn't answer:** a KNN detector on the model's embeddings separates coffee leaves from other plant leaves (AUROC 0.993) and non-leaf images (1.000), tested on image sources never used for tuning
 - **Quality gate** asks for a retake only where the model's accuracy really drops (0.5% of genuine photos rejected, not 94% of slightly dark ones as a naive rule did)
 - **End to end on test:** 90.8% of genuine photos answered, 99.4% of those correct; the rest get *uncertain + top candidates* or a retake request; 175 of 182 non-coffee images rejected
+
+#### ✅ Phase 7 Complete (Model choice & release)
+
+- **Chosen: EfficientNetV2-B0 + background swap** — tied on accuracy with EfficientNet-B0 and plain EfficientNetV2-B0, but relies most on the leaf rather than the photo setup ([decision record](docs/decisions/001-deployment-model.md))
+- **Fast on a laptop CPU:** 15 ms per forward pass, 63 ms for a full 2048 px phone photo
+- **Release bundle** `artifacts/models/coffeeguard-effv2b0-v1` (committed) reproduces the test results exactly; see the [model card](docs/MODEL_CARD.md)
 
 ### Quick Status Check
 

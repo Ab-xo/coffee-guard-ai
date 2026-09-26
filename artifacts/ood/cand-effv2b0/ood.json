@@ -1,0 +1,260 @@
+{
+  "bundle": "cand-effv2b0",
+  "n": {
+    "train": 1764,
+    "val": 377,
+    "test": 379,
+    "ood_cal": 186,
+    "ood_test": 182
+  },
+  "ood_sources": {
+    "far/animals": 50,
+    "far/wallpapers": 36,
+    "near/banana_leaves_lsd": 50,
+    "near/tomato_leaves": 50,
+    "far/indoor_scenes": 42,
+    "far/rendered_text": 50,
+    "far/synthetic": 40,
+    "near/bean_leaves": 50
+  },
+  "scorer_comparison": {
+    "msp": {
+      "cal_auroc": {
+        "near": 0.9779310344827586,
+        "far": 0.9837764480908026
+      },
+      "cal_auroc_mean": 0.9808537412867806
+    },
+    "energy": {
+      "cal_auroc": {
+        "near": 0.9810610079575597,
+        "far": 0.9870766763308865
+      },
+      "cal_auroc_mean": 0.9840688421442231
+    },
+    "mahalanobis": {
+      "cal_auroc": {
+        "near": 0.9990981432360743,
+        "far": 0.9880636604774535
+      },
+      "cal_auroc_mean": 0.9935809018567638
+    },
+    "knn": {
+      "cal_auroc": {
+        "near": 0.9994694960212201,
+        "far": 0.9999074702362593
+      },
+      "cal_auroc_mean": 0.9996884831287397
+    }
+  },
+  "scorer": "knn",
+  "tau_ood": 0.5459531545639038,
+  "tau_ood_val_acceptance": 0.99,
+  "tau_conf": 0.7722873091697693,
+  "quality_thresholds": {
+    "min_brightness": 41.31669616699219,
+    "max_brightness": 203.01645462036132,
+    "min_contrast": 12.451808452606201,
+    "min_sharpness": 1.5867026448249817,
+    "min_green_frac": 0.021177119502314816
+  },
+  "quality_threshold_fit": {
+    "brightness": {
+      "steps": [
+        {
+          "severity": 1,
+          "accuracy": 0.9787798408488063,
+          "median_measure": 132.87765502929688
+        },
+        {
+          "severity": 2,
+          "accuracy": 0.9734748010610079,
+          "median_measure": 107.85810089111328
+        },
+        {
+          "severity": 3,
+          "accuracy": 0.9655172413793104,
+          "median_measure": 83.06790924072266
+        },
+        {
+          "severity": 4,
+          "accuracy": 0.9442970822281167,
+          "median_measure": 57.77651596069336
+        },
+        {
+          "severity": 5,
+          "accuracy": 0.9018567639257294,
+          "median_measure": 41.31669616699219
+        }
+      ],
+      "percentile_threshold": 89.73496227264404,
+      "threshold": 41.31669616699219
+    },
+    "contrast": {
+      "steps": [
+        {
+          "severity": 1,
+          "accuracy": 0.9787798408488063,
+          "median_measure": 37.287776947021484
+        },
+        {
+          "severity": 2,
+          "accuracy": 0.9761273209549072,
+          "median_measure": 27.362550735473633
+        },
+        {
+          "severity": 3,
+          "accuracy": 0.9655172413793104,
+          "median_measure": 19.863662719726562
+        },
+        {
+          "severity": 4,
+          "accuracy": 0.9151193633952255,
+          "median_measure": 14.937679290771484
+        },
+        {
+          "severity": 5,
+          "accuracy": 0.8275862068965517,
+          "median_measure": 9.965937614440918
+        }
+      ],
+      "percentile_threshold": 24.504237813949583,
+      "threshold": 12.451808452606201
+    },
+    "sharpness": {
+      "steps": [
+        {
+          "severity": 1,
+          "accuracy": 0.9787798408488063,
+          "median_measure": 21.535749435424805
+        },
+        {
+          "severity": 2,
+          "accuracy": 0.9708222811671088,
+          "median_measure": 4.098993301391602
+        },
+        {
+          "severity": 3,
+          "accuracy": 0.946949602122016,
+          "median_measure": 2.220803737640381
+        },
+        {
+          "severity": 4,
+          "accuracy": 0.9098143236074271,
+          "median_measure": 1.6433838605880737
+        },
+        {
+          "severity": 5,
+          "accuracy": 0.8408488063660478,
+          "median_measure": 1.5300214290618896
+        }
+      ],
+      "percentile_threshold": 39.04526168823242,
+      "threshold": 1.5867026448249817
+    }
+  },
+  "test": {
+    "msp": {
+      "id_acceptance": 0.9234828496042217,
+      "near": {
+        "auroc": 0.9571503957783641,
+        "fpr_at_95_id": 0.1
+      },
+      "far": {
+        "auroc": 0.9864276005436955,
+        "fpr_at_95_id": 0.0
+      },
+      "all": {
+        "auroc": 0.9783844124213518,
+        "fpr_at_95_id": 0.027472527472527472
+      }
+    },
+    "energy": {
+      "id_acceptance": 0.9182058047493403,
+      "near": {
+        "auroc": 0.9700263852242745,
+        "fpr_at_95_id": 0.1
+      },
+      "far": {
+        "auroc": 0.9920044774926042,
+        "fpr_at_95_id": 0.007575757575757576
+      },
+      "all": {
+        "auroc": 0.9859665400562498,
+        "fpr_at_95_id": 0.03296703296703297
+      }
+    },
+    "mahalanobis": {
+      "id_acceptance": 0.9393139841688655,
+      "near": {
+        "auroc": 0.9862796833773086,
+        "fpr_at_95_id": 0.02
+      },
+      "far": {
+        "auroc": 0.47225553689933636,
+        "fpr_at_95_id": 0.5303030303030303
+      },
+      "all": {
+        "auroc": 0.6134709617559222,
+        "fpr_at_95_id": 0.3901098901098901
+      }
+    },
+    "knn": {
+      "id_acceptance": 0.9182058047493403,
+      "near": {
+        "auroc": 0.9901846965699208,
+        "fpr_at_95_id": 0.0
+      },
+      "far": {
+        "auroc": 0.9999800111937315,
+        "fpr_at_95_id": 0.0
+      },
+      "all": {
+        "auroc": 0.9972889906926846,
+        "fpr_at_95_id": 0.0
+      }
+    }
+  },
+  "test_per_source_accepted_by_ood_gate": {
+    "indoor_scenes": 0.0,
+    "rendered_text": 0.0,
+    "synthetic": 0.0,
+    "bean_leaves": 0.06
+  },
+  "quality_gate": {
+    "val_rejected": 0.002652519893899204,
+    "test_rejected": 0.005277044854881266,
+    "ood_test_rejected": 0.5,
+    "corrupted_test_rejected": {
+      "brightness_sev3": 0.07387862796833773,
+      "brightness_sev5": 0.762532981530343,
+      "contrast_sev3": 0.2559366754617414,
+      "contrast_sev5": 1.0,
+      "gaussian_blur_sev3": 0.1424802110817942,
+      "gaussian_blur_sev5": 0.5092348284960422,
+      "gaussian_noise_sev3": 0.0,
+      "gaussian_noise_sev5": 0.0,
+      "jpeg_sev3": 0.005277044854881266,
+      "jpeg_sev5": 0.036939313984168866
+    }
+  },
+  "decisions": {
+    "test": {
+      "counts": {
+        "accepted:None": 358,
+        "uncertain:low_confidence": 10,
+        "rejected:ood": 9,
+        "rejected:low_quality": 2
+      },
+      "accepted_share": 0.9445910290237467,
+      "accepted_accuracy": 0.994413407821229
+    },
+    "ood_test": {
+      "counts": {
+        "rejected:low_quality": 91,
+        "rejected:ood": 88,
+        "accepted:None": 3
+      }
+    }
+  }
+}

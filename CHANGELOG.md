@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Phase 7 Completed - Model Comparison and Release Bundle ✅
+
+#### Added
+- `src/coffeeguard/export/benchmark.py` - CPU latency/size benchmark; CLI `coffeeguard benchmark`
+- `src/coffeeguard/evaluation/compare.py` - decision matrix; CLI `coffeeguard compare`
+- `docs/decisions/001-deployment-model.md` (ADR), `docs/MODEL_CARD.md`
+- Release bundle `artifacts/models/coffeeguard-effv2b0-v1` (committed; weights exempted from the large-file rule)
+- `tests/unit/test_benchmark_compare.py`
+
+#### Results
+- Chosen: EfficientNetV2-B0 + background swap - test macro-F1 0.974 [0.956, 0.990], leaf-only accuracy 0.963, OOD AUROC 0.993 / 1.000
+- CPU latency 15.5 ms (model), 63 ms end to end for a 2048 px photo
+- Release bundle reproduces the Phase 4 test predictions exactly (max |dp| = 0)
+
 ### Phase 6 Completed - Quality and OOD Gates ✅
 
 #### Added
@@ -273,7 +287,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 | **Phase 4** | Evaluation, calibration, conformal prediction | ✅ Complete | ~20 files |
 | **Phase 5** | Explainability and robustness | ✅ Complete | ~20 files |
 | **Phase 6** | Quality and OOD gates | ✅ Complete | ~10 files |
-| **Phase 7** | Model comparison and export | ⏳ Planned | - |
+| **Phase 7** | Model comparison and export | ✅ Complete | ~15 files |
 | **Phase 8** | FastAPI service | ⏳ Planned | - |
 | **Phase 9** | Streamlit UI | ⏳ Planned | - |
 | **Phase 10** | Docker, documentation, final polish | ⏳ Planned | - |

@@ -795,3 +795,58 @@ OOD gate alone, per test source: indoor scenes, rendered text and synthetic fram
 | AUROC ≥ 0.95 far-OOD, ≥ 0.85 near-OOD | ✅ 1.000 / 0.993 |
 | Thresholds stored for serving | ✅ in `bundle.json` (not `configs/serve.yaml`, see top) |
 | Decision function + gate tests (blank, dark, near-OOD) | ✅ `inference/decision.py`, `tests/unit/test_ood_decision.py`; near-OOD measured on the bean-leaf source |
+
+---
+
+## Phase 7 — Model comparison, decision and release bundle
+
+### 7.1 What was built
+
+| File | Purpose |
+|---|---|
+| `export/benchmark.py` → `coffeeguard benchmark -b …` | CPU latency with ONNX Runtime (batch 1, 4 threads, 200 timed runs after 20 warm-up): model only, predict from a decoded photo, and **end to end** (decode an original phone JPEG + predict); ONNX size and parameter count → `artifacts/benchmark/<bundle>.json` |
+| `evaluation/compare.py` → `coffeeguard compare -b …` | decision matrix from the Phase 4–6 results + benchmarks → `artifacts/metrics/model_comparison.{json,md}` |
+| `docs/decisions/001-deployment-model.md` | the decision record (context, options, paired bootstrap, reasons, consequences) |
+| `docs/MODEL_CARD.md` | intended use, decision pipeline with every threshold, data, training, performance, robustness, OOD, limitations |
+| `artifacts/models/coffeeguard-effv2b0-v1/` | **release bundle** (model.onnx 23.5 MB, KNN bank 4.5 MB, classifier weights, `bundle.json` with version 1.0.0, all thresholds, headline metrics and SHA-256 of every file) — the path the API already defaults to |
+
+Tests: `tests/unit/test_benchmark_compare.py` (benchmark on the hand-built ONNX bundle reports sizes and p50 ≤ p95; compare tolerates missing results and renders the table).
+
+For a fair OOD comparison, `coffeeguard ood fit` was also run on the four other candidates (~8–10 min each on the CPU; each fits its own quality gate, KNN bank and thresholds).
+
+### 7.2 Results (test split; full table in the ADR)
+
+| Model | Test macro-F1 [95% CI] | Leaf-only acc | OOD AUROC near / far | Answered (accuracy) | Params | ONNX | CPU p50 |
+|---|---|---:|---|---|---:|---:|---:|
+| **EfficientNetV2-B0 + bg swap** | 0.974 [0.956, 0.990] | **0.963** | 0.993 / 1.000 | 90.8% (99.4%) | 5.83 M | 23.5 MB | 15.5 ms |
+| EfficientNetV2-B0 | 0.979 [0.963, 0.993] | 0.926 | 0.990 / 1.000 | 94.5% (99.4%) | 5.83 M | 23.5 MB | 22.3 ms |
+| EfficientNet-B0 | 0.974 [0.957, 0.988] | 0.903 | 0.990 / 1.000 | 92.3% (98.6%) | 3.99 M | 16.0 MB | 17.0 ms |
+| MobileNetV3-Small | 0.960 [0.938, 0.979] | 0.956 | 0.997 / 0.992 | 87.9% (99.1%) | 1.52 M | 6.1 MB | 2.7 ms |
+| MobileNetV3-Large | 0.958 [0.935, 0.977] | 0.919 | 0.995 / 1.000 | 89.4% (99.4%) | 4.19 M | 16.8 MB | 6.5 ms |
+
+- **Latency noise:** the two EfficientNetV2-B0 rows are the same network, yet measured 15.5 vs. 22.3 ms — laptop timing varies by about ±30%, so only large latency differences mean anything.
+- **End to end** (decode a 2048 px phone photo + preprocess + model), chosen model: **63 ms p50 / 72 ms p95**; with a 1024 px photo 42 ms. Target ≤ 100 ms ✅.
+
+### 7.3 Decision (ADR 001)
+
+**EfficientNetV2-B0 with background swap.** The three EfficientNets tie on test accuracy (paired CIs include 0); the background-swap model depends least on the photo setup (leaf-only 0.963, confidence on leaf-less images 0.54), which matters most for field photos; speed and size are not limiting. Trade-off: it answers slightly fewer photos directly (90.8% vs. 94.5%) at the same 99.4% accuracy. MobileNetV3-Small is recorded as the candidate for a future on-device app (retrain with background swap first).
+
+### 7.4 Release bundle and the "reproduces exactly" gate
+
+- `artifacts/models/coffeeguard-effv2b0-v1` = the `cand-effv2b0-bgswap` bundle + version, recipe, source run and headline metrics in `bundle.json`; SHA-256 recomputed for every file.
+- **Reproduction check:** `Predictor` on the release bundle reproduces the Phase 4 test predictions with **max |Δ probability| = 0.0** and macro-F1 0.97390 = 0.97390 ✅ (the plan's Phase 7 gate).
+- **Live API check** (FastAPI `TestClient`, release bundle, original full-size test photos): `/health` reports the model; Cercospora / Healthy / Leaf Rust predicted correctly at calibrated confidence 0.996–0.999 in 29–49 ms; a Phoma photo (one of the 10 test errors) came back as Healthy at **0.68** — below τ_conf 0.947, so the full decision would answer *uncertain*. Wiring the gates into the API is Phase 8.
+- **Committed in git:** only this release bundle's weights (gitignore exception + pre-commit large-file exclusion for this folder), so a fresh clone and the Phase 10 Docker image can serve without retraining; candidate bundles keep only `bundle.json`.
+- Not done: INT8 quantisation (not needed for the latency target; stretch item).
+
+### Phase 7 status ✅
+
+| Gate item | Result |
+|---|---|
+| Per-candidate test macro-F1, params, ONNX size, CPU latency p50/p95, robustness, OOD AUROC | ✅ `artifacts/metrics/model_comparison.md` |
+| Paired bootstrap between models | ✅ (vs. the chosen model) |
+| Decision recorded | ✅ `docs/decisions/001-deployment-model.md` |
+| ONNX export with three outputs + parity; bundle with SHA-256 | ✅ `artifacts/models/coffeeguard-effv2b0-v1` |
+| Model card | ✅ `docs/MODEL_CARD.md` |
+| Bundle loads in `Predictor` and reproduces the test metrics exactly | ✅ max |Δp| = 0.0 |
+| CPU p50 ≤ 100 ms | ✅ 15.5 ms model, 63 ms end to end |

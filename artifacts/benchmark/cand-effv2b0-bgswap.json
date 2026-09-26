@@ -1,0 +1,31 @@
+{
+  "bundle": "cand-effv2b0-bgswap",
+  "model": "tf_efficientnetv2_b0.in1k",
+  "onnx_mb": 23.471931,
+  "params_m": 5.833524,
+  "photo": {
+    "file": "20231123_111819 (2).jpg",
+    "size": [
+      1024,
+      768
+    ],
+    "bytes": 34952
+  },
+  "threads": 4,
+  "machine": {
+    "cpu": "Intel64 Family 6 Model 142 Stepping 10, GenuineIntel",
+    "logical_cores": 8
+  },
+  "model_only": {
+    "p50_ms": 15.478699991945177,
+    "p95_ms": 22.968390089226883
+  },
+  "predict": {
+    "p50_ms": 38.18024997599423,
+    "p95_ms": 58.979295042809085
+  },
+  "end_to_end": {
+    "p50_ms": 42.31174994492903,
+    "p95_ms": 52.53197499550877
+  }
+}

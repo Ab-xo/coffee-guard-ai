@@ -273,6 +273,52 @@ def robustness(
 
 
 @app.command()
+def benchmark(
+    bundle: Annotated[list[Path], typer.Option("--bundle", "-b", help="Bundle dir(s).")],
+    photo: Annotated[
+        Path | None, typer.Option(help="Full-size photo (default: first test photo's original).")
+    ] = None,
+    runs: Annotated[int, typer.Option(help="Timed runs.")] = 200,
+    threads: Annotated[int | None, typer.Option(help="ONNX Runtime threads.")] = None,
+    out_root: Annotated[Path, typer.Option(help="Output folder.")] = Path("artifacts/benchmark"),
+) -> None:
+    """CPU latency (p50/p95, batch 1) and size of ONNX bundles on this machine."""
+    from coffeeguard.data.dataset import read_split
+    from coffeeguard.export.benchmark import benchmark_bundle
+    from coffeeguard.utils.io import write_json
+    from coffeeguard.utils.paths import resolve
+
+    cfg = _data_cfg(Path("configs/data.yaml"), None)
+    if photo is None:
+        photo = cfg.raw_dir / read_split(cfg.splits_dir, "test")["path"].iloc[0]
+    for b in bundle:
+        res = benchmark_bundle(resolve(b), resolve(photo), runs=runs, threads=threads)
+        write_json(resolve(out_root) / f"{res['bundle']}.json", res)
+        typer.echo(
+            f"{res['bundle']}: model p50 {res['model_only']['p50_ms']:.1f} ms "
+            f"(p95 {res['model_only']['p95_ms']:.1f}) | end-to-end p50 "
+            f"{res['end_to_end']['p50_ms']:.1f} ms | {res['onnx_mb']:.1f} MB, "
+            f"{res['params_m']:.2f} M params"
+        )
+
+
+@app.command()
+def compare(
+    bundle: Annotated[list[str], typer.Option("--bundle", "-b", help="Bundle names.")],
+) -> None:
+    """Decision matrix over bundles from the Phase 4-6 results and benchmarks."""
+    from coffeeguard.evaluation.compare import gather, markdown
+    from coffeeguard.utils.io import write_json
+    from coffeeguard.utils.paths import resolve
+
+    rows = gather(bundle, resolve("artifacts"))
+    write_json(resolve("artifacts/metrics/model_comparison.json"), rows)
+    md = markdown(rows)
+    resolve("artifacts/metrics/model_comparison.md").write_text(md, "utf-8")
+    typer.echo(md)
+
+
+@app.command()
 def curves(
     run: Annotated[Path, typer.Option("--run", "-r", help="Run directory.")],
 ) -> None:

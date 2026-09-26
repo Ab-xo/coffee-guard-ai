@@ -45,7 +45,22 @@
   "files": {
     "model.onnx": "43c8f5a3bcbf0e9d82cc666796684b859199d1870fb932a60889a25534285664",
     "classifier_weight.npy": "b3046224e4461ec5b4b352c794bb0488bb26b5e81ae44987e9168da248154885",
-    "classifier_bias.npy": "9eb543c898cf3ef83ae16697347d5ed361b86fe34059ac79e75b0aa03ae6189b"
+    "classifier_bias.npy": "9eb543c898cf3ef83ae16697347d5ed361b86fe34059ac79e75b0aa03ae6189b",
+    "ood_knn_bank.npy": "2b2070c9cb8d06bea609a2da76918eeb142363ff07251cd41bafef4e5bcfa177"
   },
-  "conformal_alpha": 0.02
+  "conformal_alpha": 0.02,
+  "ood": {
+    "scorer": "knn",
+    "tau": 0.5737110376358032,
+    "knn_k": 10,
+    "id_acceptance": 0.99
+  },
+  "tau_conf": 0.9122490286827087,
+  "quality_thresholds": {
+    "min_brightness": 49.54660606384277,
+    "max_brightness": 203.01645462036132,
+    "min_contrast": 12.451808452606201,
+    "min_sharpness": 1.9320937991142273,
+    "min_green_frac": 0.021177119502314816
+  }
 }
