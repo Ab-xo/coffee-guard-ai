@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/)
 [![Release](https://img.shields.io/badge/release-v1.0-2f7d4f.svg)](CHANGELOG.md)
-[![CI](https://github.com/Ab-xo/coffee-guard-ai/actions/workflows/ci.yml/badge.svg?branch=eleni-changes)](https://github.com/Ab-xo/coffee-guard-ai/actions)
+[![CI](https://github.com/Ab-xo/coffee-guard-ai/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Ab-xo/coffee-guard-ai/actions)
 
 Coffee leaf diseases can be difficult to identify quickly from photographs, especially when images vary in lighting, blur, background, framing and disease severity. CoffeeGuard analyses a photo of one coffee leaf and predicts whether it is **Healthy** or shows **Cercospora**, **Leaf Rust** or **Phoma** — and exposes how **confident** it is, **where it looked**, how **robust** it is, and when it **refuses to answer**.
 
