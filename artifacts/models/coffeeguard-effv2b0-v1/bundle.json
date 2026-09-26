@@ -1,0 +1,84 @@
+{
+  "name": "coffeeguard-effv2b0-v1",
+  "model": "tf_efficientnetv2_b0.in1k",
+  "classes": [
+    "Healthy",
+    "Cercospora",
+    "Leaf Rust",
+    "Phoma"
+  ],
+  "img_size": 224,
+  "mean": [
+    0.485,
+    0.456,
+    0.406
+  ],
+  "std": [
+    0.229,
+    0.224,
+    0.225
+  ],
+  "data_fingerprint": "53320bd30430396d",
+  "source_run": "20260926-042311-effnetv2_b0_bgswap-s0",
+  "weights": "raw",
+  "val": {
+    "accuracy": 0.986737400530504,
+    "macro_f1": 0.9869445341669435,
+    "macro_precision": 0.9859608745684695,
+    "macro_recall": 0.9883122954651706,
+    "loss": 0.15340563654899597
+  },
+  "cam_exact": true,
+  "feature_dim": 1280,
+  "feature_map_size": [
+    7,
+    7
+  ],
+  "onnx_opset": 17,
+  "parity": {
+    "max_abs_logit_diff": 8.344650268554688e-07,
+    "argmax_agreement": 1.0
+  },
+  "temperature": 0.5203184458894946,
+  "conformal_qhat": 0.5129861831665039,
+  "thresholds": {},
+  "files": {
+    "classifier_bias.npy": "751add626777d53cef13d0967a5e07db32787730f9f382648620d22cb6163121",
+    "classifier_weight.npy": "7e2ae24545b8083580c8105713b93e0cbbd8b9148ec962354eaa018cff751c35",
+    "model.onnx": "8e640bcf1263cef11b4a6e3a1cae3df948583885e69490f6396fcce04283c5e9",
+    "ood_knn_bank.npy": "a44f26e1b4569032f24bf220491f002f471d73801a7bc040b9ff879fb4e3717d"
+  },
+  "conformal_alpha": 0.02,
+  "ood": {
+    "scorer": "knn",
+    "tau": 0.5536057353019714,
+    "knn_k": 10,
+    "id_acceptance": 0.995
+  },
+  "tau_conf": 0.9467676877975464,
+  "quality_thresholds": {
+    "min_brightness": 41.31669616699219,
+    "max_brightness": 203.01645462036132,
+    "min_contrast": 12.451808452606201,
+    "min_sharpness": 1.5867026448249817,
+    "min_green_frac": 0.021177119502314816
+  },
+  "version": "1.0.0",
+  "source_bundle": "cand-effv2b0-bgswap",
+  "recipe": "configs/train/effnetv2_b0_bgswap.yaml",
+  "metrics": {
+    "test_macro_f1": 0.9738978999193235,
+    "test_macro_f1_ci95": [
+      0.9563928380609958,
+      0.9896190934499082
+    ],
+    "test_accuracy": 0.9736147757255936,
+    "test_ece_after_temperature": 0.01430163188471331,
+    "test_conformal_coverage": 0.9736147757255936,
+    "relative_robustness_sev1_3": 0.9785036737620588,
+    "ood_auroc_near": 0.9926121372031662,
+    "ood_auroc_far": 1.0,
+    "accepted_share_test": 0.9076517150395779,
+    "accepted_accuracy_test": 0.9941860465116279
+  }
+}

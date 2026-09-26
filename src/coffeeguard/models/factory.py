@@ -24,7 +24,24 @@ def build_model(
     kwargs = {"drop_rate": drop_rate}
     if drop_path_rate:
         kwargs["drop_path_rate"] = drop_path_rate
-    return timm.create_model(name, pretrained=pretrained, num_classes=num_classes, **kwargs)
+    model = timm.create_model(name, pretrained=pretrained, num_classes=num_classes, **kwargs)
+    zero_init_classifier(model)
+    return model
+
+
+@torch.no_grad()
+def zero_init_classifier(model: nn.Module) -> None:
+    """Start the new classifier at zero (uniform prediction, loss = ln C).
+
+    timm's EfficientNet/MobileNet init draws Linear weights from U(±1/sqrt(fan_out)) with
+    fan_out = num_classes: tiny for ImageNet's 1000 classes, but ±0.5 for our 4, which
+    gave initial logits with std ≈ 6 and a linear-probe stage stuck at chance. A zero head
+    is the usual LP-FT start; gradients are still non-zero because features differ.
+    """
+    clf = model.get_classifier()
+    if isinstance(clf, nn.Linear):
+        nn.init.zeros_(clf.weight)
+        nn.init.zeros_(clf.bias)
 
 
 def model_data_config(model: nn.Module) -> dict:

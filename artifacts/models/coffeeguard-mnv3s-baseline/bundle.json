@@ -1,0 +1,51 @@
+{
+  "name": "coffeeguard-mnv3s-baseline",
+  "model": "mobilenetv3_small_100.lamb_in1k",
+  "classes": [
+    "Healthy",
+    "Cercospora",
+    "Leaf Rust",
+    "Phoma"
+  ],
+  "img_size": 224,
+  "mean": [
+    0.485,
+    0.456,
+    0.406
+  ],
+  "std": [
+    0.229,
+    0.224,
+    0.225
+  ],
+  "data_fingerprint": "53320bd30430396d",
+  "source_run": "20260925-211837-mobilenetv3_small-s0",
+  "weights": "ema",
+  "val": {
+    "accuracy": 0.9920424403183024,
+    "macro_f1": 0.9913039524791292,
+    "macro_precision": 0.990506329113924,
+    "macro_recall": 0.9923445535296868,
+    "loss": 0.11105705797672272
+  },
+  "cam_exact": false,
+  "feature_dim": 1024,
+  "feature_map_size": [
+    7,
+    7
+  ],
+  "onnx_opset": 17,
+  "parity": {
+    "max_abs_logit_diff": 1.7881393432617188e-06,
+    "argmax_agreement": 1.0
+  },
+  "temperature": 0.5770207734142707,
+  "conformal_qhat": 0.20234614610671997,
+  "thresholds": {},
+  "files": {
+    "model.onnx": "65f7fd1674a7b7cd8278a9da5315f73cc17397eeaa390993a1d05ae5d0aa130c",
+    "classifier_weight.npy": "0c49dbc703f314d3811cb0acca6088d1cf78fa02c7658527ece219e70f3d1a00",
+    "classifier_bias.npy": "5b4040bfa3c341e82db65bef61456b7319091184f248c18babc331cf0a294df6"
+  },
+  "conformal_alpha": 0.02
+}

@@ -1,0 +1,36 @@
+classes:
+- Healthy
+- Cercospora
+- Leaf Rust
+- Phoma
+class_aliases:
+  Cerscospora: Cercospora
+raw_dir: data/raw
+processed_dir: data/processed
+manifest_path: data/manifests/manifest.parquet
+splits_dir: data/splits_cv/fold1
+embeddings_path: data/manifests/embeddings.npz
+reports_dir: artifacts/reports
+figures_dir: artifacts/figures
+kaggle_dataset: biniyamyoseph/ethiopian-coffee-leaf-disease
+allowed_formats:
+- JPEG
+- PNG
+min_side: 100
+aspect_warn:
+- 0.5
+- 2.0
+cache_long_side: 384
+cache_quality: 95
+phash_max_distance: 5
+embed_similarity: 0.97
+embed_model: vit_small_patch14_dinov2.lvd142m
+split:
+  train: 0.7
+  val: 0.15
+  test: 0.15
+  n_folds: 20
+  seed: 42
+exclude: []
+exclude_name_patterns:
+- ^aug_

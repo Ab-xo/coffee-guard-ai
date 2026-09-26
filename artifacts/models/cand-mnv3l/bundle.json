@@ -1,0 +1,66 @@
+{
+  "name": "cand-mnv3l",
+  "model": "mobilenetv3_large_100.ra_in1k",
+  "classes": [
+    "Healthy",
+    "Cercospora",
+    "Leaf Rust",
+    "Phoma"
+  ],
+  "img_size": 224,
+  "mean": [
+    0.485,
+    0.456,
+    0.406
+  ],
+  "std": [
+    0.229,
+    0.224,
+    0.225
+  ],
+  "data_fingerprint": "53320bd30430396d",
+  "source_run": "20260925-195031-mobilenetv3_large-s0",
+  "weights": "raw",
+  "val": {
+    "accuracy": 0.9787798408488063,
+    "macro_f1": 0.9794377331641253,
+    "macro_precision": 0.9793707520980248,
+    "macro_recall": 0.9797172190644916,
+    "loss": 0.15004384517669678
+  },
+  "cam_exact": false,
+  "feature_dim": 1280,
+  "feature_map_size": [
+    7,
+    7
+  ],
+  "onnx_opset": 17,
+  "parity": {
+    "max_abs_logit_diff": 9.5367431640625e-07,
+    "argmax_agreement": 1.0
+  },
+  "temperature": 0.49371779847217323,
+  "conformal_qhat": 0.8765395283699036,
+  "thresholds": {},
+  "files": {
+    "model.onnx": "58d7d0b70e01e8e7b7042add7f6ababd423c92484f9f59806bba32278558b8c7",
+    "classifier_weight.npy": "9b40a7f1b63176f99ede4d848ed86ebb3c6e3d68708d26aa68a5a31918f15778",
+    "classifier_bias.npy": "a76ec582af8c41d56f318db54ba4b0f10b6a430de18f5013583c77b092de286b",
+    "ood_knn_bank.npy": "66c1b2d513192b438b8ab3eb819dfc45735b8cbdf6405c36518cc37e0f5274fa"
+  },
+  "conformal_alpha": 0.02,
+  "ood": {
+    "scorer": "knn",
+    "tau": 0.620057225227356,
+    "knn_k": 10,
+    "id_acceptance": 0.995
+  },
+  "tau_conf": 0.9164938926696777,
+  "quality_thresholds": {
+    "min_brightness": 49.54660606384277,
+    "max_brightness": 203.01645462036132,
+    "min_contrast": 12.451808452606201,
+    "min_sharpness": 1.5867026448249817,
+    "min_green_frac": 0.021177119502314816
+  }
+}

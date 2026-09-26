@@ -1,0 +1,15 @@
+# Keep the build context small: no environments, data, runs, caches or docs
+.git
+.venv
+.cache
+.ruff_cache
+.pytest_cache
+**/__pycache__
+data
+runs
+kaggle/_build
+notebooks
+docs
+tests
+*.md
+!README.md

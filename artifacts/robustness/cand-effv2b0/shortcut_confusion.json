@@ -1,0 +1,62 @@
+{
+  "bundle": "cand-effv2b0",
+  "note": "test photos with a separable background (298); rows = true class, columns = predicted",
+  "classes": [
+    "Healthy",
+    "Cercospora",
+    "Leaf Rust",
+    "Phoma"
+  ],
+  "leaf_only": [
+    [
+      57,
+      0,
+      0,
+      0
+    ],
+    [
+      1,
+      71,
+      1,
+      2
+    ],
+    [
+      3,
+      2,
+      91,
+      0
+    ],
+    [
+      11,
+      0,
+      2,
+      57
+    ]
+  ],
+  "background_only": [
+    [
+      57,
+      0,
+      0,
+      0
+    ],
+    [
+      11,
+      21,
+      43,
+      0
+    ],
+    [
+      48,
+      7,
+      41,
+      0
+    ],
+    [
+      70,
+      0,
+      0,
+      0
+    ]
+  ]
+}

@@ -46,6 +46,10 @@ def test_train_smoke(synthetic_raw: Path, tmp_path: Path):
     assert ckpt["classes"] == ["Healthy", "Cercospora", "Leaf Rust", "Phoma"]
     assert ckpt["data_fingerprint"] is not None
 
+    from coffeeguard.training.curves import plot_curves
+
+    assert plot_curves(run_dir).stat().st_size > 0
+
     # --- export to ONNX and predict through the slim runtime
     from PIL import Image
 
@@ -62,3 +66,12 @@ def test_train_smoke(synthetic_raw: Path, tmp_path: Path):
     assert pred.label in meta["classes"]
     assert abs(sum(pred.probabilities.values()) - 1.0) < 1e-5
     assert pred.feature_map.ndim == 3
+
+    # --- Phase 4 evaluation on the same bundle (val + test, calibration, conformal, figures)
+    from coffeeguard.evaluation.evaluate import evaluate_bundle
+
+    res = evaluate_bundle(bundle, data_cfg, tmp_path / "eval")
+    assert res["temperature"] > 0 and 0 <= res["conformal_qhat"] <= 1
+    assert 0 <= res["test"]["macro_f1"] <= 1
+    assert (tmp_path / "eval" / "bundle" / "figures" / "reliability.png").exists()
+    assert read_json(bundle / "bundle.json")["temperature"] == res["temperature"]

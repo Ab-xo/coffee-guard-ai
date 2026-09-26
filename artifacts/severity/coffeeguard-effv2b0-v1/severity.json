@@ -1,0 +1,154 @@
+{
+  "bundle": "coffeeguard-effv2b0-v1",
+  "n_used": 596,
+  "note": "severity proxy = colour-based lesion share of the leaf; photos on paper only",
+  "lesion_frac_by_class": {
+    "Cercospora": {
+      "count": 151.0,
+      "mean": 0.0367,
+      "std": 0.0565,
+      "min": 0.0,
+      "25%": 0.0045,
+      "50%": 0.0142,
+      "75%": 0.0524,
+      "max": 0.5051
+    },
+    "Healthy": {
+      "count": 100.0,
+      "mean": 0.0075,
+      "std": 0.0206,
+      "min": 0.0,
+      "25%": 0.0,
+      "50%": 0.0006,
+      "75%": 0.0073,
+      "max": 0.105
+    },
+    "Leaf Rust": {
+      "count": 206.0,
+      "mean": 0.1546,
+      "std": 0.14,
+      "min": 0.0096,
+      "25%": 0.052,
+      "50%": 0.1042,
+      "75%": 0.2301,
+      "max": 0.7466
+    },
+    "Phoma": {
+      "count": 139.0,
+      "mean": 0.0715,
+      "std": 0.0543,
+      "min": 0.0126,
+      "25%": 0.0375,
+      "50%": 0.0552,
+      "75%": 0.0826,
+      "max": 0.2646
+    }
+  },
+  "by_tercile": {
+    "Cercospora": {
+      "mild": {
+        "n": 51,
+        "lesion_frac_median": 0.002866370609608397,
+        "accepted": 0.9019607843137255,
+        "uncertain": 0.0784313725490196,
+        "rejected": 0.0196078431372549,
+        "wrong_top_class": 0.0,
+        "called_healthy": 0.0,
+        "answered_wrong": 0.0,
+        "mean_confidence": 0.980819444656372
+      },
+      "moderate": {
+        "n": 50,
+        "lesion_frac_median": 0.014620288558014395,
+        "accepted": 0.88,
+        "uncertain": 0.12,
+        "rejected": 0.0,
+        "wrong_top_class": 0.02,
+        "called_healthy": 0.0,
+        "answered_wrong": 0.0,
+        "mean_confidence": 0.9672633117437363
+      },
+      "severe": {
+        "n": 50,
+        "lesion_frac_median": 0.0770372806731884,
+        "accepted": 0.86,
+        "uncertain": 0.08,
+        "rejected": 0.06,
+        "wrong_top_class": 0.0,
+        "called_healthy": 0.0,
+        "answered_wrong": 0.0,
+        "mean_confidence": 0.9767257419038327
+      }
+    },
+    "Leaf Rust": {
+      "mild": {
+        "n": 69,
+        "lesion_frac_median": 0.03502776591200342,
+        "accepted": 0.9130434782608695,
+        "uncertain": 0.08695652173913043,
+        "rejected": 0.0,
+        "wrong_top_class": 0.043478260869565216,
+        "called_healthy": 0.0,
+        "answered_wrong": 0.043478260869565216,
+        "mean_confidence": 0.9809678378312484
+      },
+      "moderate": {
+        "n": 68,
+        "lesion_frac_median": 0.10415924859450686,
+        "accepted": 0.9264705882352942,
+        "uncertain": 0.04411764705882353,
+        "rejected": 0.029411764705882353,
+        "wrong_top_class": 0.0,
+        "called_healthy": 0.0,
+        "answered_wrong": 0.0,
+        "mean_confidence": 0.9905050062772
+      },
+      "severe": {
+        "n": 69,
+        "lesion_frac_median": 0.25070536074163646,
+        "accepted": 0.9565217391304348,
+        "uncertain": 0.028985507246376812,
+        "rejected": 0.014492753623188406,
+        "wrong_top_class": 0.028985507246376812,
+        "called_healthy": 0.0,
+        "answered_wrong": 0.014492753623188406,
+        "mean_confidence": 0.9877459634752834
+      }
+    },
+    "Phoma": {
+      "mild": {
+        "n": 47,
+        "lesion_frac_median": 0.031260820101894446,
+        "accepted": 0.9148936170212766,
+        "uncertain": 0.0851063829787234,
+        "rejected": 0.0,
+        "wrong_top_class": 0.02127659574468085,
+        "called_healthy": 0.02127659574468085,
+        "answered_wrong": 0.0,
+        "mean_confidence": 0.9622706238259661
+      },
+      "moderate": {
+        "n": 46,
+        "lesion_frac_median": 0.055248089537525434,
+        "accepted": 0.9782608695652174,
+        "uncertain": 0.021739130434782608,
+        "rejected": 0.0,
+        "wrong_top_class": 0.0,
+        "called_healthy": 0.0,
+        "answered_wrong": 0.0,
+        "mean_confidence": 0.9860478821008102
+      },
+      "severe": {
+        "n": 46,
+        "lesion_frac_median": 0.10845803250917598,
+        "accepted": 0.9347826086956522,
+        "uncertain": 0.021739130434782608,
+        "rejected": 0.043478260869565216,
+        "wrong_top_class": 0.021739130434782608,
+        "called_healthy": 0.0,
+        "answered_wrong": 0.0,
+        "mean_confidence": 0.9911583702672612
+      }
+    }
+  }
+}

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import importlib.metadata as md
+import os
 import platform
 import re
 import subprocess
@@ -36,7 +37,13 @@ def create_run_dir(name: str, root: str | Path = "runs") -> Path:
 
 
 def git_info() -> dict[str, Any]:
-    """Current commit SHA and whether the working tree has uncommitted changes."""
+    """Current commit SHA and whether the working tree has uncommitted changes.
+
+    Remote runs (Kaggle) have no git checkout; the launcher passes the local state in
+    ``COFFEEGUARD_GIT_SHA`` / ``COFFEEGUARD_GIT_DIRTY`` instead.
+    """
+    if sha := os.environ.get("COFFEEGUARD_GIT_SHA"):
+        return {"sha": sha, "dirty": os.environ.get("COFFEEGUARD_GIT_DIRTY") == "1"}
 
     def _git(*args: str) -> str | None:
         try:

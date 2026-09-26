@@ -105,6 +105,7 @@ known-first-party = ["coffeeguard", "apps"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = [".", "apps/api", "apps/web"]  # `tests.*` fixtures, the API package `app`, the UI package `ui`
 addopts = ["-q", "--strict-markers"]
 markers = [
     "slow: tests that train or export a model (deselect with -m 'not slow')",

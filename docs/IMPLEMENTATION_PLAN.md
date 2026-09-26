@@ -1,6 +1,6 @@
 # CoffeeGuard AI — Implementation Plan
 
-**Status:** Active · **Context:** built by one developer (the original team-process docs were retired in Phase 1 cleanup) · **Requirements baseline:** [`PROJECT_SPECIFICATION.md`](PROJECT_SPECIFICATION.md) and [`CoffeeGuard_AI_Project_Structure.md`](../CoffeeGuard_AI_Project_Structure.md)
+**Status:** Complete — v1.0 released (see PROGRESS.md for every deviation from this plan) · **Context:** built by one developer (the original team-process docs were retired in Phase 1 cleanup) · **Requirements baseline:** [`PROJECT_SPECIFICATION.md`](PROJECT_SPECIFICATION.md) and [`CoffeeGuard_AI_Project_Structure.md`](../CoffeeGuard_AI_Project_Structure.md)
 
 This plan keeps every requirement from the specification (4 classes, stratified 70/15/15, 224×224 input, EfficientNetV2-B0 as the primary model, Grad-CAM, robustness, OOD rejection, FastAPI + Streamlit) and upgrades *how* each is delivered: a typed, tested library driven by one CLI, remote GPU training launched from the repo, leakage-proof data handling, calibrated uncertainty, and a torch-free ONNX serving path.
 
@@ -152,7 +152,7 @@ Each run directory contains: `config.yaml`, `env.json` (versions, git SHA, data 
 
 ## 6. Phased implementation
 
-Each phase ends with a **Done when** gate. Work happens on a short-lived branch per phase (`phase/1-data`, …), merged to `main` through a PR once CI is green, then tagged (`v0.1-data`, …, `v1.0`).
+Each phase ends with a **Done when** gate. All work is committed on the `eleni-changes` branch, one commit per phase (no per-phase branches).
 
 ### Phase 0 — Foundation (Day 0, ~½ day)
 
@@ -215,6 +215,7 @@ Model: `tf_efficientnetv2_b0.in1k`, 224 px, `drop_rate=0.2`, `drop_path_rate=0.1
 
    ≤ 25 epochs, cosine with warmup, EMA, early stop on val macro-F1.
 3. Pick the winning variant on val macro-F1, then train it with **3 seeds**.
+   *Revised in Phase 3 (see PROGRESS.md 3.1): one seed for all runs, shorter schedule (5 probe + ≤ 15 fine-tune epochs, early stopping); headline test metrics use bootstrap 95% CIs instead of mean ± std over seeds. A and B tied on val; A was chosen.*
 4. In parallel on Kaggle, launch the comparison candidates (Phase 7) with the same recipe: MobileNetV3-Large (`mobilenetv3_large_100.ra_in1k`), EfficientNet-B0 (`efficientnet_b0.ra_in1k`).
 5. Training-curve figures (loss, macro-F1, LR) per run.
 
@@ -226,6 +227,7 @@ Model: `tf_efficientnetv2_b0.in1k`, 224 px, `drop_rate=0.2`, `drop_path_rate=0.1
 2. **Metrics** — accuracy, macro and per-class precision/recall/F1, confusion matrix (counts + row-normalized), one-vs-rest ROC-AUC, **bootstrap 95% CI** for accuracy and macro-F1, mean ± std across seeds.
 3. **Calibration** — reliability diagram + ECE before and after **temperature scaling** (fit on val).
 4. **Conformal prediction** — split conformal (LAC score) fitted on val at α = 0.10; report empirical coverage and average set size on test, overall and per class.
+   *Revised in Phase 4: α = 0.02 (98% sets). The models are ~98% accurate, so at α = 0.10 every set had one class (see PROGRESS.md 4.2).*
 5. **Confidence analysis** — the 5 confidence buckets from the spec: count, accuracy, share of errors; plus a coverage-vs-accuracy (selective prediction) curve that motivates `τ_conf`.
 6. **Error analysis** — galleries: confident-but-wrong (p ≥ 0.8), low-confidence, most-confused class pairs; error rate by quality quantile (blur, brightness, background fraction). `notebooks/05_evaluation.ipynb` presents it.
 7. **Test set opened once** for the final candidates only; results go to `artifacts/metrics/test_metrics.json`.
@@ -262,6 +264,8 @@ Model: `tf_efficientnetv2_b0.in1k`, 224 px, `drop_rate=0.2`, `drop_path_rate=0.1
 5. Decision function (`inference/decision.py`) implements the logic in §3 and returns `status ∈ {accepted, uncertain, rejected}` with `reason ∈ {low_quality, ood, low_confidence}`.
 
 **Done when:** OOD metrics are reported, thresholds are in `configs/serve.yaml`, and gate tests (blank image, dark image, near-OOD leaf fixture) pass.
+
+*Revised in Phase 6 (PROGRESS.md 6.4–6.5): thresholds are stored in the bundle's `bundle.json`; quality thresholds are fitted to where the model's accuracy drops (not training percentiles); τ_ood is the highest val percentile at which ≤ 1% of OOD-cal images pass.*
 
 ### Phase 7 — Model comparison and export (Day 6, afternoon)
 

@@ -1,212 +1,144 @@
 # 🍃 CoffeeGuard AI
 
-> **Intelligent Coffee Leaf Disease Detection System for Ethiopian Coffee**
+> **Coffee leaf disease detection for Ethiopian coffee — with confidence, explanations, robustness checks, and the sense to say "I can't tell".**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![Project Status](https://img.shields.io/badge/status-Phase%202%20in%20progress-orange.svg)](docs/PROGRESS.md)
+[![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/)
+[![Release](https://img.shields.io/badge/release-v1.0-2f7d4f.svg)](CHANGELOG.md)
+[![CI](https://github.com/Ab-xo/coffee-guard-ai/actions/workflows/ci.yml/badge.svg?branch=eleni-changes)](https://github.com/Ab-xo/coffee-guard-ai/actions)
 
-An AI-powered computer vision system for detecting and classifying coffee leaf diseases in Ethiopian coffee plants using deep learning, explainable AI, and production-ready deployment.
+Coffee leaf diseases can be difficult to identify quickly from photographs, especially when images vary in lighting, blur, background, framing and disease severity. CoffeeGuard analyses a photo of one coffee leaf and predicts whether it is **Healthy** or shows **Cercospora**, **Leaf Rust** or **Phoma** — and exposes how **confident** it is, **where it looked**, how **robust** it is, and when it **refuses to answer**.
 
----
-
-## 📋 Table of Contents
-
-- [Overview](#-overview)
-- [Key Features](#-key-features)
-- [Project Structure](#-project-structure)
-- [Getting Started](#-getting-started)
-- [Development Status](#-development-status)
-- [Documentation](#-documentation)
-- [License](#-license)
+| Home | Diagnose | Model Analysis |
+|---|---|---|
+| ![Home page](docs/screenshots/home.jpg) | ![Diagnosis: uncertain answer with heat map](docs/screenshots/diagnose_uncertain.jpg) | ![Model analysis](docs/screenshots/analysis.jpg) |
 
 ---
 
-## 🎯 Overview
+## 🚀 Quick start
 
-**CoffeeGuard AI** addresses the critical challenge of rapidly identifying coffee leaf diseases in Ethiopian coffee farms. The system leverages state-of-the-art deep learning to classify leaf images into four categories:
-
-- ✅ **Healthy**
-- 🔴 **Cercospora**
-- 🟠 **Leaf Rust**
-- 🟡 **Phoma**
-
-### Project Scope
-
-- **Type**: Computer Vision + Deep Learning + AI Engineering
-- **Timeline**: 4-7 days intensive development
-- **Model**: EfficientNetV2-B0 with transfer learning (LP-FT)
-- **Deployment**: FastAPI + Streamlit, ONNX Runtime serving
-- **Dataset**: [Ethiopian Coffee Leaf Disease Dataset](https://www.kaggle.com/datasets/biniyamyoseph/ethiopian-coffee-leaf-disease/data) (CC0)
-
----
-
-## ✨ Key Features
-
-### 🔬 Core Capabilities
-
-- **Multi-class Classification**: Accurate disease identification across 4 classes
-- **Transfer Learning**: EfficientNetV2-B0 pre-trained on ImageNet
-- **Explainable AI**: Grad-CAM visualizations showing model attention
-- **Robustness Testing**: Evaluation against realistic image perturbations
-- **OOD Detection**: Rejects irrelevant/out-of-distribution inputs
-
-### 🛠 Engineering Excellence
-
-- **Data Quality Pipeline**: Validation, exact / near / rotated-copy duplicate detection, label-issue audit
-- **Leakage-safe Splitting**: Group-aware stratified 70/15/15 split — copies of one leaf never cross splits
-- **Confidence Analysis**: Calibration, conformal prediction sets, high/low confidence error analysis
-- **Model Comparison**: Benchmark multiple architectures on accuracy, latency, size and robustness
-- **Production-Ready API**: FastAPI inference service on a slim ONNX Runtime bundle
-- **Interactive UI**: Streamlit web application
-
----
-
-## 📁 Project Structure
-
-```
-coffee-guard-ai/
-├── src/coffeeguard/          # Python package (installed; CLI: `coffeeguard`)
-│   ├── cli.py                # every pipeline step is one command
-│   ├── config.py             # typed (pydantic) configs
-│   ├── data/                 # download, scan/validate, dedup, split, report, dataset
-│   ├── embeddings/           # DINOv2 embeddings, label audit, probe baseline
-│   ├── models/ training/     # timm factory, multi-stage trainer, Kaggle GPU runner
-│   ├── evaluation/ export/   # metrics, ONNX export + parity check
-│   ├── explainability/ robustness/ ood/
-│   ├── inference/            # slim runtime: preprocessing, quality, ONNX predictor
-│   └── utils/
-├── apps/api/                 # FastAPI service
-├── apps/web/                 # Streamlit UI
-├── configs/                  # data.yaml, train/*.yaml recipes
-├── kaggle/                   # GPU kernel template
-├── data/                     # raw/ processed/ manifests/ (git-ignored), splits/ (committed)
-├── artifacts/                # figures, reports, metrics, model bundles
-├── notebooks/                # narrative only
-├── tests/                    # unit + integration (synthetic fixtures)
-└── docs/                     # plan, progress log, specification, decisions
-```
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- [uv](https://docs.astral.sh/uv/) (manages Python 3.12 and all dependencies)
-- A Kaggle account and API token (for the dataset and free GPU training)
-- ~8 GB free disk space
-
-### Installation
+**With Docker** (nothing else needed):
 
 ```bash
 git clone https://github.com/Ab-xo/coffee-guard-ai.git
 cd coffee-guard-ai
-uv sync --all-extras          # creates .venv with Python 3.12
-uv run coffeeguard --help
+docker compose up --build
 ```
 
-Kaggle authentication: run `kaggle auth login`, or save your token from
-<https://www.kaggle.com/settings/api> as `~/.kaggle/access_token`.
+- Web app → <http://localhost:8501> (try <http://localhost:8501/diagnose?sample=leaf_rust>)
+- API docs → <http://localhost:8000/docs>
 
-### Pipeline
+**With [uv](https://docs.astral.sh/uv/)** (for development):
 
 ```bash
-uv run coffeeguard data download        # Kaggle -> data/raw
-uv run coffeeguard data prepare         # scan, embed, dedup/group, split
-uv run coffeeguard data report          # EDA figures + eda_summary.json
-uv run coffeeguard embed audit          # label-issue audit + DINOv2 probe baseline
-uv run coffeeguard train -c configs/train/effnetv2_b0.yaml            # local (CPU/GPU)
-uv run coffeeguard remote train -c configs/train/effnetv2_b0.yaml --seeds 0,1,2  # Kaggle GPU
-uv run coffeeguard export --run runs/<run-dir>                        # ONNX bundle
+uv sync --all-extras
+uv run uvicorn app.main:app --app-dir apps/api          # API on :8000
+uv run streamlit run apps/web/streamlit_app.py          # web app on :8501 (second terminal)
 ```
 
-### Tests and lint
+The trained model ships in the repository (`artifacts/models/coffeeguard-effv2b0-v1`, 28 MB), so neither route needs the dataset or a GPU. A 5-minute walkthrough: [`docs/DEMO.md`](docs/DEMO.md).
 
-```bash
-uv run pytest -m "not slow"   # fast unit tests
-uv run pytest                 # + train/export smoke test
-uv run ruff check . && uv run ruff format --check .
+---
+
+## 📊 Results
+
+Deployed model: **EfficientNetV2-B0** (transfer learning, background-swap augmentation), evaluated once on **379 held-out test photos**:
+
+| Measure | Value |
+| --- | --- |
+| Macro-F1 [95% bootstrap CI] | **0.974** [0.956, 0.990] — per class 0.964–0.986 |
+| 5-fold group cross-validation | 0.985 ± 0.007 |
+| Calibration error (ECE) | 0.097 → **0.014** after temperature scaling |
+| Answered directly / accuracy of those answers | **90.8% / 99.4%** (7.4% *uncertain* with the likely classes, 1.8% turned away) |
+| Telling coffee leaves from other plant leaves / from non-leaf images | AUROC **0.993 / 1.000** (image sources never used for tuning) |
+| Score kept under moderate blur, noise, darkness, JPEG, occlusion … | 97.9% |
+| Heat maps | faithful (deletion test) · 66% of the heat on the leaf |
+| Speed on a CPU server | 15 ms per forward pass · 63 ms for a full 2048 px phone photo |
+
+Five models were compared on the same recipe — see the **Model Comparison** page or the [decision record](docs/decisions/001-deployment-model.md).
+
+**Limits:** trained and tested on one public dataset whose classes were photographed in different setups; **not yet validated on new farm photos**; very early infection, several leaves per photo, heavy noise/compression and diseases other than these four are outside what it has learned. A first opinion, not a diagnosis. Details: [model card](docs/MODEL_CARD.md).
+
+---
+
+## 🧭 How it works
+
+```mermaid
+flowchart LR
+  subgraph Offline["Offline — laptop CPU + Kaggle T4 GPU"]
+    RAW[Kaggle dataset<br/>12,000 files] --> PREP[validate · dedup & group<br/>group-aware split<br/>2,520 photos]
+    PREP --> TRAIN[LP-FT training<br/>quality + background augmentation]
+    TRAIN --> EVAL[evaluate · calibrate · conformal<br/>explain · robustness · OOD fit · CV]
+    EVAL --> BUNDLE[ONNX release bundle<br/>+ thresholds]
+  end
+  subgraph Online["Online — Docker, CPU"]
+    UI[Streamlit app] -->|photo| API[FastAPI]
+    API --> Q{photo quality OK?}
+    Q -- no --> R1[retake request]
+    Q -- yes --> ORT[ONNX Runtime<br/>logits · embedding · feature map]
+    ORT --> OOD{looks like a coffee leaf?}
+    OOD -- no --> R2[turned away]
+    OOD -- yes --> D{one clear class,<br/>confident?}
+    D -- yes --> A[diagnosis + heat map]
+    D -- no --> U[uncertain: likely classes]
+  end
+  BUNDLE --> ORT
 ```
 
 ---
 
-## 🔄 Development Status
+## 🗂 Project structure
 
-### Current Progress: Phase 2 (Training Infrastructure)
-
-| Phase  | Description           |       Status       | Key Deliverables                                                                                                                                                                |
-| :----: | --------------------- | :----------------: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **0**  | **Foundation**        |  ✅ **Complete**   | • Modern tooling (uv, ruff, pre-commit)<br>• CI/CD pipeline<br>• Type-safe configuration<br>• CLI interface                                                                     |
-| **1**  | **Data Engineering**  |  ✅ **Complete**   | • Dataset validation & cleaning<br>• Duplicate detection (exact/near/rotated)<br>• Leakage-safe splitting (70/15/15)<br>• EDA reports & visualizations<br>• Label quality audit |
-| **2**  | **Training Pipeline** | 🔄 **In Progress** | • Multi-stage trainer (LP → FT)<br>• Kaggle GPU integration<br>• Model factory (timm)<br>• Smoke tests passing                                                                  |
-| **3**  | **Baseline Training** |    ⏳ **Next**     | • EfficientNetV2-B0 training<br>• Linear probe + fine-tuning<br>• 3-seed ensemble                                                                                               |
-| **4**  | **Evaluation**        |     ⏳ Planned     | • Calibration analysis<br>• Conformal prediction<br>• Error analysis                                                                                                            |
-| **5**  | **Explainability**    |     ⏳ Planned     | • Grad-CAM visualizations<br>• Feature importance                                                                                                                               |
-| **6**  | **Robustness & OOD**  |     ⏳ Planned     | • Perturbation testing<br>• Out-of-distribution detection                                                                                                                       |
-| **7**  | **Model Comparison**  |     ⏳ Planned     | • Multi-architecture benchmark<br>• ONNX export                                                                                                                                 |
-| **8**  | **FastAPI Service**   |     ⏳ Planned     | • REST API<br>• ONNX Runtime serving                                                                                                                                            |
-| **9**  | **Streamlit UI**      |     ⏳ Planned     | • Interactive web interface<br>• Explainability dashboard                                                                                                                       |
-| **10** | **Deployment**        |     ⏳ Planned     | • Docker containers<br>• Final documentation                                                                                                                                    |
-
-**Legend:** ✅ Complete • 🔄 In Progress • ⏳ Planned
-
-### What's Been Accomplished
-
-#### ✅ Phase 0 & 1 Complete (Foundation + Data)
-
-- **107 files changed:** 67 added, 11 modified, 29 removed
-- **Production-ready data pipeline** with validation, deduplication, and group-aware splitting
-- **Comprehensive test suite** (5 unit tests + 1 integration test)
-- **Complete ML infrastructure** ready for training (models, trainers, exporters)
-- **Baseline established:** DINOv2 probe classifier + label quality audit
-
-#### 🔄 Phase 2 In Progress (Training)
-
-- Training code complete and smoke-tested
-- Ready for full EfficientNetV2-B0 training runs
-
-### Quick Status Check
-
-```bash
-# See detailed progress with decisions and results
-cat docs/PROGRESS.md
-
-# See all changes in this release
-cat CHANGELOG.md
-
-# Verify everything works
-uv run pytest -m "not slow"  # Fast unit tests only
+```text
+coffee-guard-ai/
+├── src/coffeeguard/        # the library + `coffeeguard` CLI (data, training, evaluation,
+│   └── inference/          #   explainability, robustness, OOD); inference/ is torch-free
+├── apps/api/               # FastAPI service
+├── apps/web/               # Streamlit app: Home, Diagnose, Model Comparison, EDA,
+│                           #   Model Analysis, About Team
+├── configs/                # data, training recipes, CV folds
+├── data/splits*/           # committed train/val/test split and CV folds
+├── artifacts/              # release bundle, metrics, figures, reports (committed)
+├── kaggle/                 # remote GPU training kernel
+├── tests/                  # unit, API and headless-UI tests
+├── docs/                   # report, model & data cards, decisions, progress log
+├── Dockerfile.api  Dockerfile.web  docker-compose.yml
+└── pyproject.toml  uv.lock
 ```
 
-For detailed technical decisions, experiment results, and step-by-step progress: [docs/PROGRESS.md](docs/PROGRESS.md).
+## 🔁 Reproduce the pipeline
+
+Every step is one command (details and all numbers: [technical report §10](docs/TECHNICAL_REPORT.md#10-reproducing)):
+
+```bash
+uv run coffeeguard data download        # Kaggle -> data/raw
+uv run coffeeguard data prepare         # validate, embed, dedup/group, split
+uv run coffeeguard remote train -c configs/train/effnetv2_b0_bgswap.yaml    # Kaggle T4
+uv run coffeeguard export --run runs/<run> --name <bundle>
+uv run coffeeguard evaluate -b artifacts/models/<bundle>
+uv run coffeeguard ood fit -b artifacts/models/<bundle>
+```
+
+Tests and lint: `uv run pytest` · `uv run ruff check . && uv run ruff format --check .`
 
 ---
 
 ## 📚 Documentation
 
-- **[📝 CHANGELOG](CHANGELOG.md)** — what changed in each release, organized by phase
-- **[🗺️ Implementation Plan](docs/IMPLEMENTATION_PLAN.md)** — phases, design decisions, success targets
-- **[📊 Progress Log](docs/PROGRESS.md)** — what was built, results and decisions, step by step
-- **[📋 Technical Specification](docs/PROJECT_SPECIFICATION.md)** — original requirements baseline
-- **[🤝 Contributing](CONTRIBUTING.md)** — development workflow and conventions
-
----
+- **[Technical report](docs/TECHNICAL_REPORT.md)** — data, method, experiments, results, limitations
+- **[Model card](docs/MODEL_CARD.md)** · **[Data card](docs/DATA_CARD.md)** · **[Deployment decision](docs/decisions/001-deployment-model.md)**
+- **[Demo script](docs/DEMO.md)** — a 5-minute walkthrough
+- **[Progress log](docs/PROGRESS.md)** — every step, number and decision · **[Changelog](CHANGELOG.md)**
+- **[Implementation plan](docs/IMPLEMENTATION_PLAN.md)** · **[Original specification](docs/PROJECT_SPECIFICATION.md)** · **[Contributing](CONTRIBUTING.md)**
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT — see [LICENSE](LICENSE).
 
----
+## 🙏 Acknowledgements
 
-## 🙏 Acknowledgments
+- **Data:** [Ethiopian Coffee Leaf Disease dataset](https://www.kaggle.com/datasets/biniyamyoseph/ethiopian-coffee-leaf-disease) by Biniyam Yoseph (CC0); out-of-distribution test images from the sources listed in the [data card](docs/DATA_CARD.md)
+- **Compute:** Kaggle free GPU
+- **Open source:** PyTorch, timm, ONNX Runtime, scikit-learn, FastAPI, Streamlit, Altair, cleanlab
 
-- **Dataset**: [Ethiopian Coffee Leaf Disease Dataset](https://www.kaggle.com/datasets/biniyamyoseph/ethiopian-coffee-leaf-disease/data) by Biniyam Yoseph
-- **EfficientNet**: Google Research · **DINOv2**: Meta AI
-- **Community**: PyTorch, timm, FastAPI, and Streamlit communities
-
----
-
-<div align="center">
-  <strong>Built with ❤️ for Ethiopian Coffee Farmers</strong>
-</div>
+<div align="center"><strong>Built with ❤️ for Ethiopian coffee farmers</strong></div>

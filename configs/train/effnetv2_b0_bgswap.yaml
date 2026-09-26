@@ -1,0 +1,29 @@
+# Main model + background-swap augmentation (Phase 5 shortcut fix); otherwise identical.
+name: effnetv2_b0_bgswap
+model: tf_efficientnetv2_b0.in1k
+img_size: 224
+drop_rate: 0.2
+drop_path_rate: 0.1
+batch_size: 64
+num_workers: 4
+preload: true
+label_smoothing: 0.1
+ema_decay: 0.999
+augment:
+  bg_swap_p: 0.5         # paste the leaf onto other backgrounds half the time
+stages:
+  - name: head            # linear probe: backbone frozen
+    trainable: head
+    epochs: 5             # val F1 plateaus by epoch ~5 (Phase 3 ablation)
+    lr: 1.0e-3
+    weight_decay: 1.0e-4
+    warmup_epochs: 0.5
+    patience: 3
+  - name: finetune
+    trainable: last_n
+    last_n_stages: 3      # variant A chosen in the Phase 3 ablation (tied with B, flatter val curve)
+    epochs: 15            # best epochs were 3 (B) and 9 (A); early stopping still applies
+    lr: 1.0e-4
+    weight_decay: 0.05
+    warmup_epochs: 1
+    patience: 4

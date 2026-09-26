@@ -1,0 +1,29 @@
+# The full CoffeeGuard demo:  docker compose up --build
+#   web app  -> http://localhost:8501
+#   API docs -> http://localhost:8000/docs
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    image: coffeeguard-api:1.0
+    ports:
+      - "8000:8000"
+    environment:
+      ORT_THREADS: "2"
+      LOG_LEVEL: INFO
+    restart: unless-stopped
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    image: coffeeguard-web:1.0
+    ports:
+      - "8501:8501"
+    environment:
+      API_URL: http://api:8000
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped

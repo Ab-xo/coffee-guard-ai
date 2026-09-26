@@ -151,6 +151,73 @@ def fig_sample_grid(
     return save(fig, out)
 
 
+def fig_augmentation_preview(
+    train_df: pd.DataFrame,
+    cfg: DataConfig,
+    augment,
+    img_size: int,
+    out: Path,
+    per_class: int = 2,
+    n_aug: int = 5,
+    seed: int = 0,
+) -> Path:
+    """Original + ``n_aug`` training augmentations for a few images per class.
+
+    Used to check by eye that lesions (small, colour-coded) survive augmentation.
+    """
+    import random
+
+    import matplotlib.pyplot as plt
+    import torch
+
+    from coffeeguard.data.transforms import train_transform
+
+    random.seed(seed)
+    torch.manual_seed(seed)
+    # mean 0 / std 1 → the tensor is the augmented image in [0, 1], ready to plot
+    tf = train_transform(img_size, augment, (0.0, 0.0, 0.0), (1.0, 1.0, 1.0))
+    swap = None
+    if augment.bg_swap_p > 0:
+        from coffeeguard.data.bgswap import build_background_swap
+
+        donors = []
+        for rel in train_df["image"].sample(min(80, len(train_df)), random_state=seed):
+            with Image.open(cfg.processed_dir / rel) as im:
+                donors.append(im.convert("RGB"))
+        swap = build_background_swap(donors, augment.bg_swap_p, seed=seed)
+    rows = (
+        train_df.groupby("label", sort=True)
+        .sample(per_class, random_state=seed)
+        .reset_index(drop=True)
+    )
+    fig, axes = plt.subplots(len(rows), n_aug + 1, figsize=((n_aug + 1) * 1.6, len(rows) * 1.6))
+    for r, row in rows.iterrows():
+        with Image.open(cfg.processed_dir / row["image"]) as im:
+            img = im.convert("RGB")
+        axes[r, 0].imshow(img.resize((img_size, img_size), Image.Resampling.BICUBIC))
+        axes[r, 0].set_ylabel(row["label"], color=TEXT, fontsize=8)
+        for c in range(1, n_aug + 1):
+            aug_in = swap(img) if swap is not None else img
+            axes[r, c].imshow(tf(aug_in).clamp(0, 1).permute(1, 2, 0).numpy())
+        for ax in axes[r]:
+            ax.set_xticks([])
+            ax.set_yticks([])
+            ax.grid(False)
+    axes[0, 0].set_title("original", fontsize=8, fontweight="normal")
+    for c in range(1, n_aug + 1):
+        axes[0, c].set_title(f"augmented {c}", fontsize=8, fontweight="normal")
+    fig.suptitle(
+        "Training augmentation preview",
+        x=0.01,
+        ha="left",
+        color=TEXT,
+        fontsize=11,
+        fontweight="bold",
+    )
+    fig.tight_layout()
+    return save(fig, out)
+
+
 def fig_image_sizes(m: pd.DataFrame, out: Path) -> Path:
     import matplotlib.pyplot as plt
 

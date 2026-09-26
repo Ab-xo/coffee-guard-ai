@@ -1,0 +1,1019 @@
+{
+  "bundle": "cand-effb0",
+  "n": 379,
+  "clean": {
+    "accuracy": 0.9736147757255936,
+    "macro_f1": 0.9740273097636352,
+    "macro_precision": 0.9755703243516579,
+    "macro_recall": 0.9726058201058201,
+    "mean_confidence": 0.9763686656951904,
+    "ece": 0.0163011869371409,
+    "predicted_counts": {
+      "Healthy": 109,
+      "Cercospora": 75,
+      "Leaf Rust": 127,
+      "Phoma": 68
+    },
+    "errors_to": {
+      "Healthy": 2,
+      "Cercospora": 3,
+      "Leaf Rust": 5,
+      "Phoma": 0
+    }
+  },
+  "corruptions": {
+    "brightness": {
+      "1": {
+        "accuracy": 0.9736147757255936,
+        "macro_f1": 0.9740273097636352,
+        "macro_precision": 0.9755703243516579,
+        "macro_recall": 0.9726058201058201,
+        "mean_confidence": 0.9756167531013489,
+        "ece": 0.013559244081653179,
+        "predicted_counts": {
+          "Healthy": 109,
+          "Cercospora": 75,
+          "Leaf Rust": 127,
+          "Phoma": 68
+        },
+        "errors_to": {
+          "Healthy": 2,
+          "Cercospora": 3,
+          "Leaf Rust": 5,
+          "Phoma": 0
+        }
+      },
+      "2": {
+        "accuracy": 0.9736147757255936,
+        "macro_f1": 0.9737237378500806,
+        "macro_precision": 0.9753768891926787,
+        "macro_recall": 0.9723677248677249,
+        "mean_confidence": 0.9715573787689209,
+        "ece": 0.016791663887003785,
+        "predicted_counts": {
+          "Healthy": 110,
+          "Cercospora": 76,
+          "Leaf Rust": 126,
+          "Phoma": 67
+        },
+        "errors_to": {
+          "Healthy": 3,
+          "Cercospora": 3,
+          "Leaf Rust": 4,
+          "Phoma": 0
+        }
+      },
+      "3": {
+        "accuracy": 0.9683377308707124,
+        "macro_f1": 0.9679604559527161,
+        "macro_precision": 0.9698038856304985,
+        "macro_recall": 0.9668121693121694,
+        "mean_confidence": 0.9612128734588623,
+        "ece": 0.018373367497034,
+        "predicted_counts": {
+          "Healthy": 112,
+          "Cercospora": 77,
+          "Leaf Rust": 124,
+          "Phoma": 66
+        },
+        "errors_to": {
+          "Healthy": 5,
+          "Cercospora": 4,
+          "Leaf Rust": 3,
+          "Phoma": 0
+        }
+      },
+      "4": {
+        "accuracy": 0.9313984168865436,
+        "macro_f1": 0.9336354834241772,
+        "macro_precision": 0.9372218555365952,
+        "macro_recall": 0.933941798941799,
+        "mean_confidence": 0.9313393831253052,
+        "ece": 0.03153812169714155,
+        "predicted_counts": {
+          "Healthy": 119,
+          "Cercospora": 81,
+          "Leaf Rust": 116,
+          "Phoma": 63
+        },
+        "errors_to": {
+          "Healthy": 13,
+          "Cercospora": 8,
+          "Leaf Rust": 5,
+          "Phoma": 0
+        }
+      },
+      "5": {
+        "accuracy": 0.8733509234828496,
+        "macro_f1": 0.8742777837407739,
+        "macro_precision": 0.8965252276475646,
+        "macro_recall": 0.8731613756613756,
+        "mean_confidence": 0.8893120288848877,
+        "ece": 0.0342329221539258,
+        "predicted_counts": {
+          "Healthy": 140,
+          "Cercospora": 83,
+          "Leaf Rust": 103,
+          "Phoma": 53
+        },
+        "errors_to": {
+          "Healthy": 33,
+          "Cercospora": 10,
+          "Leaf Rust": 4,
+          "Phoma": 1
+        }
+      }
+    },
+    "contrast": {
+      "1": {
+        "accuracy": 0.9630606860158312,
+        "macro_f1": 0.9623350727945665,
+        "macro_precision": 0.9669854005791506,
+        "macro_recall": 0.958558201058201,
+        "mean_confidence": 0.9772206544876099,
+        "ece": 0.021972315528462023,
+        "predicted_counts": {
+          "Healthy": 112,
+          "Cercospora": 74,
+          "Leaf Rust": 128,
+          "Phoma": 65
+        },
+        "errors_to": {
+          "Healthy": 5,
+          "Cercospora": 3,
+          "Leaf Rust": 6,
+          "Phoma": 0
+        }
+      },
+      "2": {
+        "accuracy": 0.9577836411609498,
+        "macro_f1": 0.9569251316894679,
+        "macro_precision": 0.9607007575757576,
+        "macro_recall": 0.9543518518518518,
+        "mean_confidence": 0.9707426428794861,
+        "ece": 0.026755357401981192,
+        "predicted_counts": {
+          "Healthy": 112,
+          "Cercospora": 77,
+          "Leaf Rust": 126,
+          "Phoma": 64
+        },
+        "errors_to": {
+          "Healthy": 5,
+          "Cercospora": 5,
+          "Leaf Rust": 6,
+          "Phoma": 0
+        }
+      },
+      "3": {
+        "accuracy": 0.9525065963060686,
+        "macro_f1": 0.9506447287141833,
+        "macro_precision": 0.9563749294184076,
+        "macro_recall": 0.9472089947089947,
+        "mean_confidence": 0.9417029619216919,
+        "ece": 0.03592026210082861,
+        "predicted_counts": {
+          "Healthy": 115,
+          "Cercospora": 77,
+          "Leaf Rust": 125,
+          "Phoma": 62
+        },
+        "errors_to": {
+          "Healthy": 8,
+          "Cercospora": 5,
+          "Leaf Rust": 5,
+          "Phoma": 0
+        }
+      },
+      "4": {
+        "accuracy": 0.899736147757256,
+        "macro_f1": 0.8945608620316223,
+        "macro_precision": 0.9201206201206201,
+        "macro_recall": 0.8871296296296296,
+        "mean_confidence": 0.901287317276001,
+        "ece": 0.0320039854672465,
+        "predicted_counts": {
+          "Healthy": 135,
+          "Cercospora": 77,
+          "Leaf Rust": 117,
+          "Phoma": 50
+        },
+        "errors_to": {
+          "Healthy": 28,
+          "Cercospora": 6,
+          "Leaf Rust": 4,
+          "Phoma": 0
+        }
+      },
+      "5": {
+        "accuracy": 0.7889182058047494,
+        "macro_f1": 0.7754086014076781,
+        "macro_precision": 0.8599575672070278,
+        "macro_recall": 0.7698280423280424,
+        "mean_confidence": 0.8500725626945496,
+        "ece": 0.06863664055248053,
+        "predicted_counts": {
+          "Healthy": 172,
+          "Cercospora": 78,
+          "Leaf Rust": 97,
+          "Phoma": 32
+        },
+        "errors_to": {
+          "Healthy": 65,
+          "Cercospora": 11,
+          "Leaf Rust": 4,
+          "Phoma": 0
+        }
+      }
+    },
+    "gaussian_blur": {
+      "1": {
+        "accuracy": 0.9656992084432717,
+        "macro_f1": 0.9664574106276216,
+        "macro_precision": 0.9689496827654722,
+        "macro_recall": 0.9644973544973545,
+        "mean_confidence": 0.9739959836006165,
+        "ece": 0.01769312760131652,
+        "predicted_counts": {
+          "Healthy": 111,
+          "Cercospora": 76,
+          "Leaf Rust": 126,
+          "Phoma": 66
+        },
+        "errors_to": {
+          "Healthy": 5,
+          "Cercospora": 3,
+          "Leaf Rust": 5,
+          "Phoma": 0
+        }
+      },
+      "2": {
+        "accuracy": 0.9393139841688655,
+        "macro_f1": 0.941568968560119,
+        "macro_precision": 0.9455654386702153,
+        "macro_recall": 0.9393518518518518,
+        "mean_confidence": 0.9587541818618774,
+        "ece": 0.027324928457315472,
+        "predicted_counts": {
+          "Healthy": 118,
+          "Cercospora": 75,
+          "Leaf Rust": 121,
+          "Phoma": 65
+        },
+        "errors_to": {
+          "Healthy": 11,
+          "Cercospora": 5,
+          "Leaf Rust": 7,
+          "Phoma": 0
+        }
+      },
+      "3": {
+        "accuracy": 0.9340369393139841,
+        "macro_f1": 0.9378040117114878,
+        "macro_precision": 0.9441287878787878,
+        "macro_recall": 0.9340343915343916,
+        "mean_confidence": 0.924340546131134,
+        "ece": 0.022494450408110184,
+        "predicted_counts": {
+          "Healthy": 121,
+          "Cercospora": 72,
+          "Leaf Rust": 121,
+          "Phoma": 65
+        },
+        "errors_to": {
+          "Healthy": 14,
+          "Cercospora": 3,
+          "Leaf Rust": 8,
+          "Phoma": 0
+        }
+      },
+      "4": {
+        "accuracy": 0.8865435356200527,
+        "macro_f1": 0.8924008085506566,
+        "macro_precision": 0.8913510973104782,
+        "macro_recall": 0.897473544973545,
+        "mean_confidence": 0.8112925291061401,
+        "ece": 0.07525102342024327,
+        "predicted_counts": {
+          "Healthy": 118,
+          "Cercospora": 83,
+          "Leaf Rust": 110,
+          "Phoma": 68
+        },
+        "errors_to": {
+          "Healthy": 15,
+          "Cercospora": 16,
+          "Leaf Rust": 11,
+          "Phoma": 1
+        }
+      },
+      "5": {
+        "accuracy": 0.8153034300791556,
+        "macro_f1": 0.8201968782431744,
+        "macro_precision": 0.8383583496138955,
+        "macro_recall": 0.8160978835978836,
+        "mean_confidence": 0.7118188738822937,
+        "ece": 0.10446414280692636,
+        "predicted_counts": {
+          "Healthy": 107,
+          "Cercospora": 93,
+          "Leaf Rust": 127,
+          "Phoma": 52
+        },
+        "errors_to": {
+          "Healthy": 12,
+          "Cercospora": 27,
+          "Leaf Rust": 31,
+          "Phoma": 0
+        }
+      }
+    },
+    "motion_blur": {
+      "1": {
+        "accuracy": 0.9683377308707124,
+        "macro_f1": 0.9689761228083945,
+        "macro_precision": 0.970211618147398,
+        "macro_recall": 0.9680687830687832,
+        "mean_confidence": 0.9701343774795532,
+        "ece": 0.021144432725881145,
+        "predicted_counts": {
+          "Healthy": 109,
+          "Cercospora": 77,
+          "Leaf Rust": 126,
+          "Phoma": 67
+        },
+        "errors_to": {
+          "Healthy": 3,
+          "Cercospora": 4,
+          "Leaf Rust": 5,
+          "Phoma": 0
+        }
+      },
+      "2": {
+        "accuracy": 0.9498680738786279,
+        "macro_f1": 0.9517133111117101,
+        "macro_precision": 0.956302221546124,
+        "macro_recall": 0.9486375661375661,
+        "mean_confidence": 0.9595968127250671,
+        "ece": 0.01914405885661179,
+        "predicted_counts": {
+          "Healthy": 117,
+          "Cercospora": 74,
+          "Leaf Rust": 123,
+          "Phoma": 65
+        },
+        "errors_to": {
+          "Healthy": 10,
+          "Cercospora": 3,
+          "Leaf Rust": 6,
+          "Phoma": 0
+        }
+      },
+      "3": {
+        "accuracy": 0.9261213720316622,
+        "macro_f1": 0.9274869873829065,
+        "macro_precision": 0.9352872909094488,
+        "macro_recall": 0.9244312169312169,
+        "mean_confidence": 0.9338377118110657,
+        "ece": 0.044813507858241196,
+        "predicted_counts": {
+          "Healthy": 123,
+          "Cercospora": 77,
+          "Leaf Rust": 118,
+          "Phoma": 61
+        },
+        "errors_to": {
+          "Healthy": 16,
+          "Cercospora": 6,
+          "Leaf Rust": 6,
+          "Phoma": 0
+        }
+      },
+      "4": {
+        "accuracy": 0.8891820580474934,
+        "macro_f1": 0.8926595972652519,
+        "macro_precision": 0.9104938111447826,
+        "macro_recall": 0.8887169312169312,
+        "mean_confidence": 0.8971198201179504,
+        "ece": 0.040204646247672504,
+        "predicted_counts": {
+          "Healthy": 136,
+          "Cercospora": 78,
+          "Leaf Rust": 109,
+          "Phoma": 56
+        },
+        "errors_to": {
+          "Healthy": 29,
+          "Cercospora": 7,
+          "Leaf Rust": 6,
+          "Phoma": 0
+        }
+      },
+      "5": {
+        "accuracy": 0.8047493403693932,
+        "macro_f1": 0.800027217072738,
+        "macro_precision": 0.8592479674796748,
+        "macro_recall": 0.7972222222222223,
+        "mean_confidence": 0.8486688733100891,
+        "ece": 0.08696337535702144,
+        "predicted_counts": {
+          "Healthy": 162,
+          "Cercospora": 82,
+          "Leaf Rust": 96,
+          "Phoma": 39
+        },
+        "errors_to": {
+          "Healthy": 54,
+          "Cercospora": 12,
+          "Leaf Rust": 8,
+          "Phoma": 0
+        }
+      }
+    },
+    "gaussian_noise": {
+      "1": {
+        "accuracy": 0.9577836411609498,
+        "macro_f1": 0.9579258502408408,
+        "macro_precision": 0.9592981731745696,
+        "macro_recall": 0.9575264550264551,
+        "mean_confidence": 0.9601580500602722,
+        "ece": 0.015384882295351896,
+        "predicted_counts": {
+          "Healthy": 113,
+          "Cercospora": 78,
+          "Leaf Rust": 122,
+          "Phoma": 66
+        },
+        "errors_to": {
+          "Healthy": 6,
+          "Cercospora": 6,
+          "Leaf Rust": 4,
+          "Phoma": 0
+        }
+      },
+      "2": {
+        "accuracy": 0.941952506596306,
+        "macro_f1": 0.9425485598046389,
+        "macro_precision": 0.9423906883473561,
+        "macro_recall": 0.9456216931216932,
+        "mean_confidence": 0.9207876324653625,
+        "ece": 0.04076800340083783,
+        "predicted_counts": {
+          "Healthy": 113,
+          "Cercospora": 84,
+          "Leaf Rust": 116,
+          "Phoma": 66
+        },
+        "errors_to": {
+          "Healthy": 6,
+          "Cercospora": 12,
+          "Leaf Rust": 4,
+          "Phoma": 0
+        }
+      },
+      "3": {
+        "accuracy": 0.8601583113456465,
+        "macro_f1": 0.8565857433803596,
+        "macro_precision": 0.8726967810150377,
+        "macro_recall": 0.8661772486772487,
+        "mean_confidence": 0.8533095717430115,
+        "ece": 0.03966534837569286,
+        "predicted_counts": {
+          "Healthy": 128,
+          "Cercospora": 100,
+          "Leaf Rust": 95,
+          "Phoma": 56
+        },
+        "errors_to": {
+          "Healthy": 21,
+          "Cercospora": 26,
+          "Leaf Rust": 3,
+          "Phoma": 3
+        }
+      },
+      "4": {
+        "accuracy": 0.6781002638522428,
+        "macro_f1": 0.6548050407989295,
+        "macro_precision": 0.7472611744084138,
+        "macro_recall": 0.6900925925925926,
+        "mean_confidence": 0.759967029094696,
+        "ece": 0.09006586222661202,
+        "predicted_counts": {
+          "Healthy": 163,
+          "Cercospora": 126,
+          "Leaf Rust": 54,
+          "Phoma": 36
+        },
+        "errors_to": {
+          "Healthy": 60,
+          "Cercospora": 53,
+          "Leaf Rust": 3,
+          "Phoma": 6
+        }
+      },
+      "5": {
+        "accuracy": 0.5092348284960422,
+        "macro_f1": 0.44844739418469115,
+        "macro_precision": 0.649174693619138,
+        "macro_recall": 0.49772486772486774,
+        "mean_confidence": 0.6568224430084229,
+        "ece": 0.15618996278906247,
+        "predicted_counts": {
+          "Healthy": 243,
+          "Cercospora": 91,
+          "Leaf Rust": 35,
+          "Phoma": 10
+        },
+        "errors_to": {
+          "Healthy": 145,
+          "Cercospora": 37,
+          "Leaf Rust": 0,
+          "Phoma": 4
+        }
+      }
+    },
+    "jpeg": {
+      "1": {
+        "accuracy": 0.9656992084432717,
+        "macro_f1": 0.9648537102642543,
+        "macro_precision": 0.9680187728937729,
+        "macro_recall": 0.9630026455026455,
+        "mean_confidence": 0.9744505286216736,
+        "ece": 0.02711336082707606,
+        "predicted_counts": {
+          "Healthy": 112,
+          "Cercospora": 78,
+          "Leaf Rust": 125,
+          "Phoma": 64
+        },
+        "errors_to": {
+          "Healthy": 5,
+          "Cercospora": 4,
+          "Leaf Rust": 4,
+          "Phoma": 0
+        }
+      },
+      "2": {
+        "accuracy": 0.9498680738786279,
+        "macro_f1": 0.9502402070677101,
+        "macro_precision": 0.9520509977827051,
+        "macro_recall": 0.9504365079365079,
+        "mean_confidence": 0.9668957591056824,
+        "ece": 0.02480035572064588,
+        "predicted_counts": {
+          "Healthy": 110,
+          "Cercospora": 82,
+          "Leaf Rust": 123,
+          "Phoma": 64
+        },
+        "errors_to": {
+          "Healthy": 5,
+          "Cercospora": 8,
+          "Leaf Rust": 6,
+          "Phoma": 0
+        }
+      },
+      "3": {
+        "accuracy": 0.9393139841688655,
+        "macro_f1": 0.9411061209788163,
+        "macro_precision": 0.9431467170137054,
+        "macro_recall": 0.9411507936507936,
+        "mean_confidence": 0.9472268223762512,
+        "ece": 0.015655932137079165,
+        "predicted_counts": {
+          "Healthy": 113,
+          "Cercospora": 81,
+          "Leaf Rust": 121,
+          "Phoma": 64
+        },
+        "errors_to": {
+          "Healthy": 8,
+          "Cercospora": 8,
+          "Leaf Rust": 7,
+          "Phoma": 0
+        }
+      },
+      "4": {
+        "accuracy": 0.920844327176781,
+        "macro_f1": 0.9218812396655538,
+        "macro_precision": 0.9239685129424083,
+        "macro_recall": 0.9244179894179895,
+        "mean_confidence": 0.9159373044967651,
+        "ece": 0.026414479067583464,
+        "predicted_counts": {
+          "Healthy": 116,
+          "Cercospora": 85,
+          "Leaf Rust": 115,
+          "Phoma": 63
+        },
+        "errors_to": {
+          "Healthy": 10,
+          "Cercospora": 12,
+          "Leaf Rust": 7,
+          "Phoma": 1
+        }
+      },
+      "5": {
+        "accuracy": 0.7387862796833773,
+        "macro_f1": 0.7329285272548844,
+        "macro_precision": 0.7905507060116403,
+        "macro_recall": 0.749589947089947,
+        "mean_confidence": 0.7998552322387695,
+        "ece": 0.07726590402208094,
+        "predicted_counts": {
+          "Healthy": 143,
+          "Cercospora": 118,
+          "Leaf Rust": 77,
+          "Phoma": 41
+        },
+        "errors_to": {
+          "Healthy": 42,
+          "Cercospora": 46,
+          "Leaf Rust": 10,
+          "Phoma": 1
+        }
+      }
+    },
+    "occlusion": {
+      "1": {
+        "accuracy": 0.9709762532981531,
+        "macro_f1": 0.9713331042680537,
+        "macro_precision": 0.9735589589015621,
+        "macro_recall": 0.9692724867724868,
+        "mean_confidence": 0.9642269611358643,
+        "ece": 0.009462321496575974,
+        "predicted_counts": {
+          "Healthy": 109,
+          "Cercospora": 74,
+          "Leaf Rust": 128,
+          "Phoma": 68
+        },
+        "errors_to": {
+          "Healthy": 2,
+          "Cercospora": 3,
+          "Leaf Rust": 6,
+          "Phoma": 0
+        }
+      },
+      "2": {
+        "accuracy": 0.9604221635883905,
+        "macro_f1": 0.9605370563261402,
+        "macro_precision": 0.9604241741993642,
+        "macro_recall": 0.9607671957671957,
+        "mean_confidence": 0.9448052048683167,
+        "ece": 0.02575367280235395,
+        "predicted_counts": {
+          "Healthy": 110,
+          "Cercospora": 76,
+          "Leaf Rust": 124,
+          "Phoma": 69
+        },
+        "errors_to": {
+          "Healthy": 4,
+          "Cercospora": 4,
+          "Leaf Rust": 5,
+          "Phoma": 2
+        }
+      },
+      "3": {
+        "accuracy": 0.9155672823218998,
+        "macro_f1": 0.9156772718427801,
+        "macro_precision": 0.9158155874257569,
+        "macro_recall": 0.9173544973544974,
+        "mean_confidence": 0.9022558331489563,
+        "ece": 0.03067016161211568,
+        "predicted_counts": {
+          "Healthy": 118,
+          "Cercospora": 72,
+          "Leaf Rust": 117,
+          "Phoma": 72
+        },
+        "errors_to": {
+          "Healthy": 12,
+          "Cercospora": 6,
+          "Leaf Rust": 8,
+          "Phoma": 6
+        }
+      },
+      "4": {
+        "accuracy": 0.8865435356200527,
+        "macro_f1": 0.8879475086759616,
+        "macro_precision": 0.8883646148881463,
+        "macro_recall": 0.8914550264550264,
+        "mean_confidence": 0.8739525079727173,
+        "ece": 0.030227344237405612,
+        "predicted_counts": {
+          "Healthy": 123,
+          "Cercospora": 75,
+          "Leaf Rust": 110,
+          "Phoma": 71
+        },
+        "errors_to": {
+          "Healthy": 19,
+          "Cercospora": 8,
+          "Leaf Rust": 8,
+          "Phoma": 8
+        }
+      },
+      "5": {
+        "accuracy": 0.8786279683377308,
+        "macro_f1": 0.8770840885071072,
+        "macro_precision": 0.8851699435154616,
+        "macro_recall": 0.8772089947089948,
+        "mean_confidence": 0.84013831615448,
+        "ece": 0.05130143318138526,
+        "predicted_counts": {
+          "Healthy": 133,
+          "Cercospora": 73,
+          "Leaf Rust": 107,
+          "Phoma": 66
+        },
+        "errors_to": {
+          "Healthy": 26,
+          "Cercospora": 7,
+          "Leaf Rust": 5,
+          "Phoma": 8
+        }
+      }
+    },
+    "crop_zoom": {
+      "1": {
+        "accuracy": 0.978891820580475,
+        "macro_f1": 0.9797128288073943,
+        "macro_precision": 0.9803659539473684,
+        "macro_recall": 0.9791798941798943,
+        "mean_confidence": 0.9803255200386047,
+        "ece": 0.019665797499050272,
+        "predicted_counts": {
+          "Healthy": 106,
+          "Cercospora": 76,
+          "Leaf Rust": 128,
+          "Phoma": 69
+        },
+        "errors_to": {
+          "Healthy": 0,
+          "Cercospora": 3,
+          "Leaf Rust": 5,
+          "Phoma": 0
+        }
+      },
+      "2": {
+        "accuracy": 0.9736147757255936,
+        "macro_f1": 0.974274737996072,
+        "macro_precision": 0.9765384615384616,
+        "macro_recall": 0.9722751322751323,
+        "mean_confidence": 0.9818102121353149,
+        "ece": 0.015904562768961253,
+        "predicted_counts": {
+          "Healthy": 106,
+          "Cercospora": 75,
+          "Leaf Rust": 130,
+          "Phoma": 68
+        },
+        "errors_to": {
+          "Healthy": 0,
+          "Cercospora": 3,
+          "Leaf Rust": 7,
+          "Phoma": 0
+        }
+      },
+      "3": {
+        "accuracy": 0.9630606860158312,
+        "macro_f1": 0.963983864379085,
+        "macro_precision": 0.9676709401709402,
+        "macro_recall": 0.9608333333333334,
+        "mean_confidence": 0.9738146066665649,
+        "ece": 0.015195971743097995,
+        "predicted_counts": {
+          "Healthy": 108,
+          "Cercospora": 75,
+          "Leaf Rust": 130,
+          "Phoma": 66
+        },
+        "errors_to": {
+          "Healthy": 3,
+          "Cercospora": 3,
+          "Leaf Rust": 8,
+          "Phoma": 0
+        }
+      },
+      "4": {
+        "accuracy": 0.9630606860158312,
+        "macro_f1": 0.9630756930702964,
+        "macro_precision": 0.9673431994362227,
+        "macro_recall": 0.9595767195767195,
+        "mean_confidence": 0.9695754051208496,
+        "ece": 0.026596672773990283,
+        "predicted_counts": {
+          "Healthy": 110,
+          "Cercospora": 75,
+          "Leaf Rust": 129,
+          "Phoma": 65
+        },
+        "errors_to": {
+          "Healthy": 4,
+          "Cercospora": 3,
+          "Leaf Rust": 7,
+          "Phoma": 0
+        }
+      },
+      "5": {
+        "accuracy": 0.9234828496042217,
+        "macro_f1": 0.9192861911650161,
+        "macro_precision": 0.9349226940390949,
+        "macro_recall": 0.9095899470899471,
+        "mean_confidence": 0.951012134552002,
+        "ece": 0.03334731429736659,
+        "predicted_counts": {
+          "Healthy": 120,
+          "Cercospora": 68,
+          "Leaf Rust": 132,
+          "Phoma": 59
+        },
+        "errors_to": {
+          "Healthy": 13,
+          "Cercospora": 3,
+          "Leaf Rust": 12,
+          "Phoma": 1
+        }
+      }
+    },
+    "rotation": {
+      "1": {
+        "accuracy": 0.9762532981530343,
+        "macro_f1": 0.977210708262479,
+        "macro_precision": 0.9773931713447843,
+        "macro_recall": 0.9772883597883598,
+        "mean_confidence": 0.9779194593429565,
+        "ece": 0.011008191863590904,
+        "predicted_counts": {
+          "Healthy": 110,
+          "Cercospora": 77,
+          "Leaf Rust": 124,
+          "Phoma": 68
+        },
+        "errors_to": {
+          "Healthy": 3,
+          "Cercospora": 3,
+          "Leaf Rust": 3,
+          "Phoma": 0
+        }
+      },
+      "2": {
+        "accuracy": 0.9736147757255936,
+        "macro_f1": 0.9741003058088534,
+        "macro_precision": 0.9750339853236195,
+        "macro_recall": 0.9737169312169313,
+        "mean_confidence": 0.9747555255889893,
+        "ece": 0.016711578598752247,
+        "predicted_counts": {
+          "Healthy": 112,
+          "Cercospora": 77,
+          "Leaf Rust": 123,
+          "Phoma": 67
+        },
+        "errors_to": {
+          "Healthy": 5,
+          "Cercospora": 3,
+          "Leaf Rust": 2,
+          "Phoma": 0
+        }
+      },
+      "3": {
+        "accuracy": 0.9577836411609498,
+        "macro_f1": 0.9592051065661138,
+        "macro_precision": 0.962538305911755,
+        "macro_recall": 0.9572883597883599,
+        "mean_confidence": 0.9600924849510193,
+        "ece": 0.019931465387344343,
+        "predicted_counts": {
+          "Healthy": 116,
+          "Cercospora": 76,
+          "Leaf Rust": 122,
+          "Phoma": 65
+        },
+        "errors_to": {
+          "Healthy": 9,
+          "Cercospora": 3,
+          "Leaf Rust": 4,
+          "Phoma": 0
+        }
+      },
+      "4": {
+        "accuracy": 0.920844327176781,
+        "macro_f1": 0.9237815429275729,
+        "macro_precision": 0.9376195259140218,
+        "macro_recall": 0.9186375661375662,
+        "mean_confidence": 0.927933394908905,
+        "ece": 0.05252080251484873,
+        "predicted_counts": {
+          "Healthy": 131,
+          "Cercospora": 75,
+          "Leaf Rust": 114,
+          "Phoma": 59
+        },
+        "errors_to": {
+          "Healthy": 24,
+          "Cercospora": 3,
+          "Leaf Rust": 3,
+          "Phoma": 0
+        }
+      },
+      "5": {
+        "accuracy": 0.8443271767810027,
+        "macro_f1": 0.8437194066420566,
+        "macro_precision": 0.8922833972134033,
+        "macro_recall": 0.8329100529100529,
+        "mean_confidence": 0.8958909511566162,
+        "ece": 0.05656588006774476,
+        "predicted_counts": {
+          "Healthy": 155,
+          "Cercospora": 74,
+          "Leaf Rust": 106,
+          "Phoma": 44
+        },
+        "errors_to": {
+          "Healthy": 49,
+          "Cercospora": 5,
+          "Leaf Rust": 5,
+          "Phoma": 0
+        }
+      }
+    }
+  },
+  "relative_robustness": {
+    "severity_1_3": 0.9798538260095093,
+    "severity_1_5": 0.9314145023418409
+  },
+  "shortcut": {
+    "n_used": 298,
+    "excluded_field_photos": {
+      "Healthy": 51,
+      "Cercospora": 0,
+      "Leaf Rust": 30,
+      "Phoma": 0
+    },
+    "majority_class_rate": 0.3221476510067114,
+    "leaf_mask_fraction_mean": 0.24256975359011532,
+    "original": {
+      "accuracy": 0.9731543624161074,
+      "macro_f1": 0.9751355410377712,
+      "macro_precision": 0.9753803768218984,
+      "macro_recall": 0.9750446428571429,
+      "mean_confidence": 0.975375771522522,
+      "ece": 0.019271368448366213,
+      "predicted_counts": {
+        "Healthy": 58,
+        "Cercospora": 75,
+        "Leaf Rust": 97,
+        "Phoma": 68
+      },
+      "errors_to": {
+        "Healthy": 1,
+        "Cercospora": 3,
+        "Leaf Rust": 4,
+        "Phoma": 0
+      }
+    },
+    "leaf_only": {
+      "accuracy": 0.9026845637583892,
+      "macro_f1": 0.9010749101249593,
+      "macro_precision": 0.9082265394693744,
+      "macro_recall": 0.9099404761904762,
+      "mean_confidence": 0.8589013814926147,
+      "ece": 0.07214000021051242,
+      "predicted_counts": {
+        "Healthy": 80,
+        "Cercospora": 71,
+        "Leaf Rust": 86,
+        "Phoma": 61
+      },
+      "errors_to": {
+        "Healthy": 23,
+        "Cercospora": 4,
+        "Leaf Rust": 2,
+        "Phoma": 0
+      }
+    },
+    "background_only": {
+      "accuracy": 0.4161073825503356,
+      "macro_f1": 0.3298165034373491,
+      "macro_precision": 0.3763858093126386,
+      "macro_recall": 0.44377192982456143,
+      "mean_confidence": 0.7037561535835266,
+      "ece": 0.2930697290689353,
+      "predicted_counts": {
+        "Healthy": 110,
+        "Cercospora": 164,
+        "Leaf Rust": 22,
+        "Phoma": 2
+      },
+      "errors_to": {
+        "Healthy": 70,
+        "Cercospora": 96,
+        "Leaf Rust": 6,
+        "Phoma": 2
+      }
+    }
+  }
+}

@@ -1,4 +1,4 @@
-# Main model, variant A (spec): fine-tune only the last 3 stages + head.
+# Main model (chosen): variant A (spec), fine-tune only the last 3 stages + head.
 name: effnetv2_b0_partial
 model: tf_efficientnetv2_b0.in1k
 img_size: 224
@@ -12,16 +12,16 @@ ema_decay: 0.999
 stages:
   - name: head            # linear probe: backbone frozen
     trainable: head
-    epochs: 8
+    epochs: 5             # val F1 plateaus by epoch ~5 (Phase 3 ablation)
     lr: 1.0e-3
     weight_decay: 1.0e-4
     warmup_epochs: 0.5
-    patience: 4
+    patience: 3
   - name: finetune
     trainable: last_n
-    last_n_stages: 3      # spec: unfreeze the last 2-3 blocks (+ conv_head)
-    epochs: 25
+    last_n_stages: 3      # variant A chosen in the Phase 3 ablation (tied with B, flatter val curve)
+    epochs: 15            # best epochs were 3 (B) and 9 (A); early stopping still applies
     lr: 1.0e-4
     weight_decay: 0.05
     warmup_epochs: 1
-    patience: 5
+    patience: 4

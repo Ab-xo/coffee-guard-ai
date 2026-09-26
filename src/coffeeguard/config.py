@@ -149,6 +149,15 @@ class AugmentConfig(StrictModel):
     contrast: float = 0.2
     saturation: float = 0.1
     blur_p: float = 0.1
+    # Quality equalisation: image resolution/sharpness/compression differ by class in this
+    # dataset (EDA), so randomly degrade clean photos until quality stops predicting class.
+    downscale_p: float = 0.5  # downscale then upscale back (loses fine detail)
+    downscale_min: float = 0.35  # smallest scale factor of the long side
+    jpeg_p: float = 0.5  # re-encode as JPEG
+    jpeg_quality_min: int = 30  # quality drawn from [jpeg_quality_min, 95]
+    # Background swap (Phase 5 finding: backgrounds carry class information): with this
+    # probability paste the leaf onto another photo's background or a plain one.
+    bg_swap_p: float = 0.0
 
 
 class StageConfig(StrictModel):

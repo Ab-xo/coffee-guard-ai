@@ -1,0 +1,31 @@
+{
+  "bundle": "cand-mnv3s",
+  "model": "mobilenetv3_small_100.lamb_in1k",
+  "onnx_mb": 6.09557,
+  "params_m": 1.5159,
+  "photo": {
+    "file": "20231123_111819 (2).jpg",
+    "size": [
+      1024,
+      768
+    ],
+    "bytes": 34952
+  },
+  "threads": 4,
+  "machine": {
+    "cpu": "Intel64 Family 6 Model 142 Stepping 10, GenuineIntel",
+    "logical_cores": 8
+  },
+  "model_only": {
+    "p50_ms": 2.694349968805909,
+    "p95_ms": 3.5663200251292437
+  },
+  "predict": {
+    "p50_ms": 19.361950049642473,
+    "p95_ms": 24.936549976700917
+  },
+  "end_to_end": {
+    "p50_ms": 23.128900036681443,
+    "p95_ms": 27.725380042102188
+  }
+}

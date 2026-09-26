@@ -11,7 +11,7 @@ On a drive without hard-link support (e.g. exFAT), set `UV_LINK_MODE=copy`.
 
 ## Workflow
 
-- One short-lived branch per plan phase (`phase/<n>-<topic>`), merged into `main` via pull request once CI is green; each merged phase is tagged (`v0.1-data`, …, `v1.0`).
+- All work is committed on the `eleni-changes` branch (no other branches), one commit per plan phase; fetch before pushing and rebase onto others' commits instead of force-pushing.
 - Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/) (`feat:`, `fix:`, `docs:`, `chore:`, `test:`).
 - Every step's results and decisions are recorded in [`docs/PROGRESS.md`](docs/PROGRESS.md).
 
