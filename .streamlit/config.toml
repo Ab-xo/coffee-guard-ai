@@ -1,0 +1,17 @@
+# Streamlit settings for the CoffeeGuard UI (read from the working directory: run from the repo root)
+[server]
+maxUploadSize = 10            # MB, same limit as the API
+
+[browser]
+gatherUsageStats = false
+
+[theme]
+base = "light"
+primaryColor = "#2f7d4f"      # coffee-leaf green: buttons, sliders, focus
+backgroundColor = "#fcfcfb"
+secondaryBackgroundColor = "#f0efec"
+textColor = "#0b0b0b"
+font = "sans serif"
+
+[client]
+toolbarMode = "minimal"      # hide developer options (e.g. "Deploy") from users

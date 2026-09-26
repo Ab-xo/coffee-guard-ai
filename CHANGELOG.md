@@ -9,6 +9,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Phase 9 Completed - Streamlit UI ✅
+
+#### Added
+- `apps/web/streamlit_app.py` + `apps/web/views/` (Diagnose, The model) + `apps/web/ui/` (API client, banner, chart, images)
+- Upload, camera and sample input; `?sample=` demo links; 7 sample photos with sources (`apps/web/samples/`)
+- Status banner (colour + icon + words), photo vs. heat map with a strength slider, calibrated probability chart, details panel
+- Model page from `/model-info`: metric tiles, decision steps with live thresholds, limitations, evaluation figures
+- `.streamlit/config.toml` (theme, 10 MB upload limit, developer toolbar hidden); screenshots in `docs/screenshots/`
+- 14 UI tests (AppTest, API mocked)
+
+#### Fixed (found by reviewing real-browser screenshots)
+- Rejected photos no longer show a probability chart
+- Photos <= 1024 px are sent unchanged (re-compression had changed borderline results)
+- Confidence never shows "100%" (">99%")
+
 ### Phase 8 Completed - FastAPI Service ✅
 
 #### Added
@@ -305,7 +320,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 | **Phase 6** | Quality and OOD gates | ✅ Complete | ~10 files |
 | **Phase 7** | Model comparison and export | ✅ Complete | ~15 files |
 | **Phase 8** | FastAPI service | ✅ Complete | ~10 files |
-| **Phase 9** | Streamlit UI | ⏳ Planned | - |
+| **Phase 9** | Streamlit UI | ✅ Complete | ~20 files |
 | **Phase 10** | Docker, documentation, final polish | ⏳ Planned | - |
 
 ---

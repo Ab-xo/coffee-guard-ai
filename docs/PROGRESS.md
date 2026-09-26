@@ -932,3 +932,50 @@ Covered: `/health`, `/model-info`, OpenAPI lists all endpoints; accepted green/r
 **Reading:** no drop for the mildest third — wrong answers stay at 0–4% and only one diseased leaf (a mild Phoma) was called Healthy; for Leaf Rust and Phoma, mild cases are answered *uncertain* a bit more often (9% vs. 2–3%), i.e. the system hedges rather than errs. **Limit:** the mildest photos here still show visible lesions (about 1–3% of the leaf); leaves at a very early stage with little colour change aren't in the dataset, so we cannot claim the model catches them. Error counts per third are small (0–3 photos), so these are indications.
 
 **Docs updated:** model card (new *Disease severity* section; limitations now list early infection, colour casts, several leaves per photo, undetected noise/JPEG, and the missing field validation), README (goal-coverage table).
+
+---
+
+## Phase 9 — Streamlit UI
+
+Run (from the repo root, API running): `uv run streamlit run apps/web/streamlit_app.py` → `http://localhost:8501`. Demo links open a sample directly, e.g. `http://localhost:8501/?sample=leaf_rust` (`healthy`, `cercospora`, `phoma`, `uncertain`, `too_dark`, `not_coffee_bean_leaf`).
+
+### 9.1 What was built
+
+| File | Purpose |
+|---|---|
+| `apps/web/streamlit_app.py` | entry: page config + navigation (**Diagnose**, **The model**) |
+| `apps/web/views/diagnose.py` | input (upload / camera / sample) → `POST /analyze` → status banner + advice, the photo next to its heat map (strength slider), calibrated probability chart, details (quality measures, similarity score vs. threshold, model version, server latency, upload size, request id); answers are cached per photo, so moving the slider doesn't call the API again |
+| `apps/web/views/model.py` | `GET /model-info`: metric tiles (macro-F1 with CI, share answered, accuracy of answers, calibration error, robustness, OOD AUROC), how the decision works with the live thresholds, limitations, evaluation figures (confusion matrix, calibration, robustness) when available |
+| `apps/web/ui/api.py` | the only place that talks to the API (`API_URL`) |
+| `apps/web/ui/components.py` | **status banner = colour + icon + words** (✅ accepted, ⚠️ uncertain naming the candidates "Cercospora (74%) or Leaf Rust (25%)", ⛔ rejected with the reason in plain words: "too dark, washed out"); `pct()` never over-claims (0.9996 → ">99%", not "100%") |
+| `apps/web/ui/chart.py` | probability bars (Altair) per the dataviz rules: one series → one hue (predicted class in the reference palette's validated blue `#2a78d6`, others neutral grey, readable on light and dark), ≤ 24 px bars with 4 px rounded ends, value labels at the tip in the theme's text colour, hover tooltip, no legend |
+| `apps/web/ui/images.py` | EXIF orientation, **small uploads** (photos > 1024 px are shrunk to 1024 px JPEG before going to the API; smaller ones are sent untouched), heat-map blending for the slider |
+| `apps/web/samples/` | 7 demo photos chosen by running the release bundle so each shows one behaviour (4 clear classes, an uncertain case, a too-dark photo, a bean leaf); sources and licences in its README |
+| `.streamlit/config.toml` | coffee-green theme, 10 MB upload limit (same as the API), developer toolbar hidden, no usage stats |
+
+**About small uploads (your earlier question):** Streamlit's uploader always sends the full file from the phone to the Streamlit server; the UI then shrinks photos > 1024 px before calling the API (a 12 MP phone photo becomes ~150 KB). The camera option already captures small frames. Shrinking *on the phone* before the first upload needs a custom front end — noted as future work for rural connections.
+
+### 9.2 Checked in a real browser (headless Edge over the DevTools protocol)
+
+Screenshots of the running app (API + UI on this laptop) in `docs/screenshots/`. Reviewing them found four real problems, all fixed and re-checked:
+
+1. **The rejected (not-a-coffee-leaf) screen still showed the probability chart ("Leaf Rust 95%")** — contradicting the rejection. The chart is now hidden whenever the photo is rejected.
+2. **The UI re-compressed small photos** before sending them, which changed the pixels: the hard-case sample came back 59% / 40% instead of the offline 74% / 25%. Photos ≤ 1024 px are now sent untouched (the result now matches the offline pipeline exactly).
+3. "**100%** confident" for 0.9996 → now "**>99%**".
+4. Layout: the slider above the heat map pushed it below the photo; it now sits underneath, so both images line up. Also: the chart's runner-up bar was dark grey (the headless browser reported a dark theme) → theme-independent colours; the developer "Deploy" button is hidden.
+
+### 9.3 Tests (`tests/integration/test_web.py`, 14 tests, API mocked)
+
+API down → clear error and nothing else; no photo → input choice; accepted → green banner with class and ">99%"-style confidence, heat-map slider, one chart, and the upload sent to the API is ≤ 1024 px; uncertain → banner names both candidates + advice; rejected low-quality → reason and advice, no heat map, no chart; **rejected OOD → no chart even though the API reports probabilities**; small photos are sent unchanged; `?sample=` opens that sample; the model page shows the metric tiles and the limitations; the entry app builds its navigation; helpers: EXIF-aware shrinking, candidate selection, `pct()`, chart highlight colour.
+
+### Phase 9 status ✅
+
+| Gate item | Result |
+|---|---|
+| Upload **and** camera input, plus sample gallery | ✅ (+ shareable `?sample=` links) |
+| Status banner with plain-language reason and retake advice | ✅ colour + icon + words |
+| Class + calibrated confidence; prediction candidates when uncertain | ✅ |
+| Probability chart; original vs. CAM overlay with opacity slider | ✅ |
+| Model page (metrics, how it decides, limitations, figures) | ✅ |
+| Clear message when the API is down | ✅ |
+| Every status path demonstrable from the UI | ✅ accepted, uncertain, low_quality, ood — one sample each |

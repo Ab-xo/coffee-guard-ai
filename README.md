@@ -4,7 +4,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![Project Status](https://img.shields.io/badge/status-Phase%209%20next-orange.svg)](docs/PROGRESS.md)
+[![Project Status](https://img.shields.io/badge/status-Phase%2010%20next-orange.svg)](docs/PROGRESS.md)
 
 An AI-powered computer vision system for detecting and classifying coffee leaf diseases in Ethiopian coffee plants using deep learning, explainable AI, and production-ready deployment.
 
@@ -130,6 +130,12 @@ uv run uvicorn app.main:app --app-dir apps/api
 uv run streamlit run apps/web/streamlit_app.py
 ```
 
+Try a sample straight away: `http://localhost:8501/?sample=leaf_rust` (also `uncertain`, `too_dark`, `not_coffee_bean_leaf`).
+
+| Confident diagnosis | Uncertain | Not a coffee leaf |
+|---|---|---|
+| ![Leaf Rust diagnosis with heat map](docs/screenshots/ui_leaf_rust.png) | ![Uncertain: Cercospora or Leaf Rust](docs/screenshots/ui_uncertain.png) | ![Rejected: not a coffee leaf](docs/screenshots/ui_not_coffee.png) |
+
 Endpoints: `GET /health`, `GET /model-info`, `POST /predict` (decision + advice), `POST /analyze` (+ probabilities, quality report, OOD score, heat map). Another bundle: set `MODEL_BUNDLE` (PowerShell: `$env:MODEL_BUNDLE = "artifacts/models/<bundle>"`).
 
 ### Tests and lint
@@ -144,7 +150,7 @@ uv run ruff check . && uv run ruff format --check .
 
 ## 🔄 Development Status
 
-### Current Progress: Phase 9 next (Streamlit UI)
+### Current Progress: Phase 10 next (Docker and final documentation)
 
 | Phase  | Description           |       Status       | Key Deliverables                                                                                                                                                                |
 | :----: | --------------------- | :----------------: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -157,8 +163,8 @@ uv run ruff check . && uv run ruff format --check .
 | **6** | **Quality & OOD gates** | ✅ **Complete** | • KNN OOD detector: AUROC near 0.993 / far 1.000 (unseen sources)<br>• Quality gate fitted to where accuracy drops<br>• Accepted answers 99.4% correct; 96% of non-coffee images rejected |
 | **7** | **Model Comparison & Export** | ✅ **Complete** | • 5 models compared (accuracy, leaf reliance, OOD, latency, size)<br>• Chosen: EfficientNetV2-B0 + background swap ([ADR](docs/decisions/001-deployment-model.md))<br>• Release bundle `coffeeguard-effv2b0-v1`, 63 ms per photo on CPU<br>• [Model card](docs/MODEL_CARD.md) |
 | **8** | **FastAPI Service** | ✅ **Complete** | • `/health`, `/model-info`, `/predict`, `/analyze` (heat map)<br>• Quality + OOD gates, accepted / uncertain / rejected with advice<br>• Request IDs, JSON logs, upload hardening; 23 API tests<br>• Serves the offline results exactly (37 ms per photo) |
-| **9**  | **Streamlit UI**      |     ⏳ **Next**     | • Interactive web interface<br>• Explainability dashboard                                                                                                                       |
-| **10** | **Deployment**        |     ⏳ Planned     | • Docker containers<br>• Final documentation                                                                                                                                    |
+| **9** | **Streamlit UI** | ✅ **Complete** | • Upload, camera or sample photos<br>• Status banner with advice; photo next to its heat map<br>• Calibrated probability chart; *X or Y* when uncertain<br>• Model page with results and limits |
+| **10** | **Deployment**        |     ⏳ **Next**     | • Docker containers<br>• Final documentation                                                                                                                                    |
 
 **Legend:** ✅ Complete • 🔄 In Progress • ⏳ Planned
 
@@ -214,6 +220,11 @@ uv run ruff check . && uv run ruff format --check .
 - **FastAPI service** with `/predict` (accepted / uncertain / rejected + advice) and `/analyze` (+ probabilities, quality report, OOD score, heat map)
 - **Same answers as the offline evaluation** on all 379 test photos and 182 non-coffee images; 37 ms per request
 - Request IDs, JSON logs, upload checks (type by content, size, pixels, corrupt files, EXIF rotation); 23 tests against a tiny generated model
+
+#### ✅ Phase 9 Complete (UI)
+
+- **Streamlit app** with a Diagnose page (upload, camera or sample → status banner with advice, the photo next to its heat map, calibrated probabilities, *X or Y* when unsure) and a Model page (results, how it decides, limits)
+- Checked in a real browser: fixed a rejected screen that still showed a probability chart, over-claimed "100%", and re-compression that changed borderline results
 
 #### How far does it meet the project goal?
 

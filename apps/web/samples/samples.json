@@ -1,0 +1,51 @@
+[
+  {
+    "file": "healthy.jpg",
+    "title": "Healthy leaf",
+    "shows": "a confident diagnosis",
+    "true_label": "Healthy",
+    "source": "Ethiopian Coffee Leaf Disease dataset (CC0)"
+  },
+  {
+    "file": "cercospora.jpg",
+    "title": "Cercospora leaf",
+    "shows": "a confident diagnosis",
+    "true_label": "Cercospora",
+    "source": "Ethiopian Coffee Leaf Disease dataset (CC0)"
+  },
+  {
+    "file": "leaf_rust.jpg",
+    "title": "Leaf Rust leaf",
+    "shows": "a confident diagnosis",
+    "true_label": "Leaf Rust",
+    "source": "Ethiopian Coffee Leaf Disease dataset (CC0)"
+  },
+  {
+    "file": "phoma.jpg",
+    "title": "Phoma leaf",
+    "shows": "a confident diagnosis",
+    "true_label": "Phoma",
+    "source": "Ethiopian Coffee Leaf Disease dataset (CC0)"
+  },
+  {
+    "file": "uncertain.jpg",
+    "title": "A hard case",
+    "shows": "an uncertain answer with the top candidates",
+    "true_label": "Cercospora",
+    "source": "Ethiopian Coffee Leaf Disease dataset (CC0)"
+  },
+  {
+    "file": "too_dark.jpg",
+    "title": "Photo in poor light",
+    "shows": "a retake request",
+    "true_label": "Healthy",
+    "source": "Healthy sample, darkened"
+  },
+  {
+    "file": "not_coffee_bean_leaf.jpg",
+    "title": "Not a coffee leaf (bean)",
+    "shows": "an out-of-distribution rejection",
+    "true_label": null,
+    "source": "AI-Lab-Makerere/beans (MIT licence)"
+  }
+]
