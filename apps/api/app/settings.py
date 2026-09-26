@@ -16,6 +16,7 @@ class Settings(BaseSettings):
     max_pixels: int = 100_000_000  # the dataset's largest photo is 108 MP; refuse beyond
     ort_threads: int | None = None
     cors_origins: list[str] = ["http://localhost:8501"]
+    log_level: str = "INFO"
 
 
 @lru_cache

@@ -850,3 +850,46 @@ For a fair OOD comparison, `coffeeguard ood fit` was also run on the four other 
 | Model card | ✅ `docs/MODEL_CARD.md` |
 | Bundle loads in `Predictor` and reproduces the test metrics exactly | ✅ max |Δp| = 0.0 |
 | CPU p50 ≤ 100 ms | ✅ 15.5 ms model, 63 ms end to end |
+
+---
+
+## Phase 8 — FastAPI service
+
+Run: `uv run uvicorn app.main:app --app-dir apps/api` (bundle from `MODEL_BUNDLE`, default the release bundle `artifacts/models/coffeeguard-effv2b0-v1`); interactive docs at `http://localhost:8000/docs`.
+
+**Wording fix (your question after Phase 7):** the ADR and model card now say the laptop stands in for a small cloud CPU server — in a web app the model runs on the server, and for users on rural mobile networks the photo upload takes far longer than the model, so model speed only matters for server cost and capacity. Keeping uploads small is a Phase 9 (UI) item; an on-phone offline app is where model speed/size would really matter (MobileNetV3-Small).
+
+### 8.1 What was built
+
+| File | Purpose |
+|---|---|
+| `src/coffeeguard/inference/pipeline.py` | **`Pipeline`**: the whole serving path in the slim library (NumPy + Pillow + ONNX Runtime): EXIF-orient → quality gate (the model is skipped for rejected photos) → one ONNX pass → KNN OOD score → calibrated probabilities + conformal set → decision → optional CAM overlay (PNG, base64); per-step timings. Refuses a bundle without fitted gates. |
+| `apps/api/app/main.py` | app factory; lifespan loads the `Pipeline` once; **request-ID middleware** (`X-Request-ID` generated or echoed, exposed via CORS); **structured JSON logs** — one line per request with id, method, path, status code, ms, and the decision (status / reason / label) or error code; consistent error body `{"error", "detail"}` incl. FastAPI's own 422 |
+| `apps/api/app/api/routes.py` | `GET /health` (liveness, model name + version), `GET /model-info` (architecture, classes, metrics, every threshold, data fingerprint, source run), `POST /predict` (decision: status, reason, label, calibrated confidence, prediction set, issues, advice, version, latency), `POST /analyze` (the same + all probabilities, OOD score and threshold, quality report, CAM overlay, timings) |
+| `apps/api/app/schemas/prediction.py` | typed request/response models with descriptions (shown in `/docs`) |
+| `apps/api/app/settings.py` | + `LOG_LEVEL`; default bundle = the release bundle |
+| `apps/web/streamlit_app.py` | minimal update to the new API (`/analyze`; shows rejected / uncertain with advice) — the full UI is Phase 9 |
+
+Hardening from Phase 2 stays: magic-byte sniffing (JPEG/PNG/WebP, the Content-Type header is not trusted), 10 MB limit (reads at most limit + 1 byte), 100 MP pixel limit, full decode (truncated files), EXIF transpose.
+
+### 8.2 Tests (`tests/integration/test_api.py`, 23 tests, ~3 s, no trained model)
+
+The hand-built ONNX fixture (`tests/fixtures/bundle.py`) now carries the Phase 6 gates too (permissive quality thresholds, a 3-colour KNN bank, τ values, version) and its classifier is ×10 so clear colours are confident. The old tests used flat single-colour images, which the quality gate now (correctly) rejects as blurry, so they use **textured** colours (`textured()`): green → Healthy, red → Cercospora, blue → out of distribution.
+
+Covered: `/health`, `/model-info`, OpenAPI lists all endpoints; accepted green/red (PNG and JPEG); **blue → rejected `ood`**; **blank → rejected `low_quality` (too_blurry)**; **darkened → `too_dark`**; `/analyze` returns probabilities summing to 1, quality report, OOD score ≤ threshold, a decodable CAM PNG and timings; a rejected photo has no CAM/probabilities; request ID generated and echoed; the request log line is valid JSON with the decision; non-image with an image Content-Type → 415; truncated JPEG → 400; empty → 400; oversized → 413; too many pixels → 413; missing field → 422 with the same error shape; **EXIF-rotated photo** handled; a bundle without fitted gates fails at start-up.
+
+### 8.3 Checks with the real release bundle
+
+- **The API reproduces Phase 6 exactly:** all 379 test photos through `POST /predict` (in-process `TestClient`): 344 accepted / 28 uncertain / 5 rejected ood / 2 rejected low_quality, accepted answers 99.42% correct — identical to the offline evaluation (6.6). All 182 OOD test images: 84 ood / 91 low_quality / 4 uncertain / 3 accepted — identical.
+- **Latency through the API:** p50 37 ms, p95 46 ms per `/predict` (384 px images); `/analyze` adds ~17 ms for the CAM.
+- **Real server** (`uvicorn`, port 8000, `curl`): `/health` → model `coffeeguard-effv2b0-v1` v1.0.0; `/model-info` → T 0.52, q̂ 0.513, τ_conf 0.947, KNN τ 0.554; an original phone photo → accepted Cercospora 0.999 with an `X-Request-ID` header; a text file sent as `image/jpeg` → `415 unsupported_media_type`.
+
+### Phase 8 status ✅
+
+| Gate item | Result |
+|---|---|
+| `/health`, `/model-info`, `/predict`, `/analyze` | ✅ typed schemas in `/docs` |
+| Lifespan loads the bundle once; sync handlers (threadpool) | ✅ |
+| Hardening: type/magic bytes, size and pixel limits, EXIF, one error shape, request ID, JSON logs, CORS | ✅ |
+| Tests against a generated ONNX fixture incl. OOD and blank images | ✅ 23 tests |
+| Served decisions = offline evaluation | ✅ identical counts on 379 + 182 images |

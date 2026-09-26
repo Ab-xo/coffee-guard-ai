@@ -4,7 +4,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![Project Status](https://img.shields.io/badge/status-Phase%208%20next-orange.svg)](docs/PROGRESS.md)
+[![Project Status](https://img.shields.io/badge/status-Phase%209%20next-orange.svg)](docs/PROGRESS.md)
 
 An AI-powered computer vision system for detecting and classifying coffee leaf diseases in Ethiopian coffee plants using deep learning, explainable AI, and production-ready deployment.
 
@@ -124,13 +124,13 @@ uv run coffeeguard export --run runs/<run-dir>                        # ONNX bun
 ### Serve and try it
 
 ```bash
-# API (http://localhost:8000/docs)
-MODEL_BUNDLE=artifacts/models/<bundle> uv run uvicorn app.main:app --app-dir apps/api
+# API (http://localhost:8000/docs); serves artifacts/models/coffeeguard-effv2b0-v1 by default
+uv run uvicorn app.main:app --app-dir apps/api
 # UI (http://localhost:8501), in a second terminal
 uv run streamlit run apps/web/streamlit_app.py
 ```
 
-PowerShell: `$env:MODEL_BUNDLE = "artifacts/models/<bundle>"` before the `uvicorn` line.
+Endpoints: `GET /health`, `GET /model-info`, `POST /predict` (decision + advice), `POST /analyze` (+ probabilities, quality report, OOD score, heat map). Another bundle: set `MODEL_BUNDLE` (PowerShell: `$env:MODEL_BUNDLE = "artifacts/models/<bundle>"`).
 
 ### Tests and lint
 
@@ -144,7 +144,7 @@ uv run ruff check . && uv run ruff format --check .
 
 ## 🔄 Development Status
 
-### Current Progress: Phase 8 next (FastAPI service)
+### Current Progress: Phase 9 next (Streamlit UI)
 
 | Phase  | Description           |       Status       | Key Deliverables                                                                                                                                                                |
 | :----: | --------------------- | :----------------: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -156,8 +156,8 @@ uv run ruff check . && uv run ruff format --check .
 | **5** | **Explainability & Robustness** | ✅ **Complete** | • CAM = Grad-CAM (verified), faithful (deletion test)<br>• Relative robustness **0.975** (9 corruptions, sev ≤ 3)<br>• Shortcut test: background-only acc 0.40<br>• Found: blue-paper backgrounds carry class information |
 | **6** | **Quality & OOD gates** | ✅ **Complete** | • KNN OOD detector: AUROC near 0.993 / far 1.000 (unseen sources)<br>• Quality gate fitted to where accuracy drops<br>• Accepted answers 99.4% correct; 96% of non-coffee images rejected |
 | **7** | **Model Comparison & Export** | ✅ **Complete** | • 5 models compared (accuracy, leaf reliance, OOD, latency, size)<br>• Chosen: EfficientNetV2-B0 + background swap ([ADR](docs/decisions/001-deployment-model.md))<br>• Release bundle `coffeeguard-effv2b0-v1`, 63 ms per photo on CPU<br>• [Model card](docs/MODEL_CARD.md) |
-| **8**  | **FastAPI Service**   |     ⏳ **Next**     | • REST API<br>• ONNX Runtime serving                                                                                                                                            |
-| **9**  | **Streamlit UI**      |     ⏳ Planned     | • Interactive web interface<br>• Explainability dashboard                                                                                                                       |
+| **8** | **FastAPI Service** | ✅ **Complete** | • `/health`, `/model-info`, `/predict`, `/analyze` (heat map)<br>• Quality + OOD gates, accepted / uncertain / rejected with advice<br>• Request IDs, JSON logs, upload hardening; 23 API tests<br>• Serves the offline results exactly (37 ms per photo) |
+| **9**  | **Streamlit UI**      |     ⏳ **Next**     | • Interactive web interface<br>• Explainability dashboard                                                                                                                       |
 | **10** | **Deployment**        |     ⏳ Planned     | • Docker containers<br>• Final documentation                                                                                                                                    |
 
 **Legend:** ✅ Complete • 🔄 In Progress • ⏳ Planned
@@ -208,6 +208,12 @@ uv run ruff check . && uv run ruff format --check .
 - **Chosen: EfficientNetV2-B0 + background swap** — tied on accuracy with EfficientNet-B0 and plain EfficientNetV2-B0, but relies most on the leaf rather than the photo setup ([decision record](docs/decisions/001-deployment-model.md))
 - **Fast on a laptop CPU:** 15 ms per forward pass, 63 ms for a full 2048 px phone photo
 - **Release bundle** `artifacts/models/coffeeguard-effv2b0-v1` (committed) reproduces the test results exactly; see the [model card](docs/MODEL_CARD.md)
+
+#### ✅ Phase 8 Complete (API)
+
+- **FastAPI service** with `/predict` (accepted / uncertain / rejected + advice) and `/analyze` (+ probabilities, quality report, OOD score, heat map)
+- **Same answers as the offline evaluation** on all 379 test photos and 182 non-coffee images; 37 ms per request
+- Request IDs, JSON logs, upload checks (type by content, size, pixels, corrupt files, EXIF rotation); 23 tests against a tiny generated model
 
 ### Quick Status Check
 

@@ -9,6 +9,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Phase 8 Completed - FastAPI Service ✅
+
+#### Added
+- `src/coffeeguard/inference/pipeline.py` - full serving pipeline (quality gate, ONNX pass, OOD score, decision, CAM)
+- `GET /model-info`, `POST /analyze` (probabilities, quality report, OOD score, CAM overlay); `/predict` now returns the gated decision with advice
+- Request-ID middleware (`X-Request-ID`) and JSON request logs; `LOG_LEVEL` setting
+- 23 API tests; the test bundle fixture carries the Phase 6 gates
+
+#### Changed
+- `/predict` response: `status`, `reason`, `label`, `confidence`, `prediction_set`, `issues`, `advice`, `model_version`, `latency_ms` (probabilities moved to `/analyze`)
+- Streamlit page uses `/analyze` and shows rejected / uncertain answers with advice
+- ADR 001 and model card: laptop latency described as a stand-in for a small cloud CPU server
+
+#### Results
+- The API reproduces the offline decisions exactly (379 test photos, 182 OOD images); 37 ms p50 per request
+
 ### Phase 7 Completed - Model Comparison and Release Bundle ✅
 
 #### Added
@@ -288,7 +304,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 | **Phase 5** | Explainability and robustness | ✅ Complete | ~20 files |
 | **Phase 6** | Quality and OOD gates | ✅ Complete | ~10 files |
 | **Phase 7** | Model comparison and export | ✅ Complete | ~15 files |
-| **Phase 8** | FastAPI service | ⏳ Planned | - |
+| **Phase 8** | FastAPI service | ✅ Complete | ~10 files |
 | **Phase 9** | Streamlit UI | ⏳ Planned | - |
 | **Phase 10** | Docker, documentation, final polish | ⏳ Planned | - |
 

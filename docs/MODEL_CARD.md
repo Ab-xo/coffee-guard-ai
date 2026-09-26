@@ -34,7 +34,7 @@ Bundle: `artifacts/models/coffeeguard-effv2b0-v1/` (ONNX + `bundle.json` with ev
 | Conformal coverage (98% target) | 0.974 |
 | Through the full decision | **90.8% answered, 99.4% of answers correct**; 7.4% *uncertain*, 1.8% rejected |
 | Confidence ≥ 0.8 | 367 photos, 98.4% correct |
-| CPU latency (Intel i5 laptop, 4 threads, batch 1) | model 15.5 ms p50 / 23 ms p95; full request incl. decoding a 2048 px phone photo 63 ms p50 / 72 ms p95 |
+| Server CPU latency (measured on an Intel i5 laptop as a stand-in for a small cloud CPU server; 4 threads, batch 1) | model 15.5 ms p50 / 23 ms p95; full request incl. decoding a 2048 px phone photo 63 ms p50 / 72 ms p95 |
 
 Validation macro-F1 0.987. Single training seed: differences between models of ± 0.005 on 379 photos are within noise (paired bootstrap in the decision record).
 

@@ -48,7 +48,7 @@ if image is not None:
     with st.spinner("Analysing..."):
         try:
             r = httpx.post(
-                f"{API_URL}/predict",
+                f"{API_URL}/analyze",
                 files={"file": (image.name, image.getvalue(), image.type)},
                 timeout=30,
             )
@@ -62,14 +62,24 @@ if image is not None:
 
     res = r.json()
     with col_res:
-        st.metric(
-            "Prediction", res["label"], f"{res['confidence']:.0%} confidence", delta_color="off"
-        )
-        probs = pd.DataFrame(
-            {
-                "class": list(res["probabilities"]),
-                "probability": list(res["probabilities"].values()),
-            }
-        ).set_index("class")
-        st.bar_chart(probs, horizontal=True, height=200)
-        st.caption(f"Model latency: {res['latency_ms']:.0f} ms")
+        if res["status"] == "rejected":
+            st.warning("**No answer for this photo.** " + " ".join(res["advice"]))
+        else:
+            if res["status"] == "uncertain":
+                st.info(
+                    "**Not sure:** "
+                    + " or ".join(res["prediction_set"])
+                    + ". "
+                    + " ".join(res["advice"])
+                )
+            st.metric(
+                "Prediction", res["label"], f"{res['confidence']:.0%} confidence", delta_color="off"
+            )
+            probs = pd.DataFrame(
+                {
+                    "class": list(res["probabilities"]),
+                    "probability": list(res["probabilities"].values()),
+                }
+            ).set_index("class")
+            st.bar_chart(probs, horizontal=True, height=200)
+        st.caption(f"Model v{res['model_version']} · {res['latency_ms']:.0f} ms")

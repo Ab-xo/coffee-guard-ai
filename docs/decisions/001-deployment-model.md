@@ -4,7 +4,7 @@
 
 ## Context
 
-The specification names EfficientNetV2-B0 as the primary model and asks for a comparison with lighter alternatives. All candidates were trained with the same recipe (5-epoch linear probe → ≤ 15 epochs fine-tuning the last 3 stages, one seed, Kaggle T4) and evaluated identically through their exported ONNX bundles — the exact artifact the API serves. The service runs on CPU (target: ≤ 100 ms per image on the development laptop, an Intel i5 8th gen with 4 ONNX Runtime threads).
+The specification names EfficientNetV2-B0 as the primary model and asks for a comparison with lighter alternatives. All candidates were trained with the same recipe (5-epoch linear probe → ≤ 15 epochs fine-tuning the last 3 stages, one seed, Kaggle T4) and evaluated identically through their exported ONNX bundles — the exact artifact the API serves. The model runs on the **server** of a web app, not on the farmer's phone. Low-cost hosting usually offers a few CPU cores and no GPU, so the development laptop (Intel i5 8th gen, 4 ONNX Runtime threads) is used as a stand-in for such a server; target ≤ 100 ms per image. For users on rural mobile networks, uploading the photo (seconds) takes far longer than the model (milliseconds), so model speed only matters for server cost and capacity here.
 
 ## Options (test split, 379 photos; `artifacts/metrics/model_comparison.{json,md}`)
 
@@ -24,7 +24,7 @@ The specification names EfficientNetV2-B0 as the primary model and asks for a co
 
 1. **Accuracy is a tie among the three EfficientNet variants** (all paired CIs include 0); the MobileNets are 1.4–1.6 points lower, MobileNetV3-Large probably really so.
 2. **Leaf reliance breaks the tie.** With the background removed, the background-swap model keeps 0.963 accuracy vs. 0.926 / 0.903 for the others, has the highest CAM leaf focus (0.66) and is least confident on leaf-less images (0.54 vs. 0.83). In the field no photo will come on the blue or white paper of the training set, so the model that depends least on the photo setup is the safer choice — its small test deficit is expected, because the test split shares the setup bias.
-3. **Speed and size are not limiting:** 15–23 ms model latency and 63 ms end to end are well inside the 100 ms target; 23.5 MB is fine for a server image.
+3. **Speed and size are not limiting:** 15–23 ms model latency and 63 ms end to end are well inside the 100 ms target (one CPU core serves ~60 photos/s); 23.5 MB is fine for a server image. What users will actually wait for is the photo upload — addressed in the UI (Phase 9) by keeping uploads small.
 4. **Robustness and OOD detection** are equivalent across the EfficientNets (0.975–0.980; AUROC ≥ 0.990 / 1.000).
 5. It is the specification's primary architecture.
 
@@ -32,5 +32,5 @@ The specification names EfficientNetV2-B0 as the primary model and asks for a co
 
 - The deployed model is slightly more cautious: it answers 90.8% of genuine test photos directly (vs. 94.5% without background swap) at the same 99.4% accuracy; the rest get *uncertain* with the top candidates or a retake request.
 - The bundle (28 MB incl. the KNN bank) is committed so a fresh clone and the Docker image can serve it; candidate bundles keep only `bundle.json` in git.
-- **MobileNetV3-Small** (6 MB, 2.7 ms, most robust in relative terms) is the candidate for a future on-device/offline app; it should be retrained with background swap first.
+- **MobileNetV3-Small** (6 MB, 2.7 ms, most robust in relative terms) is the candidate for a future **offline app that runs on the phone** (farms without signal), where phone CPU, app size and battery do matter; it should be retrained with background swap first.
 - INT8 quantisation was not needed for the latency target and was not done (stretch item).
