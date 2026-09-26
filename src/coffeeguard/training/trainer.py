@@ -113,6 +113,18 @@ class Trainer:
             train_transform(cfg.img_size, cfg.augment, self.mean, self.std),
             cfg.preload,
         )
+        if cfg.augment.bg_swap_p > 0:
+            from coffeeguard.data.bgswap import build_background_swap
+
+            imgs = train_ds._cache or [LeafDataset._load(p) for p in train_ds.paths]
+            train_ds.pre_transform = build_background_swap(
+                imgs, cfg.augment.bg_swap_p, seed=cfg.seed
+            )
+            log.info(
+                "Background swap p=%.2f with %d donor backgrounds",
+                cfg.augment.bg_swap_p,
+                len(train_ds.pre_transform.donors),
+            )
         val_ds = LeafDataset(
             self.val_df, root, eval_transform(cfg.img_size, self.mean, self.std), cfg.preload
         )

@@ -22,6 +22,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - EfficientNetV2-B0: deletion AUC 0.45 (CAM order) vs. 0.61 (random); leaf focus 0.61; relative robustness 0.975 (sev <= 3)
 - Shortcut test: background-only accuracy 0.399, but blue-paper backgrounds are still classified as Cercospora/Leaf Rust (photo-setup confound)
 
+#### Added - Background-swap augmentation (follow-up)
+- `src/coffeeguard/data/bgswap.py`, `augment.bg_swap_p`, recipe `configs/train/effnetv2_b0_bgswap.yaml`
+- New main model `cand-effv2b0-bgswap`: leaf-only accuracy 0.926 -> 0.963 (Phoma 0.81 -> 0.96), background-only confidence 0.83 -> 0.54, relative robustness 0.979, test macro-F1 0.974 (paired difference to the previous main model not significant)
+
 ### Phase 4 Completed - Evaluation, Calibration, Uncertainty ✅
 
 #### Added

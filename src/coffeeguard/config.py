@@ -155,6 +155,9 @@ class AugmentConfig(StrictModel):
     downscale_min: float = 0.35  # smallest scale factor of the long side
     jpeg_p: float = 0.5  # re-encode as JPEG
     jpeg_quality_min: int = 30  # quality drawn from [jpeg_quality_min, 95]
+    # Background swap (Phase 5 finding: backgrounds carry class information): with this
+    # probability paste the leaf onto another photo's background or a plain one.
+    bg_swap_p: float = 0.0
 
 
 class StageConfig(StrictModel):

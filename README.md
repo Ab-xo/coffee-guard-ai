@@ -195,6 +195,7 @@ uv run ruff check . && uv run ruff format --check .
 - **Explanations are faithful:** the torch-free CAM matches Grad-CAM (r > 0.99); hiding its hottest 5% of patches drops confidence 0.97 → 0.72 (random: 0.88); 61% of CAM mass sits on the leaf (24% of the image)
 - **Robust:** keeps 97.5% of its macro-F1 across 9 corruptions at severity ≤ 3; heavy blur/noise/JPEG make it answer *Healthy*, not the low-quality classes — evidence against a photo-quality shortcut
 - **Limitation found:** with the leaf removed, blue-paper backgrounds are still called Cercospora/Leaf Rust — the model partly learned each class's photo setup
+- **Fix applied — background-swap augmentation** (leaves pasted onto other photos' backgrounds during training): leaf-only accuracy 0.926 → 0.963, confidence on leaf-less images 0.83 → 0.54, robustness 0.979; test macro-F1 0.974 (difference not significant). This model is now the main model; blue-paper backgrounds still lean to Cercospora/Leaf Rust (needs field photos)
 
 ### Quick Status Check
 

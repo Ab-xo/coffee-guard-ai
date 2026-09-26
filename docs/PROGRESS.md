@@ -650,6 +650,44 @@ EfficientNetV2-B0 macro-F1 by severity 1→5: brightness 0.979→0.880 · contra
 
 **Limitation and possible fix:** in the field, photos won't come on blue paper, so the blue-paper cue can't help there and could hurt. The standard remedy is **background-swap augmentation** (paste masked leaves onto other classes' backgrounds / neutral colours during training) — about 4 GPU minutes to retrain; offered as an optional step, not done here. More field-style photos per class would fix it at the source.
 
+### 5.5 Follow-up: background-swap augmentation (decided with you)
+
+**Why:** the shortcut test (5.4) showed the model partly learned each class's photo setup. Field photos won't come on blue paper, so a background cue can only hurt there. The fix had to come before Phase 6 (OOD thresholds are fitted on the main model's outputs) and Phase 7 (export/comparison).
+
+**What was built**
+- `data/bgswap.py` → `BackgroundSwap`: with probability `augment.bg_swap_p` the training leaf is cut out with the Phase 5 colour mask and pasted (1.5 px soft edge) onto **another training photo's background** (its own leaf painted over with its median background colour and blurred; 60% of swaps) or a **plain background** (paper white, grey, pale blue, soil brown, foliage green, with a gentle gradient and fine noise; 40%). Field photos (mask > 80% of the frame) and empty masks are left unchanged. Donors: up to 400 training photos. Picklable (Windows workers).
+- `AugmentConfig.bg_swap_p` (default 0 → all earlier recipes unchanged); `LeafDataset(pre_transform=…)`; the trainer builds the swap from the (preloaded) training images; `data aug-preview` shows it (`artifacts/figures/augmentation_preview_bgswap.png` — Cercospora on white paper and green, Leaf Rust on blue and maroon, Phoma on teal and blue; lesions intact).
+- Recipe `configs/train/effnetv2_b0_bgswap.yaml` = the main recipe + `augment.bg_swap_p: 0.5` — the only difference.
+- Test (`tests/unit/test_transforms.py`): leaf pixels kept, background replaced by the donor's, field photo unchanged, picklable.
+- `coffeeguard robustness` now rebuilds `summary.csv` from every bundle evaluated so far (a single-bundle run used to overwrite it).
+
+**Run:** Kaggle T4, seed 0, 6 min kernel (run `20260926-042311-effnetv2_b0_bgswap-s0`, git `2bdbee7` + the uncommitted swap code; `dirty: true`, committed right after). Exported as `artifacts/models/cand-effv2b0-bgswap` (parity max |Δlogit| 8e-7, argmax 100%). Val macro-F1 **0.9869** (5 errors) vs. 0.9848 (6) without the swap. Then the full Phase 4–5 checks.
+
+**Results — same model and seed, with vs. without background swap**
+
+| Check | Without | **With swap** | |
+|---|---:|---:|---|
+| Test macro-F1 [95% CI] | 0.979 [0.963, 0.993] | **0.974** [0.956, 0.990] | paired Δ −0.006 [−0.018, +0.006] — not significant |
+| Test errors (of 379) | 8 | 10 | |
+| ECE after temperature scaling | 0.012 | 0.014 | |
+| Conformal coverage (98% target) / avg set size | 0.987 / 1.026 | 0.974 / — | within ±2 pp |
+| **Leaf-only accuracy** (298 paper-background photos) | 0.926 | **0.963** | |
+| ↳ Phoma leaf-only recall | 0.81 (57/70) | **0.96** (67/70) | the Phoma weakness is fixed |
+| Background-only accuracy | 0.399 | 0.386 | |
+| **Mean confidence on background-only images** | 0.83 | **0.54** | much less sure without a leaf |
+| Blue-paper backgrounds (Cercospora + Leaf Rust) still called Cercospora/Leaf Rust | 65.5% | 65.5% | unchanged |
+| Relative robustness, severity 1–3 / 1–5 | 0.975 / 0.926 | **0.979 / 0.938** | better at severity 5 for 7 of 9 corruptions |
+| Leaf focus (CAM mass on the leaf) | 0.61 | **0.66** | Phoma 0.69 → 0.77, Healthy 0.68 → 0.74 |
+| Deletion AUC, CAM vs. random | 0.450 vs. 0.611 | 0.445 vs. 0.630 | still faithful |
+
+Background-only confusion with the swap (rows = true Healthy/Cercospora/Leaf Rust/Phoma; columns = predicted): `[[56,1,0,0],[11,26,37,1],[46,16,33,1],[53,17,0,0]]`.
+
+**Decision: the background-swap model (`cand-effv2b0-bgswap`) becomes the main model.** It relies more on the leaf (leaf-only +3.7 pp, leaf focus +5 pp), fixes the Phoma-without-background weakness, is far less confident when no leaf is present, and is slightly more robust. The small test drop is not significant — and expected, because the test set shares the photo-setup bias that the swap removes.
+
+**What the swap did not fix:** blue-paper backgrounds with the leaf blanked out still *lean* towards Cercospora/Leaf Rust, now at ~0.54 confidence. A likely reason is that the background-only test keeps a grey leaf-shaped silhouette with its paper shadows, so shape and setup cues remain. The real fix is field photos of every class; this stays a documented limitation (to go into the model card).
+
+**Paired bootstrap vs. the new main model** (test; `artifacts/metrics/test_metrics.json`): EffV2-B0 without swap −0.006 (tie) · EfficientNet-B0 −0.000 (tie) · MobileNetV3-Small +0.014 [−0.009, +0.036] · MobileNetV3-Large +0.016 [−0.002, +0.036], P(not better) 0.04 · MobileNetV3-S baseline +0.008 (tie).
+
 ### Phase 5 status ✅
 
 | Gate item / success target | Result |
@@ -658,6 +696,7 @@ EfficientNetV2-B0 macro-F1 by severity 1→5: brightness 0.979→0.880 · contra
 | CAM galleries per class, correct vs. incorrect, high vs. low confidence | ✅ `artifacts/explain/<bundle>/figures/` |
 | Faithfulness (deletion) and leaf-focus score | ✅ AUC 0.45 vs. 0.61 random; leaf focus 0.61 |
 | Robustness table/curves; relative robustness ≥ 0.85 at severity ≤ 3 | ✅ 0.975 (all four models ≥ 0.975) |
-| Shortcut test: background-only accuracy ≤ 40% | ✅ 0.399 — but blue-paper backgrounds carry class information (see 5.4) |
+| Shortcut test: background-only accuracy ≤ 40% | ✅ 0.399 (0.386 with background swap) — blue-paper backgrounds still carry class information (5.4, 5.5) |
+| Main model after Phase 5 | **`cand-effv2b0-bgswap`** (EfficientNetV2-B0 + background swap), see 5.5 |
 
 Not done (scope, per plan §11): Grad-CAM++ / Eigen-CAM comparison (stretch item) and the narrative notebook.

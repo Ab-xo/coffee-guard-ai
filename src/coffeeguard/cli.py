@@ -226,8 +226,12 @@ def robustness(
 
     cfg = _data_cfg(config, None)
     out = resolve(out_root)
-    results = [run_robustness(resolve(b), cfg, out) for b in bundle]
-    table = summary_table(results)
+    for b in bundle:
+        run_robustness(resolve(b), cfg, out)
+    # the summary covers every bundle evaluated so far, not only this call's
+    from coffeeguard.utils.io import read_json
+
+    table = summary_table([read_json(f) for f in sorted(out.glob("*/robustness.json"))])
     table.to_csv(out / "summary.csv", index=False)
     typer.echo(table.T.to_string())
 

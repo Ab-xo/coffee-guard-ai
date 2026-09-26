@@ -24,10 +24,12 @@ class LeafDataset(Dataset):
         root: Path,
         transform: Callable[[Image.Image], torch.Tensor],
         preload: bool = False,
+        pre_transform: Callable[[Image.Image], Image.Image] | None = None,
     ) -> None:
         self.paths = [root / p for p in frame["image"]]
         self.labels = frame["class_id"].astype(int).tolist()
         self.transform = transform
+        self.pre_transform = pre_transform  # e.g. background swap, before the torch transforms
         self._cache: list[Image.Image] | None = None
         if preload:
             self._cache = [self._load(p) for p in self.paths]
@@ -42,6 +44,8 @@ class LeafDataset(Dataset):
 
     def __getitem__(self, i: int) -> tuple[torch.Tensor, int]:
         img = self._cache[i] if self._cache is not None else self._load(self.paths[i])
+        if self.pre_transform is not None:
+            img = self.pre_transform(img)
         return self.transform(img), self.labels[i]
 
 

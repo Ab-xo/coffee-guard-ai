@@ -176,6 +176,15 @@ def fig_augmentation_preview(
     torch.manual_seed(seed)
     # mean 0 / std 1 → the tensor is the augmented image in [0, 1], ready to plot
     tf = train_transform(img_size, augment, (0.0, 0.0, 0.0), (1.0, 1.0, 1.0))
+    swap = None
+    if augment.bg_swap_p > 0:
+        from coffeeguard.data.bgswap import build_background_swap
+
+        donors = []
+        for rel in train_df["image"].sample(min(80, len(train_df)), random_state=seed):
+            with Image.open(cfg.processed_dir / rel) as im:
+                donors.append(im.convert("RGB"))
+        swap = build_background_swap(donors, augment.bg_swap_p, seed=seed)
     rows = (
         train_df.groupby("label", sort=True)
         .sample(per_class, random_state=seed)
@@ -188,7 +197,8 @@ def fig_augmentation_preview(
         axes[r, 0].imshow(img.resize((img_size, img_size), Image.Resampling.BICUBIC))
         axes[r, 0].set_ylabel(row["label"], color=TEXT, fontsize=8)
         for c in range(1, n_aug + 1):
-            axes[r, c].imshow(tf(img).clamp(0, 1).permute(1, 2, 0).numpy())
+            aug_in = swap(img) if swap is not None else img
+            axes[r, c].imshow(tf(aug_in).clamp(0, 1).permute(1, 2, 0).numpy())
         for ax in axes[r]:
             ax.set_xticks([])
             ax.set_yticks([])
