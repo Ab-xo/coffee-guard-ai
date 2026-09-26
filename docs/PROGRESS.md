@@ -1032,3 +1032,45 @@ Screenshots of all pages: `docs/screenshots/*.jpg`.
 ### 9b.5 Tests
 
 `tests/integration/test_web.py` (21 tests): every report page renders from the committed artifacts without errors; Home shows the headline numbers and the limits; Model Analysis has the four sections and shows the CV result; the entry app builds its navigation; Diagnose: API down, empty state, accepted / uncertain / rejected / OOD cards via the sample gallery, small photos sent untouched, `?sample=` links; helpers.
+
+---
+
+## Phase 10 — Packaging, documentation, release (v1.0)
+
+### 10.1 Docker
+
+| File | What it does |
+|---|---|
+| `Dockerfile.api` | multi-stage: `uv sync --frozen --no-dev --extra api` into a venv on `python:3.12-slim` (FastAPI, ONNX Runtime, NumPy, Pillow — **no torch**), then a runtime stage with the venv, `apps/api` and the release bundle; non-root user, `MODEL_BUNDLE` set, `HEALTHCHECK` on `/health` |
+| `Dockerfile.web` | the locked `web` extra only (Streamlit, httpx — the UI never imports the ML package) + `apps/web`, `.streamlit/` and the committed report artifacts (no model weights); `API_URL=http://api:8000`, health check on `/_stcore/health` |
+| `docker-compose.yml` | `docker compose up --build`: API on :8000, web on :8501; the web service waits for a healthy API |
+| `.dockerignore` | no `.git`, `.venv`, data, runs, caches, tests or docs in the build context |
+
+**How it was verified.** Building images locally would have filled the C: drive (1.2 GB free, where Docker Desktop keeps its disk image), so:
+1. **Locally, without Docker:** each image's exact dependency set (`uv export --extra api` / `--extra web`) was installed into a fresh environment on E:. The slim API environment is 128 MB of packages (ONNX Runtime 42 MB, NumPy 44 MB, Pillow 15 MB; no torch/timm/pandas/scikit-learn/OpenCV — asserted) and served all four decision paths from the release bundle over HTTP (Leaf Rust accepted 0.9996, hard case uncertain 0.743, too dark rejected low_quality, bean leaf rejected ood). It refuses to start when the bundle is missing. The web-only environment (no `coffeeguard`, no ONNX Runtime — asserted) rendered all six pages without errors and got a diagnosis from the slim API. This also surfaced log tracebacks from the Model Comparison page (a dict column passed to charts) — fixed.
+2. **In CI (GitHub Actions, run 36233204269 on `3dbcae9`), both jobs green:** `lint-test` (ruff + the full pytest suite on Linux, incl. the train→export→evaluate smoke test) and the new `docker` job — builds both images, **asserts the API image is < 400 MB**, starts the stack with `docker compose up --wait`, sends real sample photos through the containers (Leaf Rust → accepted, bean leaf → rejected ood, dark photo → rejected low_quality) and checks the web app responds. CI now also runs on pushes to `eleni-changes`.
+
+### 10.2 Documentation
+
+- `README.md` rewritten: one-command quick start (Docker or uv), screenshots, results table, architecture diagram (Mermaid), structure, reproduce commands, documentation map.
+- `docs/TECHNICAL_REPORT.md`: data, method, experiments (ablations, comparison, background swap, CV), evaluation, explanation/robustness/shortcuts, rejection gates, system, limitations, reproduction, references.
+- `docs/DATA_CARD.md`: source and licence, what the download really contains, cleaning, splits and CV folds, preprocessing, confounds, label quality, OOD data sources and licences.
+- `docs/DEMO.md`: a 5-minute demo script with the sample links.
+- `docs/MODEL_CARD.md` and `docs/decisions/001-deployment-model.md` from Phase 7 (updated since).
+
+### 10.3 Release
+
+Tagged **`v1.0`** on `eleni-changes`.
+
+### Phase 10 status ✅
+
+| Gate item | Result |
+|---|---|
+| `Dockerfile.api` (slim, non-root, health check, < 400 MB) | ✅ asserted in CI |
+| `Dockerfile.web` + `docker-compose.yml` | ✅ stack started and tested in CI |
+| CI builds the images | ✅ `docker` job |
+| README, data card, model card, technical report, ADR, demo script | ✅ |
+| A fresh clone reaches a working demo with `docker compose up` | ✅ (CI does exactly this from a fresh checkout) |
+| Tag `v1.0` | ✅ |
+
+**Open item for you:** team member names for the About Team page (`apps/web/team.json`).

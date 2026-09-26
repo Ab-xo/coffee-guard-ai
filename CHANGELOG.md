@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.0] - 2026-09-26
+
+### Phase 10 Completed - Packaging, Documentation, Release ✅
+
+#### Added
+- `Dockerfile.api` (locked `api` extra only, no torch, non-root, health check, < 400 MB), `Dockerfile.web`, `docker-compose.yml`, `.dockerignore`
+- CI `docker` job: builds both images, checks the API image size, runs the stack and sends real photos through it; CI also runs on `eleni-changes`
+- `docs/TECHNICAL_REPORT.md`, `docs/DATA_CARD.md`, `docs/DEMO.md`; README rewritten (quick start, results, architecture)
+
+#### Fixed
+- Model Comparison page passed a dict column to charts (log tracebacks)
+
 ## [Unreleased]
 
 ### Phase 9b - Six-Page App and Cross-Validation ✅
@@ -333,7 +345,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 | **Phase 7** | Model comparison and export | ✅ Complete | ~15 files |
 | **Phase 8** | FastAPI service | ✅ Complete | ~10 files |
 | **Phase 9** | Streamlit UI | ✅ Complete | ~20 files |
-| **Phase 10** | Docker, documentation, final polish | ⏳ Planned | - |
+| **Phase 10** | Docker, documentation, release v1.0 | ✅ Complete | ~10 files |
 
 ---
 

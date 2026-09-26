@@ -1,6 +1,6 @@
 # CoffeeGuard AI — Implementation Plan
 
-**Status:** Active · **Context:** built by one developer (the original team-process docs were retired in Phase 1 cleanup) · **Requirements baseline:** [`PROJECT_SPECIFICATION.md`](PROJECT_SPECIFICATION.md) and [`CoffeeGuard_AI_Project_Structure.md`](../CoffeeGuard_AI_Project_Structure.md)
+**Status:** Complete — v1.0 released (see PROGRESS.md for every deviation from this plan) · **Context:** built by one developer (the original team-process docs were retired in Phase 1 cleanup) · **Requirements baseline:** [`PROJECT_SPECIFICATION.md`](PROJECT_SPECIFICATION.md) and [`CoffeeGuard_AI_Project_Structure.md`](../CoffeeGuard_AI_Project_Structure.md)
 
 This plan keeps every requirement from the specification (4 classes, stratified 70/15/15, 224×224 input, EfficientNetV2-B0 as the primary model, Grad-CAM, robustness, OOD rejection, FastAPI + Streamlit) and upgrades *how* each is delivered: a typed, tested library driven by one CLI, remote GPU training launched from the repo, leakage-proof data handling, calibrated uncertainty, and a torch-free ONNX serving path.
 
