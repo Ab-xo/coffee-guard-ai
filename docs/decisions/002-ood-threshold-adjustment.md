@@ -1,6 +1,6 @@
 # ADR 002: OOD Threshold Adjustment for Real-World Usage
 
-**Status:** Proposed  
+**Status:** Superseded by [ADR 003](003-ood-gate-augmented-reference-set.md) (release 1.1.0: augmented reference set, τ 0.494; τ 0.68 let 96% of bean leaves through the OOD gate)  
 **Date:** 2026-09-26  
 **Context:** Production deployment and real-world testing
 

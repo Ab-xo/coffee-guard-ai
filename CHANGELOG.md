@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Model Analysis → *Other datasets* tab; external AUROC and BRACOL accuracy on the Model Comparison page and in `model_comparison.json`
 - Release bundle v1.1.0 (same model; gate, `metrics.ood_auroc_external_coffee`, `metrics.external_bracol_accuracy`)
 
-#### Replaces (proposed, see ADR 003)
+#### Replaces (ADR 003, accepted)
 - The `[Unreleased]` threshold change below (τ 0.554 → 0.68, ADR 002, merged from `main`). Measured on the same data, τ 0.68 with the old reference set lets 96% of bean leaves through the OOD gate (16% get a confident disease answer); v1.1 lets 4% through while accepting more vertical and small coffee-leaf photos. Comparison: `docs/decisions/003-ood-gate-augmented-reference-set.md`
 
 #### Found

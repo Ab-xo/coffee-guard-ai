@@ -1151,3 +1151,7 @@ While this was being built, the repo owner fixed the same report on `main` by ra
 
 Raising τ helps coffee photos but removes most of the protection against other plants' leaves: with the old references the two overlap (AUROC 0.712), so no threshold separates them. `origin/main` was merged into `eleni-changes`: ADR 002, the notebooks and the owner's changelog entry are kept unchanged; the release bundle keeps the v1.1 gate (conflict resolved in its favour; SHA-256 of every file re-checked); ADR 003 records the comparison and is marked *proposed* for the team to accept. `main` itself was not changed.
 
+### 6. Decision: v1.1 replaces the τ 0.68 change on `main`
+
+You decided that your changes override the owner's threshold change on `main`. ADR 003 → **accepted**, ADR 002 → **superseded by ADR 003** (content otherwise unchanged; the two notebooks from the same pull request are kept — they do not touch the gate). `main` fast-forwarded to `eleni-changes` (no force push: `main`'s commits are already part of this branch's history, so nothing of the owner's is lost from history) and tagged **`v1.1`**.
+
