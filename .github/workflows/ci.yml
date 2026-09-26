@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, eleni-changes]
   pull_request:
 
 concurrency:
@@ -29,3 +29,38 @@ jobs:
 
       - name: Test
         run: uv run pytest
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build and start the stack (API + web)
+        run: docker compose up --build --detach --wait --wait-timeout 240
+
+      - name: API image is under 400 MB
+        run: |
+          size=$(docker image inspect coffeeguard-api:1.0 --format '{{.Size}}')
+          web=$(docker image inspect coffeeguard-web:1.0 --format '{{.Size}}')
+          echo "API image: $((size / 1000000)) MB · web image: $((web / 1000000)) MB"
+          test "$size" -lt 400000000
+
+      - name: Real photos through the running containers
+        run: |
+          curl -fsS localhost:8000/health
+          curl -fsS -F "file=@apps/web/samples/leaf_rust.jpg;type=image/jpeg" localhost:8000/predict \
+            | python3 -c "import json,sys; r=json.load(sys.stdin); print(r); assert r['status']=='accepted' and r['label']=='Leaf Rust'"
+          curl -fsS -F "file=@apps/web/samples/not_coffee_bean_leaf.jpg;type=image/jpeg" localhost:8000/predict \
+            | python3 -c "import json,sys; r=json.load(sys.stdin); print(r); assert r['status']=='rejected' and r['reason']=='ood'"
+          curl -fsS -F "file=@apps/web/samples/too_dark.jpg;type=image/jpeg" localhost:8000/predict \
+            | python3 -c "import json,sys; r=json.load(sys.stdin); print(r); assert r['reason']=='low_quality'"
+          curl -fsS localhost:8501/_stcore/health
+          curl -fsS localhost:8501/ | grep -qi streamlit
+
+      - name: Container logs
+        if: always()
+        run: docker compose logs --no-color | tail -n 200
+
+      - name: Stop
+        if: always()
+        run: docker compose down

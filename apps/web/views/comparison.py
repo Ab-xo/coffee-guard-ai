@@ -23,6 +23,8 @@ df = pd.DataFrame(rows)
 df["name"] = df["bundle"].map(data.MODEL_NAMES)
 df["ci_lo"] = df["test_ci"].map(lambda c: c[0])
 df["ci_hi"] = df["test_ci"].map(lambda c: c[1])
+# charts need plain columns (lists/dicts break Arrow serialisation and spam the server log)
+df = df.drop(columns=["test_ci", "paired_vs_main"], errors="ignore")
 chosen = data.MODEL_NAMES[data.MAIN]
 
 theme.note(
