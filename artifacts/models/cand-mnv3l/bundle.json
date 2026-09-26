@@ -46,14 +46,20 @@
     "model.onnx": "58d7d0b70e01e8e7b7042add7f6ababd423c92484f9f59806bba32278558b8c7",
     "classifier_weight.npy": "9b40a7f1b63176f99ede4d848ed86ebb3c6e3d68708d26aa68a5a31918f15778",
     "classifier_bias.npy": "a76ec582af8c41d56f318db54ba4b0f10b6a430de18f5013583c77b092de286b",
-    "ood_knn_bank.npy": "66c1b2d513192b438b8ab3eb819dfc45735b8cbdf6405c36518cc37e0f5274fa"
+    "ood_knn_bank.npy": "283b36d516c88770db0955f8fcb854fc2441f4c2e1b9b062f0057ab641ee1ebb"
   },
   "conformal_alpha": 0.02,
   "ood": {
     "scorer": "knn",
-    "tau": 0.620057225227356,
+    "tau": 0.6128364205360413,
     "knn_k": 10,
-    "id_acceptance": 0.995
+    "id_acceptance": 0.995,
+    "knn_bank": [
+      "original",
+      "rot90",
+      "degraded",
+      "rot90+degraded"
+    ]
   },
   "tau_conf": 0.9164938926696777,
   "quality_thresholds": {

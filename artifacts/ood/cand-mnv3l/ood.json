@@ -41,14 +41,20 @@
     },
     "knn": {
       "cal_auroc": {
-        "near": 1.0,
+        "near": 0.999920424403183,
         "far": 1.0
       },
-      "cal_auroc_mean": 1.0
+      "cal_auroc_mean": 0.9999602122015915
     }
   },
   "scorer": "knn",
-  "tau_ood": 0.620057225227356,
+  "knn_bank": [
+    "original",
+    "rot90",
+    "degraded",
+    "rot90+degraded"
+  ],
+  "tau_ood": 0.6128364205360413,
   "tau_ood_val_acceptance": 0.995,
   "tau_conf": 0.9164938926696777,
   "quality_thresholds": {
@@ -200,17 +206,17 @@
       }
     },
     "knn": {
-      "id_acceptance": 0.9287598944591029,
+      "id_acceptance": 0.9393139841688655,
       "near": {
-        "auroc": 0.9948284960422163,
+        "auroc": 0.9945118733509235,
         "fpr_at_95_id": 0.0
       },
       "far": {
-        "auroc": 0.9998800671623891,
+        "auroc": 0.9999000559686575,
         "fpr_at_95_id": 0.0
       },
       "all": {
-        "auroc": 0.9984922728986053,
+        "auroc": 0.9984197860187306,
         "fpr_at_95_id": 0.0
       }
     }
@@ -219,7 +225,7 @@
     "indoor_scenes": 0.0,
     "rendered_text": 0.0,
     "synthetic": 0.0,
-    "bean_leaves": 0.08
+    "bean_leaves": 0.18
   },
   "quality_gate": {
     "val_rejected": 0.002652519893899204,
@@ -242,8 +248,8 @@
     "test": {
       "counts": {
         "accepted:None": 339,
-        "uncertain:low_confidence": 32,
-        "rejected:ood": 6,
+        "uncertain:low_confidence": 33,
+        "rejected:ood": 5,
         "rejected:low_quality": 2
       },
       "accepted_share": 0.8944591029023746,
@@ -252,9 +258,9 @@
     "ood_test": {
       "counts": {
         "rejected:low_quality": 92,
-        "rejected:ood": 86,
-        "accepted:None": 3,
-        "uncertain:low_confidence": 1
+        "rejected:ood": 81,
+        "accepted:None": 6,
+        "uncertain:low_confidence": 3
       }
     }
   }

@@ -224,3 +224,48 @@ def bars(
         .encode(x=x, y=y, text=alt.Text(f"{value}:Q", format=fmt))
     )
     return _finish(b + t, height)
+
+
+def before_after(df: pd.DataFrame, cat: str, before: str, after: str, height: int = 280):
+    """Dumbbell per category: grey dot = before, blue dot = after (labelled), on 0-100%.
+
+    ``before`` / ``after`` are column names shown in the legend; they may contain dots, so
+    the chart uses plain internal field names (Vega-Lite reads "a.b" as a nested field).
+    """
+    d = pd.DataFrame({"cat": df[cat], "b": df[before], "a": df[after]})
+    d["lab"] = d[["a", "b"]].max(axis=1)  # label right of both dots
+    long = d.melt(id_vars=["cat"], value_vars=["b", "a"], var_name="k", value_name="v")
+    long["gate"] = long["k"].map({"b": before, "a": after})
+    y = alt.Y(
+        "cat:N",
+        sort=list(d["cat"]),
+        title=None,
+        axis=alt.Axis(labelLimit=320, labelFontSize=12, labelOverlap=False),
+    )
+    scale = alt.Scale(domain=[0, 1.12])
+    axis = alt.Axis(format="%", values=[0, 0.2, 0.4, 0.6, 0.8, 1.0])
+    rule = (
+        alt.Chart(d)
+        .mark_rule(color=GREY, strokeWidth=2)
+        .encode(x=alt.X("b:Q", scale=scale, axis=axis, title="share passed"), x2="a:Q", y=y)
+    )
+    dots = (
+        alt.Chart(long)
+        .mark_circle(size=110, opacity=1, stroke="#ffffff", strokeWidth=2)
+        .encode(
+            x=alt.X("v:Q", scale=scale, axis=axis, title="share passed"),
+            y=y,
+            color=alt.Color(
+                "gate:N",
+                scale=alt.Scale(domain=[before, after], range=[GREY, BLUE]),
+                legend=alt.Legend(title=None, orient="top"),
+            ),
+            tooltip=[alt.Tooltip("cat:N", title=cat), "gate:N", alt.Tooltip("v:Q", format=".0%")],
+        )
+    )
+    labels = (
+        alt.Chart(d)
+        .mark_text(align="left", dx=10, fontSize=12)
+        .encode(x=alt.X("lab:Q", scale=scale), y=y, text=alt.Text("a:Q", format=".0%"))
+    )
+    return _finish(rule + dots + labels, height)

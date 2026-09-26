@@ -47,7 +47,10 @@ theme.stats_row(
     [
         (f"{m.get('test_macro_f1', 0):.1%}", "macro-F1 on 379 unseen test photos"),
         (f"{m.get('accepted_accuracy_test', 0):.1%}", "of direct answers are correct"),
-        (f"{m.get('ood_auroc_near', 0):.3f}", "AUROC telling coffee leaves from other plants"),
+        (
+            f"{m.get('ood_auroc_external_coffee', m.get('ood_auroc_near', 0)):.3f}",
+            "AUROC telling coffee leaves from other datasets apart from other plants",
+        ),
         ("63 ms", "per photo on an ordinary CPU server"),
     ]
 )
@@ -115,8 +118,9 @@ steps = [
     ),
     (
         "Is it a coffee leaf?",
-        "The photo is compared with the 1,764 training photos; anything too unlike them — other "
-        "plants, rooms, screenshots — is turned away.",
+        "The photo is compared with the 1,764 training photos — also turned sideways and as "
+        "small re-compressed copies; anything too unlike them — other plants, rooms, "
+        "screenshots — is turned away.",
     ),
     (
         "Diagnosis",
@@ -141,7 +145,9 @@ theme.section("How far to trust it", kicker="Limits")
 theme.note(
     "<b>A first opinion, not a diagnosis.</b> Trained and tested on 2,520 photos from one "
     "public dataset in which each disease was photographed in its own setup; it has "
-    "<b>not yet been tested on new farm photos</b>. Very early infection, several leaves in one "
+    "<b>not yet been tested on new farm photos</b>. On coffee leaves from another public dataset "
+    "(Brazil) it recognised Healthy, Leaf Rust and Phoma but mostly called Cercospora Leaf Rust "
+    "(details: Model Analysis → Other datasets). Very early infection, several leaves in one "
     "photo, heavy noise or compression, and diseases other than these four are outside what it "
     "has learned. Confirm any disease finding with an agronomist before treating.",
     warn=True,

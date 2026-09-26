@@ -41,16 +41,22 @@
     },
     "knn": {
       "cal_auroc": {
-        "near": 0.9998143236074271,
-        "far": 1.0
+        "near": 0.9991246684350134,
+        "far": 0.9996915674541978
       },
-      "cal_auroc_mean": 0.9999071618037135
+      "cal_auroc_mean": 0.9994081179446056
     }
   },
   "scorer": "knn",
-  "tau_ood": 0.5536057353019714,
-  "tau_ood_val_acceptance": 0.995,
-  "tau_conf": 0.9467676877975464,
+  "knn_bank": [
+    "original",
+    "rot90",
+    "degraded",
+    "rot90+degraded"
+  ],
+  "tau_ood": 0.49427229166030884,
+  "tau_ood_val_acceptance": 0.98,
+  "tau_conf": 0.9477220177650452,
   "quality_thresholds": {
     "min_brightness": 41.31669616699219,
     "max_brightness": 203.01645462036132,
@@ -200,17 +206,17 @@
       }
     },
     "knn": {
-      "id_acceptance": 0.9340369393139841,
+      "id_acceptance": 0.9313984168865436,
       "near": {
-        "auroc": 0.9926121372031662,
+        "auroc": 0.9893403693931397,
         "fpr_at_95_id": 0.02
       },
       "far": {
-        "auroc": 1.0,
+        "auroc": 0.9998201007435836,
         "fpr_at_95_id": 0.0
       },
       "all": {
-        "auroc": 0.9979703673635072,
+        "auroc": 0.9969410536692858,
         "fpr_at_95_id": 0.005494505494505495
       }
     }
@@ -219,7 +225,7 @@
     "indoor_scenes": 0.0,
     "rendered_text": 0.0,
     "synthetic": 0.0,
-    "bean_leaves": 0.14
+    "bean_leaves": 0.04
   },
   "quality_gate": {
     "val_rejected": 0.002652519893899204,
@@ -241,20 +247,20 @@
   "decisions": {
     "test": {
       "counts": {
-        "accepted:None": 344,
-        "uncertain:low_confidence": 28,
-        "rejected:ood": 5,
+        "accepted:None": 342,
+        "uncertain:low_confidence": 22,
+        "rejected:ood": 13,
         "rejected:low_quality": 2
       },
-      "accepted_share": 0.9076517150395779,
-      "accepted_accuracy": 0.9941860465116279
+      "accepted_share": 0.9023746701846965,
+      "accepted_accuracy": 0.9941520467836257
     },
     "ood_test": {
       "counts": {
         "rejected:low_quality": 91,
-        "rejected:ood": 84,
-        "uncertain:low_confidence": 4,
-        "accepted:None": 3
+        "rejected:ood": 89,
+        "accepted:None": 1,
+        "uncertain:low_confidence": 1
       }
     }
   }

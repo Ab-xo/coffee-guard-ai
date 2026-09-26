@@ -165,8 +165,9 @@ with right:
         c3.metric("Sharpness", f"{q.get('sharpness', 0):.0f}")
         if res.get("ood_score") is not None:
             st.write(
-                f"Similarity check: score {res['ood_score']:.3f} "
-                f"(photos above {res['ood_threshold']:.3f} are turned away)"
+                f"Distance from the coffee leaves the model knows: {res['ood_score']:.3f} "
+                f"(lower is more familiar; above {res['ood_threshold']:.3f} the photo is "
+                "turned away)"
             )
         st.caption(
             f"Model v{res['model_version']} · {res['latency_ms']:.0f} ms on the server · "

@@ -47,14 +47,21 @@
     "classifier_weight.npy": "4d69f3af0aefba4e3e36bc0caefe92761df5092129b3ba6c50dd056b5439f1d3",
     "classifier_bias.npy": "c2c6c10f0bc3ebe49c0270923d77b2c2d41382e419cd690291b02d54804343ef",
     "ood_class_means.npy": "f92058f18067e18de379ec1103ddceb7b8040e50d753ee0908fbca7755d34e73",
-    "ood_precision.npy": "875491ab179420f6cff9197a9f85d7fc9ec70264d875729cf9f4246168c5cadf"
+    "ood_precision.npy": "875491ab179420f6cff9197a9f85d7fc9ec70264d875729cf9f4246168c5cadf",
+    "ood_knn_bank.npy": "50bd751c33497c22f00f29dbd8721447e0b3211e49405e1f882b30bbb10d898f"
   },
   "conformal_alpha": 0.02,
   "ood": {
-    "scorer": "mahalanobis",
-    "tau": 5584.58203125,
+    "scorer": "knn",
+    "tau": 0.48316478729248047,
     "knn_k": 10,
-    "id_acceptance": 0.995
+    "id_acceptance": 0.99,
+    "knn_bank": [
+      "original",
+      "rot90",
+      "degraded",
+      "rot90+degraded"
+    ]
   },
   "tau_conf": 0.9543623328208923,
   "quality_thresholds": {

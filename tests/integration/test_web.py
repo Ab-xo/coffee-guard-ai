@@ -110,7 +110,7 @@ def test_home_shows_headline_numbers_and_limits():
     assert "not yet been tested on new farm photos" in html
 
 
-def test_analysis_page_has_the_four_sections():
+def test_analysis_page_has_the_five_sections():
     at = AppTest.from_file(str(VIEWS / "analysis.py"), default_timeout=60).run()
     labels = {t.label for t in at.tabs}
     assert {
@@ -118,7 +118,15 @@ def test_analysis_page_has_the_four_sections():
         "Learning curves",
         "Residuals & predictions",
         "Cross-validation",
+        "Other datasets",
     } <= labels
+
+
+def test_other_datasets_tab_shows_external_results():
+    at = AppTest.from_file(str(VIEWS / "analysis.py"), default_timeout=60).run()
+    html = _html(at)
+    assert "BRACOL" in html and "RoCoLe" in html
+    assert "AUROC telling these coffee leaves from other plants" in html
 
 
 def test_entry_app_builds_navigation(api):

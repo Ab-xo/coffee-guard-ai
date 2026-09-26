@@ -41,16 +41,22 @@
     },
     "knn": {
       "cal_auroc": {
-        "near": 0.9994694960212201,
-        "far": 0.9999074702362593
+        "near": 0.9982228116710875,
+        "far": 0.9991055456171735
       },
-      "cal_auroc_mean": 0.9996884831287397
+      "cal_auroc_mean": 0.9986641786441305
     }
   },
   "scorer": "knn",
-  "tau_ood": 0.5459531545639038,
-  "tau_ood_val_acceptance": 0.99,
-  "tau_conf": 0.7722873091697693,
+  "knn_bank": [
+    "original",
+    "rot90",
+    "degraded",
+    "rot90+degraded"
+  ],
+  "tau_ood": 0.49765509366989136,
+  "tau_ood_val_acceptance": 0.98,
+  "tau_conf": 0.9243180751800537,
   "quality_thresholds": {
     "min_brightness": 41.31669616699219,
     "max_brightness": 203.01645462036132,
@@ -200,17 +206,17 @@
       }
     },
     "knn": {
-      "id_acceptance": 0.9182058047493403,
+      "id_acceptance": 0.9050131926121372,
       "near": {
-        "auroc": 0.9901846965699208,
+        "auroc": 0.9840633245382585,
         "fpr_at_95_id": 0.0
       },
       "far": {
-        "auroc": 0.9999800111937315,
+        "auroc": 0.9996002238746302,
         "fpr_at_95_id": 0.0
       },
       "all": {
-        "auroc": 0.9972889906926846,
+        "auroc": 0.9953318449360665,
         "fpr_at_95_id": 0.0
       }
     }
@@ -219,7 +225,7 @@
     "indoor_scenes": 0.0,
     "rendered_text": 0.0,
     "synthetic": 0.0,
-    "bean_leaves": 0.06
+    "bean_leaves": 0.08
   },
   "quality_gate": {
     "val_rejected": 0.002652519893899204,
@@ -241,19 +247,20 @@
   "decisions": {
     "test": {
       "counts": {
-        "accepted:None": 358,
-        "uncertain:low_confidence": 10,
-        "rejected:ood": 9,
+        "accepted:None": 342,
+        "rejected:ood": 19,
+        "uncertain:low_confidence": 16,
         "rejected:low_quality": 2
       },
-      "accepted_share": 0.9445910290237467,
-      "accepted_accuracy": 0.994413407821229
+      "accepted_share": 0.9023746701846965,
+      "accepted_accuracy": 0.9941520467836257
     },
     "ood_test": {
       "counts": {
         "rejected:low_quality": 91,
-        "rejected:ood": 88,
-        "accepted:None": 3
+        "rejected:ood": 87,
+        "uncertain:low_confidence": 2,
+        "accepted:None": 2
       }
     }
   }

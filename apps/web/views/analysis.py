@@ -1,5 +1,5 @@
 """Model analysis of the deployed model: feature importance, learning curves, residuals &
-predictions, cross-validation."""
+predictions, cross-validation, coffee leaves from other datasets."""
 
 from __future__ import annotations
 
@@ -15,8 +15,14 @@ st.markdown(
     "learned, where it goes wrong, and how stable its score is across different data splits.</p>",
     unsafe_allow_html=True,
 )
-tab_fi, tab_lc, tab_res, tab_cv = st.tabs(
-    ["Feature importance", "Learning curves", "Residuals & predictions", "Cross-validation"]
+tab_fi, tab_lc, tab_res, tab_cv, tab_ext = st.tabs(
+    [
+        "Feature importance",
+        "Learning curves",
+        "Residuals & predictions",
+        "Cross-validation",
+        "Other datasets",
+    ]
 )
 
 # ======================================================================= feature importance
@@ -438,3 +444,93 @@ with tab_cv:
                 },
             )
         st.caption("Learning curves of every fold are on the 'Learning curves' tab.")
+
+# ======================================================================= other datasets
+with tab_ext:
+    ext = data.load_json("ood", data.MAIN, "external.json")
+    old = data.load_json("ood", data.MAIN, "external_gate_v1.0.json")
+    theme.note(
+        "Every number on the other tabs comes from photos of the training dataset. Here the "
+        "deployed model meets <b>coffee leaves from two other public datasets</b>, never used "
+        "for training or for fitting any threshold: <b>BRACOL</b> (Brazil, arabica, one leaf on "
+        "a light background) and <b>RoCoLe</b> (Ecuador, robusta, leaves on the plant). BRACOL "
+        "is also re-shot the way photos often arrive: with the leaf standing vertically, and "
+        "as small re-compressed copies from a web page or chat app."
+    )
+    if not ext:
+        st.info(
+            "No external results found (run `coffeeguard ood external-collect` and "
+            "`coffeeguard ood external`)."
+        )
+    else:
+        b = ext["bracol"]
+        theme.stats_row(
+            [
+                (
+                    f"{ext['auroc_external_coffee_vs_other_plants']:.3f}",
+                    "AUROC telling these coffee leaves from other plants' leaves"
+                    + (f" (was {old['auroc_external_coffee_vs_other_plants']:.3f})" if old else ""),
+                ),
+                (
+                    f"{b['vertical + 300 px JPEG']['passed_gates']:.0%}",
+                    "of vertical, small web-sized coffee-leaf photos get an answer",
+                ),
+                (f"{ext['rocole']['passed_gates']:.0%}", "of RoCoLe leaves on the plant pass"),
+                (
+                    f"{b['as photographed']['top1_accuracy']:.0%}",
+                    "BRACOL disease accuracy (vs. 97% on our own test photos)",
+                ),
+            ]
+        )
+        c1, c2 = st.columns([1.15, 1], gap="large")
+        with c1:
+            st.markdown("**Coffee leaves that get past the gates** (quality + out-of-distribution)")
+            rows = [(f"BRACOL · {k}", k, "bracol") for k in b] + [
+                ("RoCoLe · on the plant", None, "rocole")
+            ]
+            df = pd.DataFrame(
+                [
+                    {
+                        "condition": name,
+                        "gate v1.0": (old[src][k] if k else old[src])["passed_gates"]
+                        if old
+                        else np.nan,
+                        "gate v1.1": (ext[src][k] if k else ext[src])["passed_gates"],
+                    }
+                    for name, k, src in rows
+                ]
+            )
+            if old:
+                st.altair_chart(
+                    viz.before_after(df, "condition", "gate v1.0", "gate v1.1"),
+                    width="stretch",
+                )
+            else:
+                st.altair_chart(
+                    viz.bars(df, "condition", "gate v1.1", "share passed", fmt=".0%", sort=None),
+                    width="stretch",
+                )
+            st.caption(
+                "v1.0 compared a photo only with clean, full-size training photos (every leaf on "
+                "paper lying horizontally) and turned away most vertical or small photos. v1.1 "
+                "also compares it with turned and small re-compressed copies of the same "
+                "training photos; its threshold was re-fitted by the same rule, and it now lets "
+                f"through {ext['other_plants_passing_ood']:.0%} of other plants' leaves "
+                f"(v1.0: {old['other_plants_passing_ood']:.0%})."
+                if old
+                else ""
+            )
+        with c2:
+            st.markdown("**BRACOL confusion** (as photographed; rows = BRACOL's label)")
+            cm = b["as photographed"]["confusion"]
+            matrix = [[cm.get(t, {}).get(p, 0) for p in viz.CLASSES] for t in viz.CLASSES]
+            st.altair_chart(viz.confusion(matrix, viz.CLASSES), width="stretch")
+        theme.note(
+            "<b>What this shows.</b> Healthy, Leaf Rust and Phoma leaves from Brazil are "
+            "recognised, but <b>BRACOL's Cercospora is mostly called Leaf Rust</b>: every "
+            "Cercospora photo in the training data was taken on blue paper, so the model learned "
+            "that dataset's look of the disease, not the disease in general. "
+            f"{ext['bracol_seen_share']:.0%} of the sampled BRACOL photos also appear in the "
+            "training dataset (it copied part of BRACOL) and are left out of these numbers. "
+            "More varied Cercospora photos are the most useful next data."
+        )

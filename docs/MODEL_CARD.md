@@ -1,6 +1,6 @@
 # Model card — CoffeeGuard EfficientNetV2-B0 v1
 
-Bundle: `artifacts/models/coffeeguard-effv2b0-v1/` (ONNX + `bundle.json` with every threshold; SHA-256 of each file in `bundle.json`). Decision record: [`decisions/001-deployment-model.md`](decisions/001-deployment-model.md). All numbers trace to the files named in [`PROGRESS.md`](PROGRESS.md).
+Bundle: `artifacts/models/coffeeguard-effv2b0-v1/`, version **1.1.0** (same model as 1.0.0; re-fitted out-of-distribution gate, see *Coffee leaves from other datasets*) (ONNX + `bundle.json` with every threshold; SHA-256 of each file in `bundle.json`). Decision record: [`decisions/001-deployment-model.md`](decisions/001-deployment-model.md). All numbers trace to the files named in [`PROGRESS.md`](PROGRESS.md).
 
 ## Intended use
 
@@ -11,7 +11,7 @@ Bundle: `artifacts/models/coffeeguard-effv2b0-v1/` (ONNX + `bundle.json` with ev
 ## How a photo is handled
 
 1. **Quality gate** — rejects photos that are too dark (mean brightness < 41), over-exposed (> 203), flat (RMS contrast < 12.5), blurred (Laplacian variance < 1.6 at 384 px) or have almost no leaf colour (< 2%). The dark/flat/blur limits sit where the model's accuracy on degraded validation photos falls below 90%. Answer: *retake*, with the reason.
-2. **OOD gate** — KNN distance (k = 10, cosine) from the photo's embedding to 1,764 training embeddings; rejects above τ = 0.554 (99.5th percentile of validation photos). Answer: *this doesn't look like a coffee leaf*.
+2. **OOD gate** — KNN distance (k = 10, cosine) from the photo's embedding to 7,056 reference embeddings: the 1,764 training photos as taken, turned 90°, as small re-compressed copies (long side 120–384 px, JPEG quality 20–70), and both. Rejects above τ = 0.494 (98th percentile of validation photos — the highest level at which ≤ 1% of the OOD calibration images pass). Answer: *not recognised as a coffee leaf*, with advice to send the original camera photo.
 3. **Prediction** — EfficientNetV2-B0 (`tf_efficientnetv2_b0.in1k`, 224 px), temperature-scaled (T = 0.52). **Accepted** if the 98% conformal set has one class and confidence ≥ 0.947; otherwise **uncertain** with the top candidates.
 4. **Explanation** — CAM of the predicted class from the same forward pass (identical to Grad-CAM for this head; verified by test).
 
@@ -32,7 +32,7 @@ Bundle: `artifacts/models/coffeeguard-effv2b0-v1/` (ONNX + `bundle.json` with ev
 | Main confusion | Leaf Rust → Cercospora (3); half of the errors of the pre-swap model were images the label audit flags as possibly mislabelled |
 | Calibration (ECE, 15 bins) | 0.097 → **0.014** after temperature scaling |
 | Conformal coverage (98% target) | 0.974 |
-| Through the full decision | **90.8% answered, 99.4% of answers correct**; 7.4% *uncertain*, 1.8% rejected |
+| Through the full decision | **90.2% answered, 99.4% of answers correct**; 5.8% *uncertain*, 4.0% rejected (v1.0 gate: 90.8% / 99.4%, 7.4%, 1.8%) |
 | Confidence ≥ 0.8 | 367 photos, 98.4% correct |
 | Server CPU latency (measured on an Intel i5 laptop as a stand-in for a small cloud CPU server; 4 threads, batch 1) | model 15.5 ms p50 / 23 ms p95; full request incl. decoding a 2048 px phone photo 63 ms p50 / 72 ms p95 |
 
@@ -51,7 +51,25 @@ Lesion coverage was estimated from colour alone (yellow/orange/brown or much-dar
 
 ## Out-of-distribution detection (sources never used for tuning)
 
-AUROC 0.993 against other plant leaves (bean), 1.000 against non-leaf images (indoor scenes, text/screenshots, blank/noise frames). End to end, 175 of 182 such test images are rejected; 3 bean leaves were accepted.
+AUROC 0.989 against other plant leaves (bean), 1.000 against non-leaf images (indoor scenes, text/screenshots, blank/noise frames); 4% of bean leaves pass the gate (v1.0: 14%). End to end, 180 of 182 such test images are rejected; 1 bean leaf was accepted and 1 answered *uncertain*.
+
+## Coffee leaves from other datasets (never used for training or fitting)
+
+A user's clear photo of a diseased coffee leaf — standing vertically, a small image from the web — was rejected as "not a coffee leaf" by v1.0. The check above could not catch this, because its coffee-leaf side is the training dataset itself. So the gate and the model were run on coffee leaves from two independent public datasets (`coffeeguard ood external`): **BRACOL** (Brazil, arabica, one leaf on a light background; 186 photos not present in our data) and **RoCoLe** (Ecuador, robusta, leaves on the plant; 150 photos).
+
+| Photos that get past the gates | v1.0 gate | **v1.1 gate** |
+|---|---:|---:|
+| BRACOL as photographed (horizontal, 2048 px) | 97% | 85% |
+| BRACOL, leaf vertical | 48% | **98%** |
+| BRACOL, 300 px JPEG | 73% | 84% |
+| BRACOL, 150 px JPEG | 8% | **99%** |
+| BRACOL, vertical + 300 px JPEG | 19% | **98%** |
+| RoCoLe, on the plant | 95% | 93% |
+| AUROC: these coffee leaves vs. other plants' leaves | 0.712 | **0.981** |
+
+Cause: v1.0 compared a photo only with clean, full-size training photos, in which every leaf photographed on paper lies horizontally; the classifier handles vertical and small photos about as well as clean ones, but the gate did not. v1.1 adds turned and small copies of the same training photos to the reference set; the threshold rule is unchanged. The price: 2.2 points more of our own clean test photos are turned away (mostly ones v1.0 answered *uncertain*). The two harder conditions were chosen because of the failure report and match the added copies in kind (not in images), so the AUROC and RoCoLe are the least tuned numbers.
+
+**Disease accuracy on BRACOL is only 63%** (accepted answers 83% correct): Healthy 37/37, Leaf Rust 50/56, Phoma 30/32, but **Cercospora 1/61** — mostly called Leaf Rust. All Cercospora training photos were taken on blue paper in one setup; the model learned that dataset's appearance of the disease. Answers on vertical or small photos come back *uncertain* about half the time, which is the intended behaviour. Details: `artifacts/ood/coffeeguard-effv2b0-v1/external.json`, Model Analysis → *Other datasets* in the app.
 
 ## Limitations and risks
 
@@ -61,5 +79,5 @@ AUROC 0.993 against other plant leaves (bean), 1.000 against non-leaf images (in
 - **Single seed, single dataset:** reported uncertainty covers test-set sampling, not training randomness or a new region/season/camera.
 - **Early infection:** see *Disease severity* — performance on leaves with barely visible symptoms is unknown.
 - **Photo conditions not covered by the tests:** colour casts (indoor light, sunset), several leaves or a whole branch in one photo (a second leaf in the frame caused one test error), and heavy noise or JPEG compression (not detected by the quality gate; the model then tends to answer *Healthy*).
-- **Not validated in the field:** every number here comes from photos of the same dataset (same photographers, papers and cameras); robustness was tested with synthetic corruptions. **The key next step is a field test set** — 30–50 farm phone photos per class, labelled by an agronomist — to measure real-world performance.
+- **Not validated in the field:** apart from the BRACOL/RoCoLe check above, every number comes from photos of the same dataset (same photographers, papers and cameras); robustness was tested with synthetic corruptions. That check already shows a large drop on another dataset (63% accuracy, Cercospora almost always missed). **The key next step is a field test set** — 30–50 farm phone photos per class, labelled by an agronomist — and more varied Cercospora training photos.
 - **Not a diagnosis:** treat *Healthy* answers on poor photos with care (see robustness), and confirm any disease finding before treatment.

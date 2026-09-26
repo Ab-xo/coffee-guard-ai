@@ -6,7 +6,11 @@ Fitted on train / val / OOD-cal only; reported on test / OOD-test:
    val accuracy on corrupted photos drops below 90%; over-exposure and leaf-colour
    fraction use the 0.5th / 99.5th percentile of the training photos.
 2. **OOD scorer**: MSP, energy, Mahalanobis and KNN are compared by AUROC of val (ID)
-   vs. OOD-cal, averaged over near- and far-OOD; the best one is kept.
+   vs. OOD-cal, averaged over near- and far-OOD; the best one is kept (near-ties: KNN).
+   The KNN reference bank holds every training photo four times - as taken, turned 90°,
+   as a small re-compressed copy, and both (``BANK_VARIANTS``) - because the classifier
+   copes with leaves in any orientation and with thumbnail-sized photos, but a bank of
+   clean, (on paper, always) horizontal photos alone turned such coffee leaves away.
 3. **τ_ood** = the highest val percentile (95-99.5%) at which ≤ 1% of OOD-cal images pass.
 4. **τ_conf** = lowest confidence at which val predictions that pass the gates are
    ≥ 99% correct (below it the answer is "uncertain").
@@ -15,7 +19,9 @@ Everything the API needs is written into the bundle (``bundle.json`` + ``ood_*.n
 
 from __future__ import annotations
 
+import io
 import json
+import random
 from pathlib import Path
 
 import numpy as np
@@ -40,6 +46,32 @@ ID_ACCEPT = 0.95  # minimum share of genuine val photos the OOD gate accepts
 MAX_OOD_CAL_ACCEPT = 0.01  # max share of OOD-cal images the gate may accept
 TARGET_ACC = 0.99
 MIN_GATE_ACC = 0.90  # reject photos of a quality at which val accuracy falls below this
+AUROC_TIE = 0.001  # OOD scorers closer than this on OOD-cal count as tied
+BANK_VARIANTS = ("original", "rot90", "degraded", "rot90+degraded")
+
+
+def degrade(img: Image.Image, rng: random.Random) -> Image.Image:
+    """A copy as it arrives from a messaging app or a web page: long side 120-384 px,
+    JPEG quality 20-70."""
+    small = img.copy()
+    side = rng.randint(120, 384)
+    small.thumbnail((side, side), Image.Resampling.BICUBIC)
+    buf = io.BytesIO()
+    small.convert("RGB").save(buf, "JPEG", quality=rng.randint(20, 70))
+    buf.seek(0)
+    return Image.open(buf).convert("RGB")
+
+
+def bank_variants(images: list[Image.Image], seed: int = 0) -> dict[str, list[Image.Image]]:
+    """The training photos in each of ``BANK_VARIANTS`` (deterministic for a seed)."""
+    rng = random.Random(seed)
+    rot = [im.rotate(90, expand=True) for im in images]
+    return {
+        "original": images,
+        "rot90": rot,
+        "degraded": [degrade(im, rng) for im in images],
+        "rot90+degraded": [degrade(im, rng) for im in rot],
+    }
 
 
 def _run(predictor: Predictor, images: list[Image.Image], batch: int = 32):
@@ -75,7 +107,9 @@ def _fpr_at(tau: float, ood_scores: np.ndarray) -> float:
     return float((ood_scores <= tau).mean())
 
 
-def fit_gates(bundle_dir: Path, cfg: DataConfig, ood_root: Path, out_root: Path) -> dict:
+def fit_gates(
+    bundle_dir: Path, cfg: DataConfig, ood_root: Path, out_root: Path, augment_bank: bool = True
+) -> dict:
     predictor = Predictor(bundle_dir)
     classes, name, temp = predictor.classes, bundle_dir.name, predictor.temperature
     meta = predictor.meta
@@ -141,9 +175,14 @@ def fit_gates(bundle_dir: Path, cfg: DataConfig, ood_root: Path, out_root: Path)
 
     means = np.stack([tr_emb[tr_y == k].mean(0) for k in range(len(classes))])
     lw = LedoitWolf().fit(tr_emb - means[tr_y])
+    bank = [tr_emb]
+    if augment_bank:
+        variants = bank_variants(imgs["train"])
+        bank += [_run(predictor, variants[v])[1].astype(np.float64) for v in BANK_VARIANTS[1:]]
+        del variants
     state = OODState(
         temperature=temp,
-        knn_bank=_l2n(tr_emb).astype(np.float16),
+        knn_bank=_l2n(np.concatenate(bank)).astype(np.float16),
         class_means=means.astype(np.float32),
         precision=lw.precision_.astype(np.float32),
     )
@@ -163,7 +202,11 @@ def fit_gates(bundle_dir: Path, cfg: DataConfig, ood_root: Path, out_root: Path)
             for kind in ("near", "far")
         }
         comparison[sc] = {"cal_auroc": auc, "cal_auroc_mean": float(np.mean(list(auc.values())))}
-    best = max(comparison, key=lambda k: comparison[k]["cal_auroc_mean"])
+    # near-ties (< AUROC_TIE, noise at this sample size) go to KNN: only its reference set
+    # covers turned and small photos
+    top = max(v["cal_auroc_mean"] for v in comparison.values())
+    preference = ("knn", "mahalanobis", "energy", "msp")
+    best = next(k for k in preference if comparison[k]["cal_auroc_mean"] >= top - AUROC_TIE)
     s_val = score(best, val_lg, val_emb, state)
     # τ: the highest val-acceptance level (95-99.5%) that still lets at most
     # MAX_OOD_CAL_ACCEPT of the OOD-cal images through - decided on cal data only
@@ -204,6 +247,7 @@ def fit_gates(bundle_dir: Path, cfg: DataConfig, ood_root: Path, out_root: Path)
         | tf.groupby(["kind", "source"]).size().to_dict(),
         "scorer_comparison": comparison,
         "scorer": best,
+        "knn_bank": list(BANK_VARIANTS if augment_bank else BANK_VARIANTS[:1]),
         "tau_ood": tau_ood,
         "tau_ood_val_acceptance": id_accept,
         "tau_conf": tau_conf,
@@ -289,7 +333,13 @@ def fit_gates(bundle_dir: Path, cfg: DataConfig, ood_root: Path, out_root: Path)
         np.save(bundle_dir / "ood_precision.npy", state.precision)
         files |= {"ood_class_means.npy": None, "ood_precision.npy": None}
     meta.update(
-        ood={"scorer": best, "tau": tau_ood, "knn_k": state.knn_k, "id_acceptance": id_accept},
+        ood={
+            "scorer": best,
+            "tau": tau_ood,
+            "knn_k": state.knn_k,
+            "id_acceptance": id_accept,
+            "knn_bank": res["knn_bank"],
+        },
         tau_conf=tau_conf,
         quality_thresholds=qt.__dict__,
     )

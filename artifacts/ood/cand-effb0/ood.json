@@ -41,16 +41,22 @@
     },
     "knn": {
       "cal_auroc": {
-        "near": 0.9997082228116712,
+        "near": 0.9989920424403184,
         "far": 1.0
       },
-      "cal_auroc_mean": 0.9998541114058356
+      "cal_auroc_mean": 0.9994960212201591
     }
   },
   "scorer": "knn",
-  "tau_ood": 0.5737110376358032,
-  "tau_ood_val_acceptance": 0.99,
-  "tau_conf": 0.9122490286827087,
+  "knn_bank": [
+    "original",
+    "rot90",
+    "degraded",
+    "rot90+degraded"
+  ],
+  "tau_ood": 0.5414665937423706,
+  "tau_ood_val_acceptance": 0.98,
+  "tau_conf": 0.9280775189399719,
   "quality_thresholds": {
     "min_brightness": 49.54660606384277,
     "max_brightness": 203.01645462036132,
@@ -200,9 +206,9 @@
       }
     },
     "knn": {
-      "id_acceptance": 0.9129287598944591,
+      "id_acceptance": 0.9155672823218998,
       "near": {
-        "auroc": 0.9899208443271768,
+        "auroc": 0.9865963060686016,
         "fpr_at_95_id": 0.0
       },
       "far": {
@@ -210,7 +216,7 @@
         "fpr_at_95_id": 0.0
       },
       "all": {
-        "auroc": 0.9970860274290353,
+        "auroc": 0.9961726927426136,
         "fpr_at_95_id": 0.0
       }
     }
@@ -219,7 +225,7 @@
     "indoor_scenes": 0.0,
     "rendered_text": 0.0,
     "synthetic": 0.0,
-    "bean_leaves": 0.12
+    "bean_leaves": 0.1
   },
   "quality_gate": {
     "val_rejected": 0.002652519893899204,
@@ -241,20 +247,20 @@
   "decisions": {
     "test": {
       "counts": {
-        "accepted:None": 350,
-        "uncertain:low_confidence": 20,
-        "rejected:ood": 7,
+        "accepted:None": 346,
+        "uncertain:low_confidence": 19,
+        "rejected:ood": 12,
         "rejected:low_quality": 2
       },
-      "accepted_share": 0.9234828496042217,
-      "accepted_accuracy": 0.9857142857142858
+      "accepted_share": 0.9129287598944591,
+      "accepted_accuracy": 0.9855491329479769
     },
     "ood_test": {
       "counts": {
         "rejected:low_quality": 92,
-        "rejected:ood": 84,
-        "accepted:None": 5,
-        "uncertain:low_confidence": 1
+        "rejected:ood": 85,
+        "uncertain:low_confidence": 3,
+        "accepted:None": 2
       }
     }
   }

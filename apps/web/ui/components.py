@@ -6,7 +6,7 @@ from ui.theme import esc
 
 REASON_TITLE = {
     "low_quality": "Photo too poor to judge",
-    "ood": "This doesn't look like a coffee leaf",
+    "ood": "Not recognised as a coffee leaf",
 }
 ISSUE_WORDS = {
     "too_dark": "too dark",

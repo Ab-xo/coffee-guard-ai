@@ -18,6 +18,7 @@
 | The author's test set overlaps the training folder (e.g. all 300 Cercospora test file names reappear in training) | The original split is unusable for honest evaluation; everything was re-split |
 | 902 byte-identical duplicates; 69 photos appear under two different labels | Duplicates removed; cross-label copies removed as conflicts |
 | Many photos exist in 4 rotations/flips; re-shots of the same leaf | Grouped (rotation-invariant perceptual hash + DINOv2 similarity ≥ 0.97 within a class) so they never cross splits |
+| **Part of the dataset is not from Ethiopia:** it contains photos of the Brazilian BRACOL dataset (Esgario et al., 2020). Of a class-balanced sample of 320 BRACOL photos, 134 (42%) have a near-identical copy in our data — Phoma 48/80, Healthy 43/80, Leaf Rust 24/80, Cercospora 19/80; the 2048×1024 Phoma photos look entirely like BRACOL | Found in the external check (below). "Ethiopian" describes the Kaggle upload, not every photo; BRACOL photos present in our data are excluded from the external numbers |
 
 **Clean dataset: 2,520 unique photos** — Healthy 715 · Cercospora 505 · Leaf Rust 837 · Phoma 463 (imbalance 1.81 : 1). Data fingerprint `53320bd30430396d`.
 
@@ -62,6 +63,17 @@ Split **by source** so the gate is tested on image kinds it was never tuned on. 
 | test · far | indoor scenes — HF `keremberke/indoor-scene-classification` | 42 | CC BY 4.0 |
 | test · far | rendered text — HF `nateraw/rendered-sst2` | 50 | see dataset card |
 | test · far | synthetic blank / noise / gradient / screenshot frames | 40 | generated |
+
+## Coffee leaves from other datasets (`data/external/`, git-ignored, `coffeeguard ood external-collect`)
+
+Used **only to evaluate** the deployed model and its gates (`coffeeguard ood external`) — never for training or for fitting a threshold. Downloaded as originals (not resized).
+
+| Dataset | Content | Sample | Licence |
+|---|---|---:|---|
+| BRACOL — HF mirror `luisangelico/bracol` of [esgario/lara2018](https://github.com/esgario/lara2018) | Brazil, arabica, one leaf on a light background, 2048×1024 phone photos; label = predominant stress (Healthy, Leaf Rust, Phoma, Cercospora used; leaf miner not) | 80 per class; **186 unseen** after removing near-duplicates of our data (perceptual hash, any flip/rotation, Hamming ≤ 8) | public; no explicit image licence (repository MIT); evaluation only, not redistributed |
+| RoCoLe — HF `bhugxer/RoCoLe-Coffee` | Ecuador, robusta, leaves photographed on the plant; labels not used | 150 random | CC BY 4.0 ([Mendeley, doi 10.17632/c5yvn32dzg.2](https://doi.org/10.17632/c5yvn32dzg.2)); not redistributed |
+
+BRACOL is also evaluated turned vertical and as small re-compressed copies (300 / 150 px, JPEG quality 35), the way photos from a web page or chat app arrive.
 
 ## Intended use
 

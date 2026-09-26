@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import numpy as np
 import pandas as pd
 import streamlit as st
 from ui import data, theme, viz
@@ -59,7 +60,7 @@ with c1:
         width="stretch",
     )
 with c2:
-    st.markdown("**Telling coffee leaves from other plant leaves** (AUROC)")
+    st.markdown("**Our test photos vs. other plant leaves** (AUROC)")
     st.altair_chart(
         viz.model_bars(df, "ood_auroc_near", "AUROC", chosen, fmt=".3f", domain=[0, 1]),
         width="stretch",
@@ -68,6 +69,31 @@ with c2:
     st.altair_chart(
         viz.model_bars(df, "accepted_share", "share of genuine photos", chosen, domain=[0, 1]),
         width="stretch",
+    )
+
+if "ood_auroc_external_coffee" in df:
+    e1, e2 = st.columns(2, gap="large")
+    with e1:
+        st.markdown(
+            "**Coffee leaves from other datasets vs. other plants** (AUROC; BRACOL + RoCoLe, "
+            "incl. vertical and small photos)"
+        )
+        st.altair_chart(
+            viz.model_bars(
+                df, "ood_auroc_external_coffee", "AUROC", chosen, fmt=".3f", domain=[0, 1]
+            ),
+            width="stretch",
+        )
+    with e2:
+        st.markdown("**Disease accuracy on unseen BRACOL photos** (Brazil; a different setup)")
+        st.altair_chart(
+            viz.model_bars(df, "external_bracol_accuracy", "accuracy", chosen, domain=[0, 1]),
+            width="stretch",
+        )
+    st.caption(
+        "Every model loses a lot of accuracy on another dataset — mostly by calling BRACOL's "
+        "Cercospora Leaf Rust — so a field test set is the most important next step. Details: "
+        "Model Analysis → Other datasets."
     )
 
 theme.section(
@@ -96,6 +122,9 @@ with sc2:
     )
 
 theme.section("All numbers")
+for col in ("ood_auroc_external_coffee", "external_bracol_accuracy"):
+    if col not in df:
+        df[col] = np.nan
 table = df[
     [
         "name",
@@ -108,6 +137,8 @@ table = df[
         "relative_robustness_sev1_3",
         "ood_auroc_near",
         "ood_auroc_far",
+        "ood_auroc_external_coffee",
+        "external_bracol_accuracy",
         "accepted_share",
         "accepted_accuracy",
         "params_m",
@@ -131,6 +162,8 @@ st.dataframe(
         "relative_robustness_sev1_3": pc("Robustness", format="%.3f"),
         "ood_auroc_near": pc("AUROC near", format="%.3f"),
         "ood_auroc_far": pc("AUROC far", format="%.3f"),
+        "ood_auroc_external_coffee": pc("AUROC other-dataset coffee", format="%.3f"),
+        "external_bracol_accuracy": pc("BRACOL acc", format="%.3f"),
         "accepted_share": pc("Answered", format="%.3f"),
         "accepted_accuracy": pc("Answer acc", format="%.3f"),
         "params_m": pc("Params (M)", format="%.2f"),

@@ -2,7 +2,8 @@
 
 Sources per bundle: ``artifacts/eval/<b>/metrics.json`` (Phase 4),
 ``artifacts/robustness/<b>/robustness.json`` (Phase 5), ``artifacts/ood/<b>/ood.json``
-(Phase 6), ``artifacts/benchmark/<b>.json`` (latency/size) and the paired bootstrap
+(Phase 6), ``artifacts/ood/<b>/external.json`` (coffee leaves from other datasets),
+``artifacts/benchmark/<b>.json`` (latency/size) and the paired bootstrap
 in ``artifacts/metrics/test_metrics.json``.
 """
 
@@ -26,6 +27,7 @@ def gather(bundles: list[str], root: Path) -> list[dict]:
         ev = _get(root / "eval" / b / "metrics.json")
         rb = _get(root / "robustness" / b / "robustness.json")
         od = _get(root / "ood" / b / "ood.json")
+        ext = _get(root / "ood" / b / "external.json")
         bm = _get(root / "benchmark" / f"{b}.json")
         row: dict = {"bundle": b}
         if ev:
@@ -63,6 +65,11 @@ def gather(bundles: list[str], root: Path) -> list[dict]:
                 "accepted_accuracy": od["decisions"]["test"]["accepted_accuracy"],
                 "ood_test_accepted": od["decisions"]["ood_test"]["counts"].get("accepted:None", 0),
             }
+        if ext:
+            row |= {
+                "ood_auroc_external_coffee": ext["auroc_external_coffee_vs_other_plants"],
+                "external_bracol_accuracy": ext["bracol"]["as photographed"]["top1_accuracy"],
+            }
         if bm:
             row |= {
                 "onnx_mb": bm["onnx_mb"],
@@ -82,8 +89,9 @@ def markdown(rows: list[dict]) -> str:
     head = (
         "| Model | Test macro-F1 [95% CI] | Errors | ECE | Rel. robustness (sev 1–3) | "
         "Leaf-only acc | "
-        "OOD AUROC near / far | Accepted (acc.) | Params (M) | ONNX MB | CPU p50 / p95 ms |\n"
-        "|---|---|---:|---:|---:|---:|---|---|---:|---:|---|\n"
+        "OOD AUROC near / far / other-dataset coffee | Other-dataset accuracy | "
+        "Accepted (acc.) | Params (M) | ONNX MB | CPU p50 / p95 ms |\n"
+        "|---|---|---:|---:|---:|---:|---|---:|---|---:|---:|---|\n"
     )
     lines = []
     for r in rows:
@@ -92,7 +100,8 @@ def markdown(rows: list[dict]) -> str:
             f"| {r.get('model', r['bundle'])} (`{r['bundle']}`) | {f(r.get('test_macro_f1'))} "
             f"[{f(ci[0])}, {f(ci[1])}] | {r.get('test_errors', '—')} | {f(r.get('ece_after'))} | "
             f"{f(r.get('relative_robustness_sev1_3'))} | {f(r.get('leaf_only_acc'))} | "
-            f"{f(r.get('ood_auroc_near'))} / {f(r.get('ood_auroc_far'))} | "
+            f"{f(r.get('ood_auroc_near'))} / {f(r.get('ood_auroc_far'))} / "
+            f"{f(r.get('ood_auroc_external_coffee'))} | {f(r.get('external_bracol_accuracy'))} | "
             f"{f(r.get('accepted_share'), '{:.1%}')} ({f(r.get('accepted_accuracy'), '{:.1%}')}) | "
             f"{f(r.get('params_m'), '{:.2f}')} | {f(r.get('onnx_mb'), '{:.1f}')} | "
             f"{f(r.get('latency_model_p50_ms'), '{:.1f}')} / "

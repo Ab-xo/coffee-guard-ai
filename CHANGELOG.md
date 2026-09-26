@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.1.0] - 2026-09-26
+
+### Coffee-leaf gate fixed after a user test; external-dataset evaluation
+
+#### Fixed
+- A clear coffee-leaf photo (vertical leaf, small web image) was rejected as "not a coffee leaf". The OOD gate's KNN reference set held only clean, full-size training photos (every leaf on paper horizontal); it now also holds each training photo turned 90° and as a small re-compressed copy (`BANK_VARIANTS` in `ood/fit.py`, 7,056 embeddings). τ re-fitted by the unchanged rule: 0.554 → 0.494. All five candidate bundles re-fitted.
+- Coffee leaves from other datasets vs. other plants' leaves: AUROC 0.712 → 0.981; vertical 300 px coffee-leaf photos passing: 19% → 98%; bean leaves passing: 14% → 4%; own test photos answered directly: 90.8% → 90.2% (99.4% correct)
+- UI said "Similarity check: score …" for a *distance* (higher = less familiar); now "Distance from the coffee leaves the model knows … (lower is more familiar)". Rejection title "Not recognised as a coffee leaf"; the advice asks for the original camera photo
+
+#### Added
+- `coffeeguard ood external-collect` / `ood external` (`src/coffeeguard/ood/external.py`): BRACOL (Brazil) and RoCoLe (Ecuador) coffee-leaf photos, evaluation only; BRACOL photos already in our dataset are detected by perceptual hash and excluded; BRACOL also re-shot vertical and as 300 / 150 px JPEGs
+- Model Analysis → *Other datasets* tab; external AUROC and BRACOL accuracy on the Model Comparison page and in `model_comparison.json`
+- Release bundle v1.1.0 (same model; gate, `metrics.ood_auroc_external_coffee`, `metrics.external_bracol_accuracy`)
+
+#### Found
+- The Kaggle "Ethiopian" dataset contains BRACOL photos (42% of a 320-photo BRACOL sample; Phoma 48/80)
+- On unseen BRACOL photos the model's accuracy is 0.63: Cercospora 1/61 (mostly called Leaf Rust), other classes 117/125 — documented in the model card, data card and technical report
+
+---
+
 ## [1.0.0] - 2026-09-26
 
 ### Phase 10 Completed - Packaging, Documentation, Release ✅

@@ -19,8 +19,9 @@ ADVICE = {
     "too_blurry": "The photo is blurry. Hold the phone steady and tap to focus on the leaf.",
     "low_contrast": "The photo is washed out. Move closer and avoid glare.",
     "no_leaf": "No leaf colours found. Fill most of the frame with a single leaf.",
-    "ood": "This doesn't look like a coffee leaf the model knows. Photograph one coffee leaf, "
-    "close up.",
+    "ood": "This doesn't look like the coffee leaves the model knows. If it is a coffee leaf, "
+    "send the original camera photo (not a screenshot or a small copy from the web) with "
+    "one leaf filling most of the frame.",
     "low_confidence": "The model isn't sure. Retake the photo of one leaf, close up and in "
     "focus, or ask an agronomist.",
 }

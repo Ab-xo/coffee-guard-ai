@@ -41,15 +41,21 @@
     },
     "knn": {
       "cal_auroc": {
-        "near": 0.999575596816976,
-        "far": 0.9999383134908395
+        "near": 0.9994429708222812,
+        "far": 0.9996915674541978
       },
-      "cal_auroc_mean": 0.9997569551539078
+      "cal_auroc_mean": 0.9995672691382396
     }
   },
-  "scorer": "mahalanobis",
-  "tau_ood": 5584.58203125,
-  "tau_ood_val_acceptance": 0.995,
+  "scorer": "knn",
+  "knn_bank": [
+    "original",
+    "rot90",
+    "degraded",
+    "rot90+degraded"
+  ],
+  "tau_ood": 0.48316478729248047,
+  "tau_ood_val_acceptance": 0.99,
   "tau_conf": 0.9543623328208923,
   "quality_thresholds": {
     "min_brightness": 41.31669616699219,
@@ -200,26 +206,26 @@
       }
     },
     "knn": {
-      "id_acceptance": 0.9261213720316622,
+      "id_acceptance": 0.9129287598944591,
       "near": {
-        "auroc": 0.9778364116094987,
-        "fpr_at_95_id": 0.06
+        "auroc": 0.9646965699208443,
+        "fpr_at_95_id": 0.1
       },
       "far": {
-        "auroc": 0.9987606940113536,
+        "auroc": 0.999060526105381,
         "fpr_at_95_id": 0.0
       },
       "all": {
-        "auroc": 0.9930122647800749,
-        "fpr_at_95_id": 0.016483516483516484
+        "auroc": 0.9896198788019368,
+        "fpr_at_95_id": 0.027472527472527472
       }
     }
   },
   "test_per_source_accepted_by_ood_gate": {
-    "indoor_scenes": 0.0,
-    "rendered_text": 1.0,
-    "synthetic": 0.025,
-    "bean_leaves": 0.12
+    "indoor_scenes": 0.047619047619047616,
+    "rendered_text": 0.0,
+    "synthetic": 0.0,
+    "bean_leaves": 0.38
   },
   "quality_gate": {
     "val_rejected": 0.002652519893899204,
@@ -241,20 +247,20 @@
   "decisions": {
     "test": {
       "counts": {
-        "accepted:None": 333,
-        "uncertain:low_confidence": 42,
-        "rejected:low_quality": 2,
-        "rejected:ood": 2
+        "accepted:None": 331,
+        "uncertain:low_confidence": 39,
+        "rejected:ood": 7,
+        "rejected:low_quality": 2
       },
-      "accepted_share": 0.8786279683377308,
-      "accepted_accuracy": 0.990990990990991
+      "accepted_share": 0.8733509234828496,
+      "accepted_accuracy": 0.9909365558912386
     },
     "ood_test": {
       "counts": {
         "rejected:low_quality": 91,
-        "rejected:ood": 85,
-        "accepted:None": 4,
-        "uncertain:low_confidence": 2
+        "rejected:ood": 70,
+        "accepted:None": 11,
+        "uncertain:low_confidence": 10
       }
     }
   }

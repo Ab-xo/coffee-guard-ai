@@ -11,12 +11,14 @@ Coffee leaf diseases can be difficult to identify quickly from photographs, espe
 | Macro-F1 [95% bootstrap CI] | **0.974** [0.956, 0.990] |
 | 5-fold group cross-validation (validation macro-F1) | 0.985 ± 0.007 |
 | Calibration error (ECE) after temperature scaling | 0.097 → **0.014** |
-| Answered directly / accuracy of those answers | **90.8% / 99.4%** (7.4% *uncertain*, 1.8% rejected) |
-| Out-of-distribution detection AUROC, other plant leaves / non-leaves | 0.993 / 1.000 (sources never used for tuning) |
+| Answered directly / accuracy of those answers | **90.2% / 99.4%** (5.8% *uncertain*, 4.0% rejected) |
+| Out-of-distribution detection AUROC, other plant leaves / non-leaves | 0.989 / 1.000 (sources never used for tuning) |
+| Coffee leaves from **other datasets** (BRACOL, RoCoLe) vs. other plants | AUROC **0.981** (v1.0 gate: 0.712) |
+| Disease accuracy on unseen BRACOL photos (Brazil) | **0.63** — Cercospora 1/61, other classes 117/125 |
 | Score kept under moderate photo damage (9 corruption types) | 97.9% |
 | Latency on a CPU server | 15 ms model; 63 ms for a full 2048 px phone photo |
 
-The deployed model is EfficientNetV2-B0 fine-tuned on 1,764 photos with background-swap augmentation, served as an ONNX bundle by a FastAPI service with a Streamlit front end (`docker compose up`).
+The deployed model is EfficientNetV2-B0 fine-tuned on 1,764 photos with background-swap augmentation, served as an ONNX bundle by a FastAPI service with a Streamlit front end (`docker compose up`). Release 1.1.0 keeps the model and re-fits the out-of-distribution gate after a clear coffee-leaf photo was rejected (§7.1); the same check showed that performance drops substantially on another dataset.
 
 ## 2. Data
 
@@ -66,8 +68,16 @@ Evaluated through the exported ONNX bundle (exactly what is served) [`artifacts/
 ## 7. Rejection gates
 
 - **Quality gate:** thresholds for darkness, low contrast and blur sit where the model's validation accuracy under corruption drops below 90% (the training-photo percentiles first tried rejected 94–100% of mildly dark or blurred photos the model handles well); over-exposure and leaf-colour thresholds use training percentiles. 0.5% of genuine photos are rejected.
-- **OOD gate:** of MSP, energy, Mahalanobis and KNN scores on the model's embedding, **KNN** (cosine distance to the 10th-nearest training embedding; Sun et al., 2022) was best on the calibration sources; τ is the highest validation percentile (99.5th) at which ≤ 1% of OOD calibration images pass. On unseen test sources: AUROC 0.993 (bean leaves) and 1.000 (indoor scenes, text, synthetic frames). Mahalanobis looked perfect on calibration data but collapsed on unseen far-OOD sources (0.47) — a reason to split OOD data by source.
-- **End to end (test):** 344 genuine photos accepted (99.4% correct), 28 uncertain, 5 rejected as OOD, 2 as low quality; 175 of 182 OOD images rejected (3 bean leaves accepted).
+- **OOD gate:** of MSP, energy, Mahalanobis and KNN scores on the model's embedding, **KNN** (cosine distance to the 10th-nearest reference embedding; Sun et al., 2022) was best on the calibration sources; τ is the highest validation percentile (95–99.5%) at which ≤ 1% of OOD calibration images pass. Since v1.1 the reference set holds each training photo four times — as taken, turned 90°, as a small re-compressed copy, and both (7,056 embeddings, 18 MB) — giving τ = 0.494 at the 98th percentile. On unseen test sources: AUROC 0.989 (bean leaves; 4% pass) and 1.000 (indoor scenes, text, synthetic frames). Mahalanobis looked perfect on calibration data but collapsed on unseen far-OOD sources in v1.0 (0.47) — a reason to split OOD data by source.
+- **End to end (test):** 342 genuine photos accepted (99.4% correct), 22 uncertain, 13 rejected as OOD, 2 as low quality; 180 of 182 OOD images rejected (1 bean leaf accepted, 1 uncertain).
+
+### 7.1 Coffee leaves from other datasets (v1.1)
+
+A user's clear, well-lit photo of a diseased coffee leaf — standing vertically, a 4.6 KB image from the web — was rejected as "not a coffee leaf" (KNN distance 0.605 > τ 0.554). The OOD evaluation above could not reveal this: its coffee side is the training dataset itself. The gate and model were therefore run on coffee leaves from two independent datasets, used for evaluation only: **BRACOL** (Brazil; 186 photos after removing 134 that turned out to be *in* the Kaggle dataset) and **RoCoLe** (Ecuador, leaves on the plant; 150 photos). BRACOL was also turned vertical and shrunk to 300 / 150 px JPEG.
+
+- **Diagnosis:** the v1.0 gate let through 97% of BRACOL as photographed but 48% of vertical leaves, 8% of 150 px copies and 19% of vertical 300 px copies, while the classifier's accuracy was the same under these conditions (61–67%). Every training leaf photographed on paper lies horizontally, and all photos are clean and ≥ 720 px, so the reference set covered only that. Preprocessing was not the cause: a centre crop made acceptance worse (68%).
+- **Fix:** add turned and small re-compressed copies (long side 120–384 px, JPEG quality 20–70) of the training photos to the reference set; same threshold rule. Coffee-from-other-datasets vs. other plants' leaves: AUROC 0.712 → **0.981**; vertical 300 px copies passed 19% → 98%; RoCoLe 95% → 93%; BRACOL as photographed 97% → 85%; bean leaves passing 14% → 4%; our own test photos answered directly 90.8% → 90.2%. The user's photo is now answered *uncertain* (Leaf Rust 61%; turned horizontal: Phoma 99%). The two harder conditions were chosen after the failure report and resemble the added copies in kind, so the AUROC over all sets and the untouched RoCoLe set are the fairer numbers.
+- **What it revealed about the model:** on unseen BRACOL photos accuracy is **0.63** (answers given directly: 0.83): Healthy 37/37, Leaf Rust 50/56, Phoma 30/32, **Cercospora 1/61** (43 called Leaf Rust). All training Cercospora come from one blue-paper setup; this is the dataset confound of §2 showing up as a generalisation failure. All five candidate models were evaluated the same way (Model Comparison page).
 
 ## 8. System
 
@@ -79,7 +89,7 @@ Evaluated through the exported ONNX bundle (exactly what is served) [`artifacts/
 
 ## 9. Limitations and future work
 
-1. **No field validation.** All results come from one dataset with class-specific photo setups; robustness was tested with synthetic corruptions. The most valuable next step is a field test set: 30–50 farm phone photos per class labelled by an agronomist.
+1. **No field validation, and a measured drop on another dataset.** Apart from §7.1, all results come from one dataset with class-specific photo setups; robustness was tested with synthetic corruptions. On BRACOL, accuracy falls to 0.63 and Cercospora is almost never recognised. The most valuable next steps are more varied Cercospora training photos and a field test set: 30–50 farm phone photos per class labelled by an agronomist.
 2. **Residual background cue:** blue-paper backgrounds still lean towards Cercospora/Leaf Rust.
 3. **Early infection** is not represented; performance on barely visible symptoms is unknown.
 4. **Photo conditions not covered:** colour casts, several leaves per photo, heavy noise or compression (not detected by the quality gate).
@@ -99,6 +109,7 @@ uv run coffeeguard export --run runs/<run> --name <bundle>
 uv run coffeeguard evaluate -b artifacts/models/<bundle> ...
 uv run coffeeguard explain -b ... && uv run coffeeguard robustness -b ...
 uv run coffeeguard ood collect && uv run coffeeguard ood fit -b artifacts/models/<bundle>
+uv run coffeeguard ood external-collect && uv run coffeeguard ood external -b artifacts/models/<bundle>
 uv run coffeeguard data cv-folds && uv run coffeeguard remote train -c configs/train/effnetv2_b0_bgswap.yaml --cv-folds 5
 docker compose up --build
 ```

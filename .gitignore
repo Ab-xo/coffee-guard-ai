@@ -104,6 +104,7 @@ data/raw/*
 data/processed/*
 !data/processed/.gitkeep
 data/ood/
+data/external/
 data/manifests/*.npy
 data/manifests/*.npz
 data/manifests/*.parquet

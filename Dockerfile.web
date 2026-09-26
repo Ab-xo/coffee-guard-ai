@@ -26,6 +26,7 @@ COPY artifacts/figures ./artifacts/figures
 COPY artifacts/eval ./artifacts/eval
 COPY artifacts/explain ./artifacts/explain
 COPY artifacts/robustness ./artifacts/robustness
+COPY artifacts/ood ./artifacts/ood
 COPY artifacts/models/coffeeguard-effv2b0-v1/bundle.json ./artifacts/models/coffeeguard-effv2b0-v1/bundle.json
 ENV PATH="/app/.venv/bin:$PATH" \
     PYTHONUNBUFFERED=1 \

@@ -233,17 +233,63 @@ def ood_fit(
     config: ConfigOpt = Path("configs/data.yaml"),
     ood_root: Annotated[Path, typer.Option(help="OOD images.")] = Path("data/ood"),
     out_root: Annotated[Path, typer.Option(help="Report folder.")] = Path("artifacts/ood"),
+    augment_bank: Annotated[
+        bool, typer.Option(help="Add turned and thumbnail copies to the KNN bank.")
+    ] = True,
 ) -> None:
     """Fit quality gate, OOD scorer and thresholds; report on test/OOD-test; save to bundle."""
     from coffeeguard.ood.fit import fit_gates
     from coffeeguard.utils.paths import resolve
 
-    res = fit_gates(resolve(bundle), _data_cfg(config, None), resolve(ood_root), resolve(out_root))
+    res = fit_gates(
+        resolve(bundle),
+        _data_cfg(config, None),
+        resolve(ood_root),
+        resolve(out_root),
+        augment_bank=augment_bank,
+    )
     typer.echo(
         json.dumps(
             {k: res[k] for k in ("scorer", "tau_ood", "tau_conf", "test", "decisions")}, indent=2
         )
     )
+
+
+@ood_app.command("external-collect")
+def ood_external_collect(
+    config: ConfigOpt = Path("configs/data.yaml"),
+    out: Annotated[Path, typer.Option(help="Output folder (git-ignored).")] = Path("data/external"),
+) -> None:
+    """Download coffee-leaf photos from other datasets (BRACOL, RoCoLe) for evaluation."""
+    from coffeeguard.ood.external import collect_external
+    from coffeeguard.utils.paths import resolve
+
+    cfg = _data_cfg(config, None)
+    typer.echo(json.dumps(collect_external(resolve(out), cfg.manifest_path), indent=2))
+
+
+@ood_app.command("external")
+def ood_external(
+    bundle: Annotated[list[Path], typer.Option("--bundle", "-b", help="Bundle dir(s).")],
+    ext_root: Annotated[Path, typer.Option(help="External images.")] = Path("data/external"),
+    ood_root: Annotated[Path, typer.Option(help="OOD images.")] = Path("data/ood"),
+    out_root: Annotated[Path, typer.Option(help="Report folder.")] = Path("artifacts/ood"),
+) -> None:
+    """Run coffee leaves from other datasets (and harder photo conditions) through the gates."""
+    from coffeeguard.ood.external import evaluate_external
+    from coffeeguard.utils.paths import resolve
+
+    for b in bundle:
+        res = evaluate_external(resolve(b), resolve(ext_root), resolve(ood_root), resolve(out_root))
+        keys = ("auroc_external_coffee_vs_other_plants", "other_plants_passing_ood")
+        passed = {k: v["passed_gates"] for k, v in res["bracol"].items()}
+        typer.echo(
+            json.dumps(
+                {k: res[k] for k in keys}
+                | {"bracol_passed": passed, "rocole_passed": res["rocole"]["passed_gates"]},
+                indent=2,
+            )
+        )
 
 
 @app.command()

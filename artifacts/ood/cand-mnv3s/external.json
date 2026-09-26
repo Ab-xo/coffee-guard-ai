@@ -1,0 +1,210 @@
+{
+  "bundle": "cand-mnv3s",
+  "tau_ood": 0.48316478729248047,
+  "knn_bank": [
+    "original",
+    "rot90",
+    "degraded",
+    "rot90+degraded"
+  ],
+  "bracol_unseen_per_class": {
+    "Cercospora": 61,
+    "Leaf Rust": 56,
+    "Healthy": 37,
+    "Phoma": 32
+  },
+  "bracol_seen_share": 0.41875,
+  "bracol_seen_per_class": {
+    "Phoma": 48,
+    "Healthy": 43,
+    "Leaf Rust": 24,
+    "Cercospora": 19
+  },
+  "bracol": {
+    "as photographed": {
+      "n": 186,
+      "passed_gates": 0.946236559139785,
+      "outcomes": {
+        "accepted": 0.6129032258064516,
+        "uncertain": 0.3333333333333333,
+        "ood": 0.053763440860215055
+      },
+      "median_ood_score": 0.33058643341064453,
+      "top1_accuracy": 0.6451612903225806,
+      "accepted_accuracy": 0.8421052631578947,
+      "confusion": {
+        "Cercospora": {
+          "Healthy": 8,
+          "Leaf Rust": 41,
+          "Phoma": 12
+        },
+        "Healthy": {
+          "Healthy": 37,
+          "Leaf Rust": 0,
+          "Phoma": 0
+        },
+        "Leaf Rust": {
+          "Healthy": 2,
+          "Leaf Rust": 52,
+          "Phoma": 2
+        },
+        "Phoma": {
+          "Healthy": 0,
+          "Leaf Rust": 1,
+          "Phoma": 31
+        }
+      }
+    },
+    "leaf vertical": {
+      "n": 186,
+      "passed_gates": 0.9946236559139785,
+      "outcomes": {
+        "uncertain": 0.5698924731182796,
+        "accepted": 0.42473118279569894,
+        "ood": 0.005376344086021506
+      },
+      "median_ood_score": 0.3110775649547577,
+      "top1_accuracy": 0.6612903225806451,
+      "accepted_accuracy": 0.9620253164556962,
+      "confusion": {
+        "Cercospora": {
+          "Cercospora": 8,
+          "Healthy": 11,
+          "Leaf Rust": 19,
+          "Phoma": 23
+        },
+        "Healthy": {
+          "Cercospora": 0,
+          "Healthy": 37,
+          "Leaf Rust": 0,
+          "Phoma": 0
+        },
+        "Leaf Rust": {
+          "Cercospora": 1,
+          "Healthy": 5,
+          "Leaf Rust": 47,
+          "Phoma": 3
+        },
+        "Phoma": {
+          "Cercospora": 0,
+          "Healthy": 0,
+          "Leaf Rust": 1,
+          "Phoma": 31
+        }
+      }
+    },
+    "300 px JPEG": {
+      "n": 186,
+      "passed_gates": 0.9731182795698925,
+      "outcomes": {
+        "accepted": 0.6129032258064516,
+        "uncertain": 0.3602150537634409,
+        "ood": 0.026881720430107527
+      },
+      "median_ood_score": 0.3523634076118469,
+      "top1_accuracy": 0.6290322580645161,
+      "accepted_accuracy": 0.8508771929824561,
+      "confusion": {
+        "Cercospora": {
+          "Healthy": 12,
+          "Leaf Rust": 35,
+          "Phoma": 14
+        },
+        "Healthy": {
+          "Healthy": 37,
+          "Leaf Rust": 0,
+          "Phoma": 0
+        },
+        "Leaf Rust": {
+          "Healthy": 4,
+          "Leaf Rust": 49,
+          "Phoma": 3
+        },
+        "Phoma": {
+          "Healthy": 0,
+          "Leaf Rust": 1,
+          "Phoma": 31
+        }
+      }
+    },
+    "150 px JPEG": {
+      "n": 186,
+      "passed_gates": 1.0,
+      "outcomes": {
+        "uncertain": 0.6236559139784946,
+        "accepted": 0.3763440860215054
+      },
+      "median_ood_score": 0.3038876950740814,
+      "top1_accuracy": 0.5967741935483871,
+      "accepted_accuracy": 0.7714285714285715,
+      "confusion": {
+        "Cercospora": {
+          "Healthy": 19,
+          "Leaf Rust": 37,
+          "Phoma": 5
+        },
+        "Healthy": {
+          "Healthy": 37,
+          "Leaf Rust": 0,
+          "Phoma": 0
+        },
+        "Leaf Rust": {
+          "Healthy": 9,
+          "Leaf Rust": 44,
+          "Phoma": 3
+        },
+        "Phoma": {
+          "Healthy": 0,
+          "Leaf Rust": 2,
+          "Phoma": 30
+        }
+      }
+    },
+    "vertical + 300 px JPEG": {
+      "n": 186,
+      "passed_gates": 0.9946236559139785,
+      "outcomes": {
+        "uncertain": 0.5591397849462365,
+        "accepted": 0.43548387096774194,
+        "ood": 0.005376344086021506
+      },
+      "median_ood_score": 0.33606424927711487,
+      "top1_accuracy": 0.6021505376344086,
+      "accepted_accuracy": 0.8641975308641975,
+      "confusion": {
+        "Cercospora": {
+          "Healthy": 12,
+          "Leaf Rust": 21,
+          "Phoma": 28
+        },
+        "Healthy": {
+          "Healthy": 37,
+          "Leaf Rust": 0,
+          "Phoma": 0
+        },
+        "Leaf Rust": {
+          "Healthy": 7,
+          "Leaf Rust": 44,
+          "Phoma": 5
+        },
+        "Phoma": {
+          "Healthy": 0,
+          "Leaf Rust": 1,
+          "Phoma": 31
+        }
+      }
+    }
+  },
+  "rocole": {
+    "n": 150,
+    "passed_gates": 0.9866666666666667,
+    "outcomes": {
+      "accepted": 0.8733333333333333,
+      "uncertain": 0.11333333333333333,
+      "ood": 0.013333333333333334
+    },
+    "median_ood_score": 0.25552114844322205
+  },
+  "auroc_external_coffee_vs_other_plants": 0.9671851851851851,
+  "other_plants_passing_ood": 0.38
+}

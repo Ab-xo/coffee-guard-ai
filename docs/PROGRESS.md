@@ -1074,3 +1074,64 @@ Tagged **`v1.0`** on `eleni-changes`.
 | Tag `v1.0` | ✅ |
 
 **Open item for you:** team member names for the About Team page (`apps/web/team.json`).
+
+---
+
+## v1.1 — "This doesn't look like a coffee leaf" on real coffee leaves (your test report)
+
+**Report:** clear, well-lit coffee-leaf photos were rejected. Example: a diseased leaf, standing vertically on white, a 4.6 KB image from the web — KNN score 0.605, threshold 0.554 → rejected. You asked to check the coffee-leaf gate, threshold logic and preprocessing before touching the classifier.
+
+### 1. Investigation (the numbers that decided it)
+
+- **Threshold logic: correct.** The score is a *distance* (1 − cosine similarity to the 10th-nearest training embedding): higher = less familiar, so 0.605 > 0.554 → reject is right. But the UI called it "Similarity check: score …", which reads the other way — misleading wording, fixed.
+- **Reproduced** with the leaf cropped from your screenshot: 0.625, rejected; the classifier itself was confused (Leaf Rust 44%, Healthy 29%). Turned horizontal: Phoma 99%, score 0.566; turned + padded to the training shape: 0.550, accepted as Phoma.
+- **Preprocessing** squashes every photo to 224×224 (no crop). Training photos are landscape (aspect 1.33–2.0); every leaf photographed on paper lies horizontally. A centre crop made things worse (BRACOL acceptance 97% → 68%), so preprocessing was not changed.
+- **External coffee leaves** (never used for training or fitting; see the data card): **BRACOL** (Brazil, one leaf on a light background) and **RoCoLe** (Ecuador, leaves on the plant), downloaded from Hugging Face.
+  - **Surprise: the Kaggle "Ethiopian" dataset contains BRACOL photos** — 134 of 320 sampled BRACOL photos (42%; Phoma 48/80, Healthy 43/80) are near-identical to photos in our train/val/test. They are excluded; **186 unseen** BRACOL photos remain.
+  - With the v1.0 gate, one property at a time (unseen BRACOL):
+
+    | Condition | Passed the gate | Classifier accuracy |
+    |---|---:|---:|
+    | as photographed (horizontal, 2048 px) | 97% | 63% |
+    | leaf vertical | **48%** | 67% |
+    | 300 px JPEG | 73% | 65% |
+    | 150 px JPEG | **8%** | 61% |
+    | vertical + 300 px JPEG (≈ your photo) | **19%** | 66% |
+    | RoCoLe on the plant | 95% | — |
+
+  - **Diagnosis:** the classifier copes with vertical and small photos as well as with clean ones, but the gate compared photos only with clean, full-size, horizontal training photos. The v1.0 AUROC of 0.993 measured *our own test photos* vs. bean leaves, so it could not reveal this: **coffee leaves from other datasets vs. other plants' leaves: AUROC 0.712**.
+
+### 2. Fix — augmented KNN reference set (`src/coffeeguard/ood/fit.py`)
+
+- `BANK_VARIANTS = original, rot90, degraded, rot90+degraded`: each of the 1,764 training photos is also embedded turned 90° and as a small re-compressed copy (`degrade`: long side 120–384 px, JPEG quality 20–70, seeded) → 7,056 reference embeddings (18 MB, fp16). One forward pass per photo as before.
+- τ re-fitted by the **unchanged rule** (highest val percentile at which ≤ 1% of OOD-cal pass): 0.554 (99.5th) → **0.494 (98th)**. `--no-augment-bank` restores the v1.0 behaviour.
+- Scorer choice: near-ties (< 0.001 AUROC on OOD-cal, i.e. noise) now go to KNN. Found because MobileNetV3-Small picked Mahalanobis at 0.99995 vs. KNN 0.99957 — Mahalanobis has no augmented reference set, so that candidate kept the v1.0 failure (external AUROC 0.675; with KNN: 0.967, though its weaker embedding lets 38% of bean leaves through).
+- All five candidate bundles re-fitted (`coffeeguard ood fit`), the release bundle takes the new gate from `cand-effv2b0-bgswap` → **version 1.1.0** (same `model.onnx`, SHA-256 checked; bundle 41 MB).
+
+| Deployed model | v1.0 gate | **v1.1 gate** |
+|---|---:|---:|
+| AUROC coffee from other datasets vs. other plants | 0.712 | **0.981** |
+| BRACOL vertical + 300 px JPEG passed | 19% | **98%** |
+| BRACOL 150 px JPEG passed | 8% | **99%** |
+| BRACOL leaf vertical passed | 48% | **98%** |
+| BRACOL as photographed passed | 97% | 85% |
+| RoCoLe passed | 95% | 93% |
+| Bean leaves (OOD test) passing the OOD gate | 14% | **4%** |
+| OOD test images rejected end to end | 175 / 182 | **180 / 182** |
+| Our test photos: answered / correct / uncertain / rejected | 90.8% / 99.4% / 7.4% / 1.8% | 90.2% / 99.4% / 5.8% / 4.0% |
+| AUROC our test vs. bean leaves / non-leaves | 0.993 / 1.000 | 0.989 / 1.000 |
+| Your leaf (small JPEG, vertical) | rejected (0.625) | **uncertain, Leaf Rust 61%** (0.489) |
+
+Honest caveat: the "vertical" and "small JPEG" conditions were chosen from your report and resemble the added copies in kind (not in images), so the all-sets AUROC and the untouched RoCoLe set are the fairer numbers.
+
+### 3. What the external check revealed about the model (not fixed — needs data)
+
+Unseen BRACOL, as photographed: **accuracy 0.63** (answers given directly: 0.83). Healthy 37/37, Leaf Rust 50/56, Phoma 30/32, **Cercospora 1/61** (43 → Leaf Rust, 12 → Phoma). All training Cercospora photos come from one blue-paper setup — the class/setup confound from EDA shows up as a generalisation failure. **All five candidates score 0.63–0.65 on BRACOL**, so it is the data, not the architecture. Next step: more varied Cercospora photos (e.g. BRACOL's own Cercospora in training, with a fresh external test set) and a field test set.
+
+### 4. Other changes
+
+- `src/coffeeguard/ood/external.py` + `coffeeguard ood external-collect` / `ood external`: download, duplicate check against our manifest (perceptual hash, all 8 flips/rotations, Hamming ≤ 8), evaluation under the five conditions → `artifacts/ood/<bundle>/external.json` (v1.0 result kept as `artifacts/ood/cand-effv2b0-bgswap/external_gate_v1.0.json`).
+- Model comparison (`compare.py`, `artifacts/metrics/model_comparison.*`, Model Comparison page): external AUROC and BRACOL accuracy per model.
+- App: Diagnose "Details" now says "Distance from the coffee leaves the model knows: … (lower is more familiar; above τ the photo is turned away)"; rejection title "Not recognised as a coffee leaf"; OOD advice asks for the original camera photo (not a screenshot or small web copy). Model Analysis has a new **Other datasets** tab (v1.0 vs. v1.1 gate per condition, BRACOL confusion matrix). Home: gate description, external AUROC, limits. `Dockerfile.web` now copies `artifacts/ood`.
+- Docs: model card, data card (BRACOL overlap, external sources + licences: RoCoLe CC BY 4.0; BRACOL states no image licence — evaluation only, not redistributed), technical report §7.1, ADR 001 table + update, README, demo script, changelog 1.1.0. `data/external/` is git-ignored.
+- Tests: `tests/unit/test_ood_bank.py` (bank variants, degradation, external conditions), web tests for the new tab. Full suite: 103 → 107 tests, all passing; the live API returns the expected result for every app sample (Healthy/Cercospora/Phoma/Leaf Rust accepted, hard case uncertain, dark photo retake, bean leaf rejected).
