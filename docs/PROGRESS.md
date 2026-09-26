@@ -700,3 +700,98 @@ Background-only confusion with the swap (rows = true Healthy/Cercospora/Leaf Rus
 | Main model after Phase 5 | **`cand-effv2b0-bgswap`** (EfficientNetV2-B0 + background swap), see 5.5 |
 
 Not done (scope, per plan §11): Grad-CAM++ / Eigen-CAM comparison (stretch item) and the narrative notebook.
+
+---
+
+## Phase 6 — Rejection gates: photo quality and out-of-distribution (OOD)
+
+Main model: `cand-effv2b0-bgswap`. Everything the API needs is written into its bundle (`bundle.json` → `quality_thresholds`, `ood`, `tau_conf`; `ood_knn_bank.npy`). The plan put the thresholds in `configs/serve.yaml`; they live in the bundle instead, so a model and its thresholds can never get out of sync.
+
+```bash
+uv run coffeeguard ood collect                                   # OOD images -> data/ood (git-ignored)
+uv run coffeeguard ood fit -b artifacts/models/cand-effv2b0-bgswap  # -> artifacts/ood/<bundle>/ood.json + bundle
+```
+
+### 6.1 OOD image set (split by source)
+
+| Split | Near-OOD (other plant leaves) | Far-OOD (not a leaf) |
+|---|---|---|
+| **cal** — fits thresholds | tomato leaves 50 (Kaggle `kaustubhb999/tomatoleaf`, CC0) · banana leaves 50 (Kaggle `shifatearman/bananalsd`, CC BY-SA 4.0, original photos only) | animals 50 (HF `Francesco/animals-ij5d2`, CC BY 4.0) · landscapes 36 (Windows wallpapers on this PC; used locally, not redistributed) |
+| **test** — reported only | bean leaves 50 (HF `AI-Lab-Makerere/beans`, MIT) | indoor scenes 42 (HF `keremberke/indoor-scene-classification`, CC BY 4.0) · rendered text/screenshots 50 (HF `nateraw/rendered-sst2`, see dataset card) · synthetic 40 (blank, noise, gradients, fake screenshots; generated) |
+
+186 cal + 182 test images, resized to 384 px like the training cache. No source appears in both splits, so the test numbers show how the gate handles kinds of images it was never tuned on.
+
+**Collection problems, and what changed:** per-file downloads from Kaggle were slow (~1 image / 3 s) and, parallelised, hit Kaggle's rate limit (HTTP 429). The collector now makes one request per dataset (zip → sample → delete zip) with exponential back-off on 429. The connection here is ~0.2–0.7 MB/s, so large Kaggle datasets (maize 169 MB, tea 776 MB, scenes 363 MB, …) were replaced by small Hugging Face files (≤ 15 MB each) and local images.
+
+### 6.2 What was built
+
+| File | Purpose |
+|---|---|
+| `ood/collect.py` | the source table above (Kaggle / HF / local / synthetic), reproducible sampling (seed 0) |
+| `inference/ood.py` | **NumPy-only OOD scores** from the one ONNX pass: MSP, energy, Mahalanobis (class means + Ledoit-Wolf shared covariance), **KNN** (1 − cosine similarity to the 10th-nearest training embedding); `load_state()` rebuilds the fitted state from a bundle |
+| `inference/decision.py` | **the serving decision**: quality gate → OOD gate → conformal set + confidence → `accepted` / `uncertain` (low_confidence) / `rejected` (low_quality or ood), with plain-language advice ("too dark — take it in daylight or open shade", …) |
+| `ood/fit.py` | fits quality thresholds, compares scorers, sets τ_ood and τ_conf on train / val / OOD-cal; reports on test / OOD-test; writes the bundle; score-histogram figure |
+| `cli.py` | `coffeeguard ood collect`, `coffeeguard ood fit` |
+
+Tests (`tests/unit/test_ood_decision.py`): KNN and Mahalanobis score training-like embeddings lower than far ones; MSP and energy prefer confident logits; every decision path (accepted, uncertain with a 2-class set, rejected-ood, rejected-low_quality checked first); **the quality gate rejects a blank and a darkened image and passes a normal leaf** (the plan's gate tests).
+
+### 6.3 Choosing the OOD scorer (on cal)
+
+| Scorer | cal AUROC near / far | test AUROC near / far | test near-OOD accepted at 95% ID |
+|---|---|---|---:|
+| MSP | 0.978 / 0.989 | 0.944 / 0.990 | 20% |
+| Energy | 0.986 / 0.994 | 0.958 / 0.994 | 18% |
+| Mahalanobis | 0.997 / 0.987 | 0.990 / **0.469** | 2% (far: 54%!) |
+| **KNN (chosen)** | **1.000 / 1.000** | **0.993 / 1.000** | **2%** (far: 0%) |
+
+KNN wins on every split. Mahalanobis looks fine on cal but collapses on the far-OOD test sources (text, blank and noise frames sit close to the class means in its metric) — a reason to test on unseen sources. Softmax-based scores (MSP, energy) let 18–20% of other plant leaves through: the classifier is confidently wrong on them, as expected.
+
+### 6.4 Quality gate — fitted to the model, not to the training photos
+
+**First version:** thresholds at the 0.5th percentile of the training photos. It rejected 94% of photos darkened to half brightness and 100% of mildly blurred ones — but the robustness sweep (5.3) showed the model still scores ~0.95 F1 on exactly those. Every training photo is bright and sharp, so "unlike the training photos" is far stricter than "the model can't handle it". It also missed noise and JPEG artefacts, which do hurt the model.
+
+**Final version:** for brightness, contrast and sharpness, corrupted **val** photos were run through the model at severities 1–5; the threshold sits where val accuracy drops below **90%** (midpoint between the last good and first bad severity's median quality), or beyond the worst severity if accuracy never drops that far. Over-exposure and leaf-colour fraction keep the training-percentile rule.
+
+| Measure | Training 0.5th pct | Val accuracy by severity 1→5 | **Threshold** |
+|---|---:|---|---:|
+| brightness (mean, 0–255) | 89.7 | 0.984 · 0.984 · 0.981 · 0.958 · 0.934 (never < 0.90) | **41.3** |
+| contrast (RMS) | 24.5 | 0.984 · 0.979 · 0.971 · 0.955 · **0.873** | **12.5** |
+| sharpness (Laplacian var.) | 39.0 | 0.976 · 0.971 · 0.952 · 0.920 · **0.870** | **1.6** |
+| max brightness / min leaf-colour fraction | 203.0 / 0.021 | — | 203.0 / 0.021 |
+
+| Rejected by the quality gate | Training-percentile version | **Final** |
+|---|---:|---:|
+| genuine val / test photos | 1.3% / 1.6% | **0.3% / 0.5%** |
+| darkened ×0.5 (sev 3) / ×0.25 (sev 5) | 94% / 100% | **7% / 76%** |
+| contrast sev 3 / sev 5 | 98% / 100% | **26% / 100%** |
+| Gaussian blur sev 3 / sev 5 | 100% / 100% | **14% / 51%** |
+| Gaussian noise, JPEG (sev 5) | 0% / 4% | 0% / 4% — not caught |
+| OOD test images | 56% | 50% |
+
+Known gap: noise and heavy JPEG raise or keep the "sharpness" measure, so the gate can't see them; those photos reach the model, which then tends to answer Healthy (5.3). A noise/compression detector is future work.
+
+### 6.5 OOD threshold and confidence threshold
+
+- **τ_ood** — the first version used the val 95th percentile. On test it rejected 25 genuine photos (6.6%), mostly Cercospora (15%) and Leaf Rust from one phone-camera source on blue paper; field photos were fine (1 of 81 rejected). Per-class thresholds barely helped (Cercospora 85% → 88% accepted, Healthy 100% → 96%). Instead the acceptance level is now chosen **on cal data**: the highest val percentile (95–99.5%) at which ≤ 1% of OOD-cal images pass → **99.5th percentile, τ = 0.554** (OOD-cal images all score ≥ 0.534 near / ≥ 0.606 far).
+- **τ_conf = 0.947** — the lowest confidence at which val predictions that pass both gates are ≥ 99% correct; below it (or when the 98% conformal set has > 1 class) the answer is `uncertain` with the top candidates.
+
+### 6.6 End-to-end results (test sets; fitted on train / val / OOD-cal only)
+
+| Genuine coffee-leaf test photos (379) | | OOD test images (182) | |
+|---|---:|---|---:|
+| **accepted** | **344 (90.8%)** — **99.4% correct** | rejected low_quality | 91 |
+| uncertain (top candidates + retake advice) | 28 (7.4%) | rejected ood | 84 |
+| rejected ood | 5 (1.3%) | uncertain | 4 |
+| rejected low_quality | 2 (0.5%) | **accepted** | **3** (all bean leaves) |
+
+OOD gate alone, per test source: indoor scenes, rendered text and synthetic frames 0% accepted; bean leaves 14% accepted (the hardest case: a different green leaf with spots). OOD AUROC on test: **near 0.993, far 1.000** (targets ≥ 0.85 / ≥ 0.95 ✅).
+
+### Phase 6 status ✅
+
+| Gate item / success target | Result |
+|---|---|
+| OOD data with sources and licences, split by source | ✅ 186 cal / 182 test, 8 sources (6.1) |
+| Quality gate + OOD scorers compared, best chosen on cal | ✅ quality gate fitted to model accuracy; KNN chosen |
+| AUROC ≥ 0.95 far-OOD, ≥ 0.85 near-OOD | ✅ 1.000 / 0.993 |
+| Thresholds stored for serving | ✅ in `bundle.json` (not `configs/serve.yaml`, see top) |
+| Decision function + gate tests (blank, dark, near-OOD) | ✅ `inference/decision.py`, `tests/unit/test_ood_decision.py`; near-OOD measured on the bean-leaf source |

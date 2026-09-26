@@ -198,6 +198,42 @@ def evaluate(
     typer.echo(json.dumps(summary, indent=2))
 
 
+ood_app = typer.Typer(
+    help="Out-of-distribution gate: data, fitting, evaluation.", no_args_is_help=True
+)
+app.add_typer(ood_app, name="ood")
+
+
+@ood_app.command("collect")
+def ood_collect(
+    out: Annotated[Path, typer.Option(help="Output folder (git-ignored).")] = Path("data/ood"),
+) -> None:
+    """Download a sample of public non-coffee images (+ synthetic frames), split by source."""
+    from coffeeguard.ood.collect import collect
+    from coffeeguard.utils.paths import resolve
+
+    typer.echo(json.dumps(collect(resolve(out)), indent=2))
+
+
+@ood_app.command("fit")
+def ood_fit(
+    bundle: Annotated[Path, typer.Option("--bundle", "-b", help="Bundle dir.")],
+    config: ConfigOpt = Path("configs/data.yaml"),
+    ood_root: Annotated[Path, typer.Option(help="OOD images.")] = Path("data/ood"),
+    out_root: Annotated[Path, typer.Option(help="Report folder.")] = Path("artifacts/ood"),
+) -> None:
+    """Fit quality gate, OOD scorer and thresholds; report on test/OOD-test; save to bundle."""
+    from coffeeguard.ood.fit import fit_gates
+    from coffeeguard.utils.paths import resolve
+
+    res = fit_gates(resolve(bundle), _data_cfg(config, None), resolve(ood_root), resolve(out_root))
+    typer.echo(
+        json.dumps(
+            {k: res[k] for k in ("scorer", "tau_ood", "tau_conf", "test", "decisions")}, indent=2
+        )
+    )
+
+
 @app.command()
 def explain(
     bundle: Annotated[list[Path], typer.Option("--bundle", "-b", help="Bundle dir(s).")],

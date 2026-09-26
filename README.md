@@ -4,7 +4,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![Project Status](https://img.shields.io/badge/status-Phase%206%20next-orange.svg)](docs/PROGRESS.md)
+[![Project Status](https://img.shields.io/badge/status-Phase%207%20next-orange.svg)](docs/PROGRESS.md)
 
 An AI-powered computer vision system for detecting and classifying coffee leaf diseases in Ethiopian coffee plants using deep learning, explainable AI, and production-ready deployment.
 
@@ -144,7 +144,7 @@ uv run ruff check . && uv run ruff format --check .
 
 ## 🔄 Development Status
 
-### Current Progress: Phase 6 next (OOD gate)
+### Current Progress: Phase 7 next (model comparison and export)
 
 | Phase  | Description           |       Status       | Key Deliverables                                                                                                                                                                |
 | :----: | --------------------- | :----------------: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -154,8 +154,8 @@ uv run ruff check . && uv run ruff format --check .
 | **3** | **Main Model Training** | ✅ **Complete** | • EfficientNetV2-B0, LP-FT (last 3 stages): val macro-F1 **0.985**<br>• Variant ablation A vs. B (tie → A)<br>• Comparison runs: EfficientNet-B0, MobileNetV3-L/S<br>• Kaggle T4 GPU, 1 seed, ~3–4 min per run |
 | **4** | **Evaluation** | ✅ **Complete** | • Test macro-F1 **0.979** [0.963, 0.993] (EffV2-B0)<br>• Calibration: ECE 0.098 → 0.012<br>• Conformal 98% sets: coverage 0.987<br>• Error analysis (4/8 errors on audit-flagged labels) |
 | **5** | **Explainability & Robustness** | ✅ **Complete** | • CAM = Grad-CAM (verified), faithful (deletion test)<br>• Relative robustness **0.975** (9 corruptions, sev ≤ 3)<br>• Shortcut test: background-only acc 0.40<br>• Found: blue-paper backgrounds carry class information |
-| **6**  | **Robustness & OOD**  |     ⏳ **Next**     | • Perturbation testing<br>• Out-of-distribution detection                                                                                                                       |
-| **7**  | **Model Comparison**  |     ⏳ Planned     | • Multi-architecture benchmark<br>• ONNX export                                                                                                                                 |
+| **6** | **Quality & OOD gates** | ✅ **Complete** | • KNN OOD detector: AUROC near 0.993 / far 1.000 (unseen sources)<br>• Quality gate fitted to where accuracy drops<br>• Accepted answers 99.4% correct; 96% of non-coffee images rejected |
+| **7**  | **Model Comparison**  |     ⏳ **Next**     | • Multi-architecture benchmark<br>• ONNX export                                                                                                                                 |
 | **8**  | **FastAPI Service**   |     ⏳ Planned     | • REST API<br>• ONNX Runtime serving                                                                                                                                            |
 | **9**  | **Streamlit UI**      |     ⏳ Planned     | • Interactive web interface<br>• Explainability dashboard                                                                                                                       |
 | **10** | **Deployment**        |     ⏳ Planned     | • Docker containers<br>• Final documentation                                                                                                                                    |
@@ -196,6 +196,12 @@ uv run ruff check . && uv run ruff format --check .
 - **Robust:** keeps 97.5% of its macro-F1 across 9 corruptions at severity ≤ 3; heavy blur/noise/JPEG make it answer *Healthy*, not the low-quality classes — evidence against a photo-quality shortcut
 - **Limitation found:** with the leaf removed, blue-paper backgrounds are still called Cercospora/Leaf Rust — the model partly learned each class's photo setup
 - **Fix applied — background-swap augmentation** (leaves pasted onto other photos' backgrounds during training): leaf-only accuracy 0.926 → 0.963, confidence on leaf-less images 0.83 → 0.54, robustness 0.979; test macro-F1 0.974 (difference not significant). This model is now the main model; blue-paper backgrounds still lean to Cercospora/Leaf Rust (needs field photos)
+
+#### ✅ Phase 6 Complete (Quality & OOD gates)
+
+- **Rejects what it shouldn't answer:** a KNN detector on the model's embeddings separates coffee leaves from other plant leaves (AUROC 0.993) and non-leaf images (1.000), tested on image sources never used for tuning
+- **Quality gate** asks for a retake only where the model's accuracy really drops (0.5% of genuine photos rejected, not 94% of slightly dark ones as a naive rule did)
+- **End to end on test:** 90.8% of genuine photos answered, 99.4% of those correct; the rest get *uncertain + top candidates* or a retake request; 175 of 182 non-coffee images rejected
 
 ### Quick Status Check
 

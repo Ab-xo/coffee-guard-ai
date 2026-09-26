@@ -265,6 +265,8 @@ Model: `tf_efficientnetv2_b0.in1k`, 224 px, `drop_rate=0.2`, `drop_path_rate=0.1
 
 **Done when:** OOD metrics are reported, thresholds are in `configs/serve.yaml`, and gate tests (blank image, dark image, near-OOD leaf fixture) pass.
 
+*Revised in Phase 6 (PROGRESS.md 6.4–6.5): thresholds are stored in the bundle's `bundle.json`; quality thresholds are fitted to where the model's accuracy drops (not training percentiles); τ_ood is the highest val percentile at which ≤ 1% of OOD-cal images pass.*
+
 ### Phase 7 — Model comparison and export (Day 6, afternoon)
 
 1. For each candidate (MobileNetV3-Large, EfficientNet-B0, EfficientNetV2-B0; MobileNetV3-Small and the DINOv2 probe as references): val and test macro-F1 (mean ± std over seeds where trained), params, ONNX size (FP32 and INT8), **CPU latency on this laptop** via ONNX Runtime (batch 1, p50/p95 over 200 runs after warm-up), relative robustness, OOD AUROC.

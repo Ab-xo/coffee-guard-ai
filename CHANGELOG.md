@@ -9,6 +9,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Phase 6 Completed - Quality and OOD Gates ✅
+
+#### Added
+- `src/coffeeguard/ood/collect.py` - OOD image set (8 sources, split by source into cal/test); CLI `coffeeguard ood collect`
+- `src/coffeeguard/inference/ood.py` - NumPy OOD scorers (MSP, energy, Mahalanobis, KNN) + bundle loader
+- `src/coffeeguard/inference/decision.py` - accepted / uncertain / rejected decision with advice
+- `src/coffeeguard/ood/fit.py` - fits quality gate, scorer, tau_ood and tau_conf; CLI `coffeeguard ood fit`
+- `tests/unit/test_ood_decision.py`; report `artifacts/ood/<bundle>/ood.json`
+
+#### Results
+- KNN OOD scorer: test AUROC near 0.993 / far 1.000; tau_ood at the val 99.5th percentile (<= 1% of OOD-cal accepted)
+- Quality gate fitted where model accuracy drops below 90%: 0.5% of genuine photos rejected
+- End to end: 90.8% of genuine test photos accepted at 99.4% accuracy; 175/182 OOD test images rejected
+- Thresholds stored in `bundle.json` (not a separate serve.yaml)
+
 ### Phase 5 Completed - Explainability and Robustness ✅
 
 #### Added
@@ -257,7 +272,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 | **Phase 3** | EfficientNetV2-B0 training (LP-FT, 1 seed) + comparison runs | ✅ Complete | ~15 files |
 | **Phase 4** | Evaluation, calibration, conformal prediction | ✅ Complete | ~20 files |
 | **Phase 5** | Explainability and robustness | ✅ Complete | ~20 files |
-| **Phase 6** | OOD detection gate | ⏳ Planned | - |
+| **Phase 6** | Quality and OOD gates | ✅ Complete | ~10 files |
 | **Phase 7** | Model comparison and export | ⏳ Planned | - |
 | **Phase 8** | FastAPI service | ⏳ Planned | - |
 | **Phase 9** | Streamlit UI | ⏳ Planned | - |
