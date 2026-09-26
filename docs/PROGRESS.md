@@ -979,3 +979,56 @@ API down → clear error and nothing else; no photo → input choice; accepted �
 | Model page (metrics, how it decides, limitations, figures) | ✅ |
 | Clear message when the API is down | ✅ |
 | Every status path demonstrable from the UI | ✅ accepted, uncertain, low_quality, ood — one sample each |
+
+---
+
+## Phase 9b — Six-page app + 5-fold cross-validation (your request)
+
+You asked for six pages: **Home, Diagnose, Model Comparison, EDA, Model Analysis (feature importance, learning curves, residuals & predictions, cross-validation), About Team.**
+
+### 9b.1 Cross-validation (a real experiment, not a placeholder)
+
+Cross-validation had not been done for the CNN (only one train/val split + bootstrap intervals). Rather than show something made up, the deployed recipe was cross-validated:
+
+- `coffeeguard data cv-folds` (`src/coffeeguard/data/cv.py`): train + val pooled (2,141 photos; **test stays sealed**) → 5 folds with `StratifiedGroupKFold` (duplicate/re-shot groups never span two folds; class mix kept; assertions check no group or image leaks). Writes `data/splits_cv/fold{i}/{train,val}.csv` + `split_info.json` and `configs/cv/data_fold{i}.yaml`. Each fold: ~1,712 train / ~428 val photos.
+- `coffeeguard remote train -c configs/train/effnetv2_b0_bgswap.yaml --seeds 0 --cv-folds 5`: one Kaggle job per fold (same recipe, fold data config, run name `…-cv{i}`); the runner now ships `data/splits_cv/` to Kaggle. One GPU session, 22 min (Tesla T4, git `fcdc757`, data fingerprint `53320bd30430396d`).
+
+| Fold | Val photos | Val macro-F1 | Val accuracy | Best epoch |
+|---|---:|---:|---:|---|
+| 0 | 429 | 0.991 | 0.991 | fine-tune 7 (raw) |
+| 1 | 428 | 0.973 | 0.974 | fine-tune 5 (EMA) |
+| 2 | 429 | 0.989 | 0.988 | fine-tune 4 (raw) |
+| 3 | 428 | 0.986 | 0.986 | fine-tune 14 (raw) |
+| 4 | 427 | 0.985 | 0.984 | fine-tune 5 (raw) |
+| **mean ± std** | | **0.985 ± 0.007** | **0.985 ± 0.006** | |
+
+**Reading:** the recipe's score varies by about ±0.7 points depending on which photos are in validation (range 0.973–0.991). The deployed model's held-out test score (0.974) sits at the low end of that range — consistent, and a reminder that single-split numbers carry this much spread. This also partly answers the "one seed" limitation from Phase 3.
+
+### 9b.2 App data for the report pages — `coffeeguard app-data`
+
+The report pages read only committed files (a fresh clone / Docker image has no `runs/` or parquet files). `src/coffeeguard/evaluation/app_data.py` writes `artifacts/app/`: `histories.json` (per-epoch history of the 5 compared models and the 5 CV folds), `predictions_test.csv` (the deployed model's calibrated test predictions per image, 379 rows), `cv.json` (fold results + mean ± std). ~110 KB.
+
+### 9b.3 The six pages (`apps/web/`)
+
+| Page | Content |
+|---|---|
+| **Home** (`views/home.py`) | Hero with four representative leaf photos and calls to action; headline numbers (macro-F1, accuracy of answers, OOD AUROC, latency); **the problem** next to six real dataset photos showing exactly the variation named in the goal (on the tree, small in frame, poor light, out of focus, mild, severe); the four conditions with symptoms; the four decision steps with live thresholds; limits |
+| **Diagnose** (`views/diagnose.py`) | Two panels: photo (upload / camera / a square **sample gallery** with one-click samples) and result (status card with icon + words and a confidence meter, heat map with strength slider, calibrated probability chart, details). All Phase 9 fixes kept (no chart on rejection, no "100%", small photos sent untouched) |
+| **Model Comparison** (`views/comparison.py`) | Decision summary; test macro-F1 with 95% intervals; leaf-only accuracy, robustness, OOD AUROC, share answered; latency and size; full table; paired-bootstrap verdicts; how the recipe was chosen |
+| **EDA** (`views/eda.py`) | Cleaning funnel (12,000 → 2,520), class balance per split, the photo-setup confound (resolution, file size, sharpness, sources by class), sample grids, duplicate groups, possible mislabels, augmentation previews |
+| **Model Analysis** (`views/analysis.py`) | **Feature importance** (CAM deletion test, leaf focus per class, heat-map galleries, shortcut test) · **Learning curves** (loss and val macro-F1 per epoch for any model, stage boundary, the 5 CV folds) · **Residuals & predictions** (confusion matrix, per-class F1, confidence of right vs. wrong answers, reliability diagram, every test error, damage curves for 9 corruptions) · **Cross-validation** (fold results, mean ± std vs. the test score) |
+| **About Team** (`views/team.py`) | Member cards from `apps/web/team.json` (roles from the team's original plan; **names to be filled in**), how we worked, acknowledgements |
+
+Shared building blocks: `ui/theme.py` (one stylesheet: hero, cards, stat tiles, result card, notes), `ui/data.py` (cached artifact loaders; `ARTIFACTS_DIR` override for Docker), `ui/viz.py` (Altair charts). Charts follow the dataviz rules: the four classes use the reference palette's first four categorical slots in fixed order (**validated with the palette script: all checks pass**; aqua/yellow are below 3:1 contrast, so every class chart carries visible value labels); comparisons are one hue with the deployed model highlighted; ≤ 24 px bars with rounded ends, hover tooltips, recessive axes. New assets: `apps/web/assets/` (10 photos, 105 KB).
+
+### 9b.4 Checked in a real browser (headless Edge, desktop width) — problems found and fixed
+
+- Home: the Cercospora hero tile was mostly empty paper → representative photos chosen automatically (correct, confident, leaf filling about half the frame); the problem section had no image → six-photo variation grid; step cards squeezed their text → number above the title.
+- Diagnose: uneven sample gallery with cut labels → square thumbnails + short labels; tall photos too large → height cap; a wide photo overflowed under the heat map → wide photos fill the column.
+- Charts: model names were cut ("EfficientNetV2-B0…") — Streamlit's chart theme limits y-axis labels, so each chart now sets its own label limit.
+
+Screenshots of all pages: `docs/screenshots/*.jpg`.
+
+### 9b.5 Tests
+
+`tests/integration/test_web.py` (21 tests): every report page renders from the committed artifacts without errors; Home shows the headline numbers and the limits; Model Analysis has the four sections and shows the CV result; the entry app builds its navigation; Diagnose: API down, empty state, accepted / uncertain / rejected / OOD cards via the sample gallery, small photos sent untouched, `?sample=` links; helpers.

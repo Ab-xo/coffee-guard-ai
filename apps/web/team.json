@@ -1,0 +1,12 @@
+{
+  "team_name": "CoffeeGuard AI team",
+  "intro": "A student team building a trustworthy coffee-leaf disease assistant for Ethiopian farmers — from a cleaned dataset to a deployed, explainable web app.",
+  "members": [
+    {"name": "", "role": "Project Lead", "focus": "Coordination, architecture, integration and final delivery", "github": ""},
+    {"name": "", "role": "Data Engineering", "focus": "Dataset download, validation, duplicate detection and leakage-safe splits", "github": ""},
+    {"name": "", "role": "ML Modelling", "focus": "Transfer learning, training recipes and model comparison", "github": ""},
+    {"name": "", "role": "Evaluation & Analysis", "focus": "Metrics with confidence intervals, calibration and error analysis", "github": ""},
+    {"name": "", "role": "Explainability & Robustness", "focus": "Heat maps, robustness tests and the out-of-distribution gate", "github": ""},
+    {"name": "", "role": "Backend & Frontend", "focus": "FastAPI service, Streamlit app and deployment", "github": ""}
+  ]
+}

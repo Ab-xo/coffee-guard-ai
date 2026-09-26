@@ -43,8 +43,10 @@ sh(
 )
 
 code_root = wheel.parent
-for sub in ("configs", "data/splits"):
+for sub in ("configs", "data/splits", "data/splits_cv"):
     src = code_root / sub
+    if not src.exists():
+        continue
     dst = WORK / sub
     if dst.exists():
         shutil.rmtree(dst)

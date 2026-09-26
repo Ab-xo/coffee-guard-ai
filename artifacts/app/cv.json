@@ -1,0 +1,60 @@
+{
+  "recipe": "configs/train/effnetv2_b0_bgswap.yaml",
+  "k": 5,
+  "folds": [
+    {
+      "fold": 0,
+      "run": "20260926-075759-effnetv2_b0_bgswap-cv0-s0",
+      "val_macro_f1": 0.9907467532467533,
+      "val_accuracy": 0.9906759906759907,
+      "best": "finetune epoch 7 (raw)",
+      "minutes": 3.54,
+      "gpu": "Tesla T4",
+      "n_val": 429
+    },
+    {
+      "fold": 1,
+      "run": "20260926-080159-effnetv2_b0_bgswap-cv1-s0",
+      "val_macro_f1": 0.972698754789272,
+      "val_accuracy": 0.9742990654205608,
+      "best": "finetune epoch 5 (ema)",
+      "minutes": 3.12,
+      "gpu": "Tesla T4",
+      "n_val": 428
+    },
+    {
+      "fold": 2,
+      "run": "20260926-080529-effnetv2_b0_bgswap-cv2-s0",
+      "val_macro_f1": 0.9891269849373652,
+      "val_accuracy": 0.9883449883449883,
+      "best": "finetune epoch 4 (raw)",
+      "minutes": 2.99,
+      "gpu": "Tesla T4",
+      "n_val": 429
+    },
+    {
+      "fold": 3,
+      "run": "20260926-080854-effnetv2_b0_bgswap-cv3-s0",
+      "val_macro_f1": 0.9861694051791685,
+      "val_accuracy": 0.985981308411215,
+      "best": "finetune epoch 14 (raw)",
+      "minutes": 4.47,
+      "gpu": "Tesla T4",
+      "n_val": 428
+    },
+    {
+      "fold": 4,
+      "run": "20260926-081347-effnetv2_b0_bgswap-cv4-s0",
+      "val_macro_f1": 0.9846012999362259,
+      "val_accuracy": 0.9836065573770492,
+      "best": "finetune epoch 5 (raw)",
+      "minutes": 3.24,
+      "gpu": "Tesla T4",
+      "n_val": 427
+    }
+  ],
+  "macro_f1_mean": 0.9846686396177569,
+  "macro_f1_std": 0.007112581862201745,
+  "accuracy_mean": 0.9845815820459608,
+  "accuracy_std": 0.006323470144539788
+}

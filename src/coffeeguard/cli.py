@@ -120,6 +120,18 @@ def data_report(
     make_report(_data_cfg(config, overrides))
 
 
+@data_app.command("cv-folds")
+def data_cv_folds(
+    config: ConfigOpt = Path("configs/data.yaml"),
+    k: Annotated[int, typer.Option(help="Number of folds.")] = 5,
+    seed: Annotated[int, typer.Option(help="Fold shuffling seed.")] = 42,
+) -> None:
+    """K-fold group CV splits over train + val (test stays sealed) + a data config per fold."""
+    from coffeeguard.data.cv import make_cv_folds
+
+    typer.echo(json.dumps(make_cv_folds(_data_cfg(config, None), k, seed), indent=2))
+
+
 @data_app.command("aug-preview")
 def data_aug_preview(
     config: Annotated[Path, typer.Option("--config", "-c", help="Training recipe YAML.")] = Path(
@@ -334,6 +346,25 @@ def severity(
     typer.echo(json.dumps(res["by_tercile"], indent=2))
 
 
+@app.command("app-data")
+def app_data(
+    bundle: Annotated[list[str], typer.Option("--bundle", "-b", help="Bundles to include.")] = [  # noqa: B006
+        "cand-effv2b0-bgswap",
+        "cand-effv2b0",
+        "cand-effb0",
+        "cand-mnv3s",
+        "cand-mnv3l",
+    ],
+    main: Annotated[str, typer.Option(help="Bundle whose test predictions are exported.")] = (
+        "cand-effv2b0-bgswap"
+    ),
+) -> None:
+    """Export the small data files the Streamlit analysis pages read (artifacts/app/)."""
+    from coffeeguard.evaluation.app_data import build_app_data
+
+    typer.echo(json.dumps(build_app_data(bundle, main), indent=2))
+
+
 @app.command()
 def curves(
     run: Annotated[Path, typer.Option("--run", "-r", help="Run directory.")],
@@ -382,8 +413,11 @@ def remote_train(
     overrides: SetOpt = None,
     wait: Annotated[bool, typer.Option(help="Wait and download results.")] = True,
     gpu: Annotated[str, typer.Option(help="Kaggle machine shape.")] = "NvidiaTeslaT4",
+    cv_folds: Annotated[
+        int, typer.Option(help="Run k-fold CV (folds from `data cv-folds`) instead.")
+    ] = 0,
 ) -> None:
-    """Run one or more recipes × seeds on a Kaggle GPU; results land in runs/."""
+    """Run one or more recipes × seeds (× CV folds) on a Kaggle GPU; results land in runs/."""
     from coffeeguard.training.remote import push_training, wait_and_fetch
     from coffeeguard.utils.paths import portable_path
 
@@ -392,6 +426,19 @@ def remote_train(
         for c in config
         for s in seeds.split(",")
     ]
+    if cv_folds:  # one job per fold: same recipe, fold-specific data config and run name
+        jobs = [
+            j
+            | {
+                "overrides": [
+                    *j["overrides"],
+                    f"data_config=configs/cv/data_fold{i}.yaml",
+                    f"name={load_config(TrainConfig, j['config']).name}-cv{i}",
+                ]
+            }
+            for j in jobs
+            for i in range(cv_folds)
+        ]
     ref = push_training(jobs, gpu=gpu)
     typer.echo(f"Pushed https://www.kaggle.com/code/{ref}")
     if wait:

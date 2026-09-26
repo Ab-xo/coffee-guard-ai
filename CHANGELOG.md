@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Phase 9b - Six-Page App and Cross-Validation ✅
+
+#### Added
+- Pages: Home, Diagnose (redesigned), Model Comparison, EDA, Model Analysis (feature importance, learning curves, residuals & predictions, cross-validation), About Team (`apps/web/views/`, names in `apps/web/team.json`)
+- Design system `apps/web/ui/theme.py`, artifact loaders `ui/data.py`, charts `ui/viz.py` (validated categorical palette), assets `apps/web/assets/`
+- `coffeeguard data cv-folds` (group-stratified k-fold over train + val) and `coffeeguard remote train --cv-folds 5`
+- `coffeeguard app-data` -> `artifacts/app/` (training histories, per-image test predictions, CV results)
+- Screenshots of every page in `docs/screenshots/`
+
+#### Results
+- 5-fold CV of the deployed recipe: validation macro-F1 0.985 +/- 0.007 (folds 0.973-0.991)
+
 ### Phase 9 Completed - Streamlit UI ✅
 
 #### Added

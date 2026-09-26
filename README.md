@@ -130,11 +130,11 @@ uv run uvicorn app.main:app --app-dir apps/api
 uv run streamlit run apps/web/streamlit_app.py
 ```
 
-Try a sample straight away: `http://localhost:8501/?sample=leaf_rust` (also `uncertain`, `too_dark`, `not_coffee_bean_leaf`).
+The app has six pages: **Home**, **Diagnose**, **Model Comparison**, **EDA**, **Model Analysis** (feature importance, learning curves, residuals & predictions, cross-validation) and **About Team**. Try a sample straight away: `http://localhost:8501/diagnose?sample=leaf_rust` (also `uncertain`, `too_dark`, `not_coffee_bean_leaf`).
 
-| Confident diagnosis | Uncertain | Not a coffee leaf |
+| Home | Diagnose | Model Analysis |
 |---|---|---|
-| ![Leaf Rust diagnosis with heat map](docs/screenshots/ui_leaf_rust.png) | ![Uncertain: Cercospora or Leaf Rust](docs/screenshots/ui_uncertain.png) | ![Rejected: not a coffee leaf](docs/screenshots/ui_not_coffee.png) |
+| ![Home page](docs/screenshots/home.jpg) | ![Diagnose: uncertain answer with heat map](docs/screenshots/diagnose_uncertain.jpg) | ![Model analysis](docs/screenshots/analysis.jpg) |
 
 Endpoints: `GET /health`, `GET /model-info`, `POST /predict` (decision + advice), `POST /analyze` (+ probabilities, quality report, OOD score, heat map). Another bundle: set `MODEL_BUNDLE` (PowerShell: `$env:MODEL_BUNDLE = "artifacts/models/<bundle>"`).
 
@@ -225,6 +225,11 @@ uv run ruff check . && uv run ruff format --check .
 
 - **Streamlit app** with a Diagnose page (upload, camera or sample → status banner with advice, the photo next to its heat map, calibrated probabilities, *X or Y* when unsure) and a Model page (results, how it decides, limits)
 - Checked in a real browser: fixed a rejected screen that still showed a probability chart, over-claimed "100%", and re-compression that changed borderline results
+
+#### ✅ Six-page app + cross-validation
+
+- **Home, Diagnose, Model Comparison, EDA, Model Analysis, About Team** — report pages read the committed results, so they work without the dataset
+- **5-fold group cross-validation** of the deployed recipe on Kaggle: validation macro-F1 **0.985 ± 0.007** (folds 0.973–0.991); the test score 0.974 sits at the low end of that range
 
 #### How far does it meet the project goal?
 

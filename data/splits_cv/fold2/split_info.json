@@ -1,0 +1,14 @@
+{
+  "fingerprint": "53320bd30430396d",
+  "fold": 2,
+  "k": 5,
+  "seed": 42,
+  "n_train": 1712,
+  "n_val": 429,
+  "val_class_counts": {
+    "Leaf Rust": 142,
+    "Healthy": 121,
+    "Cercospora": 86,
+    "Phoma": 80
+  }
+}

@@ -126,6 +126,8 @@ def _build_code_bundle() -> Path:
     subprocess.run(["uv", "build", "--wheel", "-o", str(stage)], cwd=root, check=True)
     shutil.copytree(root / "configs", stage / "configs")
     shutil.copytree(root / "data" / "splits", stage / "data" / "splits")
+    if (root / "data" / "splits_cv").exists():  # cross-validation folds
+        shutil.copytree(root / "data" / "splits_cv", stage / "data" / "splits_cv")
     return stage
 
 
