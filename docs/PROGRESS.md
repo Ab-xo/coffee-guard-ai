@@ -1135,3 +1135,19 @@ Unseen BRACOL, as photographed: **accuracy 0.63** (answers given directly: 0.83)
 - App: Diagnose "Details" now says "Distance from the coffee leaves the model knows: … (lower is more familiar; above τ the photo is turned away)"; rejection title "Not recognised as a coffee leaf"; OOD advice asks for the original camera photo (not a screenshot or small web copy). Model Analysis has a new **Other datasets** tab (v1.0 vs. v1.1 gate per condition, BRACOL confusion matrix). Home: gate description, external AUROC, limits. `Dockerfile.web` now copies `artifacts/ood`.
 - Docs: model card, data card (BRACOL overlap, external sources + licences: RoCoLe CC BY 4.0; BRACOL states no image licence — evaluation only, not redistributed), technical report §7.1, ADR 001 table + update, README, demo script, changelog 1.1.0. `data/external/` is git-ignored.
 - Tests: `tests/unit/test_ood_bank.py` (bank variants, degradation, external conditions), web tests for the new tab. Full suite: 103 → 107 tests, all passing; the live API returns the expected result for every app sample (Healthy/Cercospora/Phoma/Leaf Rust accepted, hard case uncertain, dark photo retake, bean leaf rejected).
+
+### 5. Merged with the owner's fix on `main` (τ 0.68)
+
+While this was being built, the repo owner fixed the same report on `main` by raising τ from 0.554 to 0.68 (ADR 002, tags `v1.0-original-threshold` / `v1.0-ood-threshold-0.68`, plus two notebooks). Both options were measured on the same data (details in `docs/decisions/003-ood-gate-augmented-reference-set.md`):
+
+| | τ 0.68, old references (`main`) | v1.1 (this work) |
+|---|---:|---:|
+| AUROC coffee from other datasets vs. other plants | 0.712 | **0.981** |
+| Bean leaves not turned away / given a confident disease answer | **96% / 16%** | 4% / 2% |
+| Vertical + 300 px coffee photos passed | 88% | 98% |
+| 150 px coffee photos passed | 67% | 99% |
+| Clean BRACOL / RoCoLe passed | 100% / 100% | 85% / 93% |
+| Own test: answered / accuracy / rejected | 91.3% / 99.1% / 0.5% | 90.2% / 99.4% / 4.0% |
+
+Raising τ helps coffee photos but removes most of the protection against other plants' leaves: with the old references the two overlap (AUROC 0.712), so no threshold separates them. `origin/main` was merged into `eleni-changes`: ADR 002, the notebooks and the owner's changelog entry are kept unchanged; the release bundle keeps the v1.1 gate (conflict resolved in its favour; SHA-256 of every file re-checked); ADR 003 records the comparison and is marked *proposed* for the team to accept. `main` itself was not changed.
+
