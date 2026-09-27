@@ -254,15 +254,15 @@ Disease-relevant visual region
 
 Test the trained model under controlled perturbations:
 
-| Perturbation | Purpose |
-|---|---|
-| Brightness | Field lighting variation |
-| Contrast | Camera/environment variation |
-| Blur | Focus/motion degradation |
-| Noise | Sensor/environment noise |
+| Perturbation     | Purpose                            |
+| ---------------- | ---------------------------------- |
+| Brightness       | Field lighting variation           |
+| Contrast         | Camera/environment variation       |
+| Blur             | Focus/motion degradation           |
+| Noise            | Sensor/environment noise           |
 | JPEG compression | Messaging/social-media compression |
-| Occlusion | Partial leaf visibility |
-| Crop/scale | Different camera framing |
+| Occlusion        | Partial leaf visibility            |
+| Crop/scale       | Different camera framing           |
 
 Compare accuracy, macro F1, and confidence against the clean test set.
 
@@ -289,11 +289,11 @@ Example:
 
 Compare:
 
-| Model | Accuracy | Macro F1 | Parameters | Size | Inference Time |
-|---|---:|---:|---:|---:|---:|
-| MobileNetV3 | — | — | — | — | — |
-| EfficientNet-B0 | — | — | — | — | — |
-| EfficientNetV2-B0 | — | — | — | — | — |
+| Model             | Accuracy | Macro F1 | Parameters | Size | Inference Time |
+| ----------------- | -------: | -------: | ---------: | ---: | -------------: |
+| MobileNetV3       |        — |        — |          — |    — |              — |
+| EfficientNet-B0   |        — |        — |          — |    — |              — |
+| EfficientNetV2-B0 |        — |        — |          — |    — |              — |
 
 Choose the deployment model using predictive performance **and** model size, latency, and robustness.
 

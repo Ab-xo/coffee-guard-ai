@@ -1,0 +1,73 @@
+# Hugging Face Space Configuration
+---
+title: CoffeeGuard AI
+emoji: ☕🍃
+colorFrom: green
+colorTo: brown
+sdk: streamlit
+sdk_version: "1.28.0"
+app_file: app.py
+pinned: true
+license: mit
+tags:
+  - computer-vision
+  - image-classification
+  - agriculture
+  - coffee
+  - disease-detection
+  - ethiopia
+  - efficientnet
+  - onnx
+short_description: Ethiopian coffee leaf disease detection with EfficientNetV2-B0
+---
+
+# CoffeeGuard AI ☕🍃
+
+**Coffee Leaf Disease Detection for Ethiopian Coffee Farmers**
+
+Upload a photo of a coffee leaf and CoffeeGuard will analyze it to detect:
+
+- ✅ **Healthy** - No disease detected
+- 🟤 **Cercospora** - Brown Eye Spot (Cercospora coffeicola)
+- 🟠 **Leaf Rust** - Coffee Leaf Rust (Hemileia vastatrix)
+- ⚫ **Phoma** - Phoma Leaf Spot
+
+## Features
+
+- 🎯 **97.4% Accuracy** on test dataset
+- 🔍 **Visual Explanations** - See where the model looked (Grad-CAM)
+- 🛡️ **Quality Checks** - Rejects poor quality or non-coffee images
+- 📊 **Confidence Scores** - Know when the model is uncertain
+- 🌍 **Built for Ethiopia** - Optimized for field conditions
+
+## How It Works
+
+1. **Upload** a photo of a single coffee leaf
+2. **Wait** for analysis (2-5 seconds)
+3. **Get Results** with confidence score and visual explanation
+4. **Understand** what the model saw with heat map overlay
+
+## Model Details
+
+- **Architecture**: EfficientNetV2-B0 (7.1M parameters)
+- **Training Data**: 2,520 Ethiopian coffee leaf images
+- **Inference**: ONNX Runtime (CPU-optimized)
+- **License**: MIT (free to use and modify)
+
+## Limitations
+
+- Works best with **single leaf** photos
+- Requires **decent lighting** (not too dark/bright)
+- Only detects **4 disease types** (healthy + 3 diseases)
+- **Not validated on farm photos** yet (accuracy may be lower in field)
+- **Cercospora accuracy**: Lower on external datasets (63%)
+
+## Try It
+
+Click "Diagnose" tab and upload a coffee leaf image, or use sample images provided!
+
+## Source Code
+
+GitHub: [Ab-xo/coffee-guard-ai](https://github.com/Ab-xo/coffee-guard-ai)
+
+Built with ❤️ for Ethiopian coffee farmers
