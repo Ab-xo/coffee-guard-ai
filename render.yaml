@@ -1,0 +1,41 @@
+# Render.com deployment configuration
+# Documentation: https://render.com/docs/blueprint-spec
+
+services:
+  # FastAPI Backend
+  - type: web
+    name: coffeeguard-api
+    env: python
+    region: frankfurt  # Closest to Ethiopia
+    plan: starter  # $7/month
+    buildCommand: "pip install uv && uv sync --no-dev"
+    startCommand: "uv run uvicorn app.main:app --app-dir apps/api --host 0.0.0.0 --port $PORT"
+    healthCheckPath: /health
+    envVars:
+      - key: MODEL_BUNDLE
+        value: artifacts/models/coffeeguard-effv2b0-v1
+      - key: LOG_LEVEL
+        value: INFO
+      - key: MAX_UPLOAD_MB
+        value: 10
+      - key: CORS_ORIGINS
+        value: "*"
+      - key: PYTHON_VERSION
+        value: "3.12.0"
+
+  # Streamlit Frontend
+  - type: web
+    name: coffeeguard-web
+    env: python
+    region: frankfurt
+    plan: starter  # $7/month
+    buildCommand: "pip install uv && uv sync --no-dev"
+    startCommand: "uv run streamlit run apps/web/streamlit_app.py --server.port $PORT --server.address 0.0.0.0 --server.headless true"
+    envVars:
+      - key: API_URL
+        fromService:
+          name: coffeeguard-api
+          type: web
+          property: host
+      - key: PYTHON_VERSION
+        value: "3.12.0"

@@ -50,6 +50,31 @@ uv run python -c "from pathlib import Path; import httpx; [print(f'{p.name}: {ht
 
 ---
 
+## 🌐 Production Deployment
+
+Ready to deploy? See **[`docs/DEPLOYMENT_GUIDE.md`](docs/DEPLOYMENT_GUIDE.md)** for complete deployment instructions.
+
+**Quick Deploy Options:**
+
+| Platform             | Setup Time | Cost/Month | Best For                          |
+| -------------------- | ---------- | ---------- | --------------------------------- |
+| **Railway.app**      | 5 minutes  | $5-20      | Fastest demo deployment           |
+| **Google Cloud Run** | 15 minutes | $0-10      | Pay-per-use, cost-effective       |
+| **AWS ECS Fargate**  | 1 hour     | $140       | Enterprise scale, auto-scaling    |
+| **Render.com**       | 10 minutes | $14        | Good balance of ease and features |
+
+**Fastest deployment (5 minutes):**
+
+1. Push code to GitHub (already done ✓)
+2. Sign up at [railway.app](https://railway.app)
+3. Click "Deploy from GitHub"
+4. Select this repository
+5. Done! Your app is live with HTTPS
+
+See deployment guide for detailed instructions on all platforms.
+
+---
+
 ## 📊 Results
 
 Deployed model: **EfficientNetV2-B0** (transfer learning, background-swap augmentation), evaluated once on **379 held-out test photos**:
