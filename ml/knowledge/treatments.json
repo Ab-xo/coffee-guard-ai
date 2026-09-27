@@ -1,0 +1,118 @@
+﻿{
+  "version": "1.0.0",
+  "last_updated": "2026-09-25",
+  "region": "Ethiopia",
+  "diseases": {
+    "healthy": {
+      "name": "Healthy Leaf",
+      "advice": "Your coffee plant looks healthy! Continue good practices.",
+      "prevention": [
+        "Monitor plants weekly for early disease detection",
+        "Maintain 2-2.5m spacing between plants",
+        "Apply organic mulch and compost annually",
+        "Use drip irrigation to keep leaves dry"
+      ]
+    },
+    "cercospora": {
+      "name": "Brown Eye Spot (Cercospora)",
+      "description": "Fungal disease causing brown circular spots with gray centers",
+      "treatments": {
+        "mild": {
+          "organic": [
+            "Apply copper-based fungicide every 14-21 days (2-3g/L)",
+            "Remove and burn infected fallen leaves",
+            "Prune overcrowded branches for air circulation"
+          ],
+          "conventional": [
+            "Use systemic fungicide (Tebuconazole 0.5-1 ml/L)",
+            "Spray when spots first appear, repeat after 14 days",
+            "Wear protective equipment"
+          ]
+        },
+        "severe": {
+          "urgent": "Contact agricultural extension officer immediately",
+          "actions": [
+            "Apply fungicide within 24-48 hours",
+            "Remove 50-60% of infected plant material",
+            "Intensive spray program: every 7 days for 8 weeks"
+          ]
+        }
+      },
+      "prevention": [
+        "Maintain 40-50% shade coverage",
+        "Avoid overhead irrigation",
+        "Apply preventive copper spray before rainy season",
+        "Remove leaf litter before rains"
+      ]
+    },
+    "leaf_rust": {
+      "name": "Coffee Leaf Rust",
+      "description": "Most damaging coffee disease - orange powdery pustules on leaf undersides",
+      "urgency": "HIGH - Act within 5-7 days to prevent rapid spread",
+      "treatments": {
+        "mild": {
+          "organic": [
+            "Copper hydroxide spray every 21 days (2.5-3 g/L)",
+            "Remove and burn infected leaves weekly",
+            "Apply potassium sulfate (50g per plant)"
+          ],
+          "conventional": [
+            "Systemic fungicide (Cyproconazole) immediately",
+            "Repeat after 21 days",
+            "Most effective treatment option"
+          ]
+        },
+        "severe": {
+          "urgent": "EMERGENCY - Contact district agricultural office within 24 hours",
+          "critical_actions": [
+            "Begin treatment within 48 hours",
+            "Intensive fungicide rotation every 7 days",
+            "Stump heavily defoliated plants (>60% leaf loss)",
+            "Expect 50-70% yield loss this year without treatment"
+          ],
+          "cost_warning": "Treatment expensive (15,000-25,000 Birr/ha) but necessary to save plantation"
+        }
+      },
+      "prevention": [
+        "MOST IMPORTANT: Preventive fungicide program (2,000-4,000 Birr/ha/year)",
+        "Plant rust-resistant varieties if available",
+        "Weekly scouting during rainy season - early detection is critical",
+        "Spray before rainy season starts (Late May in Ethiopia)"
+      ],
+      "disease_spread": "Spreads exponentially - a few leaves can become plantation-wide in 4-6 weeks"
+    },
+    "phoma": {
+      "name": "Phoma Leaf Spot",
+      "description": "Dark brown lesions with lighter centers, typically less severe",
+      "treatments": {
+        "mild": [
+          "Copper-based fungicide every 21 days (2-3 g/L)",
+          "Remove heavily spotted leaves",
+          "Improve air circulation through pruning"
+        ],
+        "moderate": [
+          "Mancozeb or Chlorothalonil spray every 14-21 days",
+          "Remove 20-30% of infected foliage",
+          "Ensure good drainage"
+        ]
+      },
+      "prevention": [
+        "Proper drainage to avoid waterlogged soil",
+        "Avoid wounding plants during field work",
+        "Maintain plant vigor with balanced nutrition"
+      ]
+    }
+  },
+  "general_advice": {
+    "safety": "Always wear gloves, mask, and protective clothing when applying fungicides",
+    "resistance": "Rotate different fungicide types to prevent resistance",
+    "support": "Contact your local agricultural extension office for subsidies and technical support",
+    "resources": {
+      "Ethiopia": {
+        "extension": "Woreda/District Agricultural Office",
+        "research": "Ethiopian Institute of Agricultural Research (EIAR)",
+        "authority": "Ethiopian Coffee and Tea Authority"
+      }
+    }
+  }
+}
