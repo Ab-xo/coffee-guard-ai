@@ -96,27 +96,7 @@ def model_info(request: Request) -> ModelInfoResponse:
 @router.post("/predict", response_model=PredictResponse, responses=_ERRORS)
 def predict(request: Request, file: Annotated[UploadFile, File()]) -> PredictResponse:
     """Decision for one leaf photo: accepted / uncertain / rejected, with advice."""
-    pipeline, res, base = _run(request, file, with_cam=False)
-    
-    # Add treatment recommendations if disease detected
-    if base["status"] == "accepted" and base["label"] and base["label"] != "Healthy":
-        try:
-            from coffeeguard.treatment import TreatmentRecommender
-            recommender = TreatmentRecommender()
-            
-            # Map label to class_id
-            class_map = {name: i for i, name in enumerate(pipeline.classes)}
-            class_id = class_map.get(base["label"], -1)
-            
-            if class_id >= 0:
-                severity = recommender.estimate_severity(base["confidence"] or 0)
-                treatment_rec = recommender.get_recommendation(
-                    class_id, base["confidence"] or 0, severity
-                )
-                base["treatment"] = treatment_rec
-        except Exception as e:
-            log.warning(f"Failed to get treatment recommendation: {e}")
-    
+    _, _, base = _run(request, file, with_cam=False)
     return PredictResponse(**base)
 
 
@@ -124,26 +104,6 @@ def predict(request: Request, file: Annotated[UploadFile, File()]) -> PredictRes
 def analyze(request: Request, file: Annotated[UploadFile, File()]) -> AnalyzeResponse:
     """The decision plus probabilities, OOD score, quality report and a CAM overlay."""
     pipeline, res, base = _run(request, file, with_cam=True)
-    
-    # Add treatment recommendations if disease detected
-    if base["status"] == "accepted" and base["label"] and base["label"] != "Healthy":
-        try:
-            from coffeeguard.treatment import TreatmentRecommender
-            recommender = TreatmentRecommender()
-            
-            # Map label to class_id
-            class_map = {name: i for i, name in enumerate(pipeline.classes)}
-            class_id = class_map.get(base["label"], -1)
-            
-            if class_id >= 0:
-                severity = recommender.estimate_severity(base["confidence"] or 0)
-                treatment_rec = recommender.get_recommendation(
-                    class_id, base["confidence"] or 0, severity
-                )
-                base["treatment"] = treatment_rec
-        except Exception as e:
-            log.warning(f"Failed to get treatment recommendation: {e}")
-    
     return AnalyzeResponse(
         **base,
         probabilities=res.probabilities,

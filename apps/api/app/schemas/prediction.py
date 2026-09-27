@@ -26,20 +26,6 @@ class ModelInfoResponse(BaseModel):
     thresholds: dict[str, float | str | dict[str, float]]
 
 
-class TreatmentRecommendation(BaseModel):
-    """Treatment recommendations for detected diseases."""
-    disease: str
-    description: str | None = None
-    severity: str = Field(examples=["mild", "moderate", "severe"])
-    urgency: str = Field(examples=["low", "moderate", "high", "critical"])
-    treatments: list[str] = Field(default_factory=list)
-    organic_treatments: list[str] | None = None
-    conventional_treatments: list[str] | None = None
-    prevention: list[str] = Field(default_factory=list)
-    urgent_message: str | None = None
-    safety_note: str | None = None
-
-
 class PredictResponse(BaseModel):
     status: Literal["accepted", "uncertain", "rejected"] = Field(
         description="accepted: one confident class; uncertain: see prediction_set; rejected: "
@@ -57,9 +43,6 @@ class PredictResponse(BaseModel):
     )
     issues: list[str] = Field(default_factory=list, examples=[["too_dark"]])
     advice: list[str] = Field(default_factory=list)
-    treatment: TreatmentRecommendation | None = Field(
-        None, description="Treatment recommendations when disease detected"
-    )
     model_version: str
     latency_ms: float
 
